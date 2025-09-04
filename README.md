@@ -1,39 +1,39 @@
-<h1 align="center"> Inventory Notification System — Backend <br>
+<h1 align="center"> Sistema de Notificação de Estoque — API REST <br>
 <img src="https://img.shields.io/badge/Status-In%20Progress-yellow" width="150" height="30" />
 </h1>
 
 ---
 
 <h2 align="center"> 🔗 Frontend</h2>
-The frontend will be developed separately. Once ready, it will be available in a dedicated repository:
+O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disponível em um repositório dedicado:
 
-- 🌐 [Inventory Notification System — Frontend](#)  <!-- update link when available -->
-
----
-
-<h2 align="center"> Project Overview</h2>
-**Inventory Notification System** is a backend built with **Spring Boot**, designed to manage stock and send notifications for low inventory or expiring products.  
-This project follows **layered architecture** (controller, service, repository, model) and applies best practices for code organization, scalability, and maintainability.
+- 🌐 [Sistema de Notificação de Estoque — Frontend](#)  <!-- atualizar link quando disponível -->
 
 ---
 
-<h2 align="center"> Technologies Used</h2>
+<h2 align="center"> Visão Geral do Projeto</h2>
+**Sistema de Notificação de Estoque** é um backend desenvolvido com **Spring Boot**, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque ou prestes a vencer.  
+Este projeto segue uma **arquitetura em camadas** (controller, service, repository, model) e aplica boas práticas de organização de código, escalabilidade e manutenção.
+
+---
+
+<h2 align="center"> Tecnologias Utilizadas</h2>
 
 - ☕ Java 17+ + 🌱 Spring Boot 3
 - 📦 [JPA](https://spring.io/projects/spring-data-jpa) + 🛠️ [Hibernate](https://hibernate.org/)
-- 📦 Maven: Dependency and build management
-- 🐘 PostgreSQL: Database
-- 🛠️ Database version control with [Flyway](https://flywaydb.org/)
+- 📦 Maven: Gerenciamento de dependências e build
+- 🐘 PostgreSQL: Banco de dados
+- 🛠️ Controle de versionamento de banco com [Flyway](https://flywaydb.org/)
 - 🔧 Lombok
 - 🔄 Spring Boot DevTools
 - 🌐 Spring Web
-- ✅ Validation (Bean Validation)
+- ✅ Validações (Bean Validation)
 - 📄 [Swagger (OpenAPI)](https://swagger.io/specification/)
-- 🐧 [WSL](https://ubuntu.com/desktop/wsl) and 🐳 [Docker CLI](https://www.docker.com/products/cli/)
+- 🐧 [WSL](https://ubuntu.com/desktop/wsl) e 🐳 [Docker CLI](https://www.docker.com/products/cli/)
 
 ---
 
-<h2 align="center"> Project Structure</h2>
+<h2 align="center"> Estrutura do Projeto</h2>
 
 ```plaintext
 src/main
@@ -51,52 +51,52 @@ src/main
 
 ---
 
-<h2 align="center"> How to Run</h2>
-### Prerequisites
+<h2 align="center"> Como Executar</h2>
+### Pré-requisitos
 - Java 17+
-- PostgreSQL running locally
-- Maven installed
+- PostgreSQL rodando localmente
+- Maven instalado
 
-### Steps
-1. Clone the repository:
+### Passos
+1. Clone o repositório:
 ```bash
 git clone git@github.com:renancvitor/inventory-notification-system-backend.git
 ```
-2. Go to project folder:
+2. Acesse a pasta do projeto:
 ```bash
 cd inventory-notification-system-backend
 ```
-3. Configure database in `src/main/resources/application.properties`
-4. Run the application with Maven
+3. Configure o banco de dados em `src/main/resources/application.properties`
+4. Execute a aplicação com Maven
 ```bash
 ./mvnw spring-boot:run
 ```
-5. Access the API at `http://localhost:8080` (default)
+5. Acesse a API em `http://localhost:8080` (padrão)
 
 ---
 
-<h2 align="center"> Contributions</h2>
+<h2 align="center"> Contribuições</h2>
 
-If you want to contribute to the project, follow these steps:
+Se você quiser contribuir para o projeto, siga estas etapas:
 
-1. Fork the repository.
-2. Create a new branch (`git checkout -b feature/alguma-coisa`).
-3. Make your changes.
-4. Open a Pull Request describing your changes.
+1. Faça um fork deste repositório.
+2. Crie uma nova branch (`git checkout -b feature/alguma-coisa`).
+3. Faça suas mudanças.
+4. Envie um pull request explicando as mudanças realizadas.
 
 Obrigado pelo interesse em contribuir!
 
 ---
 
-<h2 align="center"> Contact</h2>
+<h2 align="center"> Contato</h2>
 
-If you have any questions or suggestions, please feel free to contact me:
+Se tiver dúvidas ou sugestões, sinta-se à vontade para entrar em contato:
 
 - 📧 **E-mail**: [renan.vitor.cm@gmail.com](mailto:renan.vitor.cm@gmail.com)
 - 🟦 **LinkedIn**: [Renan Vitor](https://www.linkedin.com/in/renan-vitor-developer/)
 
 ---
 
-<h2 align="center"> Licence</h2>
+<h2 align="center"> Licença</h2>
 
-📌 This project is licensed under the [MIT License](LICENSE), which means you can use, modify, share and distribute it freely, as long as you keep the authors' credits and include a copy of the original license - see the [LICENSE](LICENSE) file for details or access the [official MIT license](https://opensource.org/licenses/MIT).
+📌 Este projeto está licenciado sob a [Licença MIT](LICENSE), o que significa que você pode utilizá-lo, modificar, compartilhar e distribuir livremente, desde que mantenha os devidos créditos aos autores e inclua uma cópia da licença original - veja o arquivo [LICENSE](LICENSE) para detalhes ou acesse a [licença MIT oficial](https://opensource.org/licenses/MIT).
