@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
+import com.github.renancvitor.inventory.dto.ProductCreationData;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -56,5 +57,16 @@ public class Product {
 
     @Column(nullable = false)
     private Boolean active = true;
+
+    public Product(ProductCreationData data, CategoryEntity categoryEntity) {
+        this.name = data.name();
+        this.category = categoryEntity;
+        this.price = data.price();
+        this.validity = data.validity();
+        this.description = data.description();
+        this.stock = data.stock();
+        this.brand = data.brand();
+        this.active = true;
+    }
 
 }
