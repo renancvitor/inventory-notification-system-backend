@@ -20,6 +20,8 @@ public class SystemLogListener {
         SystemLog systemLog = new SystemLog();
         systemLog.setEventType(systemLogEvent.getEventType());
         systemLog.setDescription(systemLogEvent.getDescription());
+        systemLog.setOldValue(systemLogEvent.getOldValue());
+        systemLog.setNewValue(systemLogEvent.getNewValue());
         systemLogRepository.save(systemLog);
     }
 

@@ -13,8 +13,8 @@ public class LogPublisherService {
 
     private final ApplicationEventPublisher publisher;
 
-    public void publish(String eventType, String description) {
-        publisher.publishEvent(new SystemLogEvent(eventType, description));
+    public void publish(String eventType, String description, String oldValue, String newValue) {
+        publisher.publishEvent(new SystemLogEvent(eventType, description, oldValue, newValue));
     }
 
 }
