@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.dto;
+package com.github.renancvitor.inventory.dto.product;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public record ProductDetailData(
                 this(
                                 product.getId(),
                                 product.getName(),
-                                product.getCategory().getName(),
+                                product.getCategory().getCategoryName(),
                                 product.getPrice(),
                                 product.getValidity(),
                                 product.getDescription(),

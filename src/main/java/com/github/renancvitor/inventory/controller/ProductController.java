@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.renancvitor.inventory.dto.ProductCreationData;
-import com.github.renancvitor.inventory.dto.ProductDetailData;
-import com.github.renancvitor.inventory.dto.ProductListingData;
+import com.github.renancvitor.inventory.dto.product.ProductCreationData;
+import com.github.renancvitor.inventory.dto.product.ProductDetailData;
+import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -41,7 +41,8 @@ public class ProductController {
     public ResponseEntity<ProductDetailData> create(@RequestBody @Valid ProductCreationData data,
             UriComponentsBuilder uriComponentsBuilder) {
         ProductDetailData productDetailData = productService.create(data);
-        URI uri = uriComponentsBuilder.path("/product/{id}")
+
+        URI uri = uriComponentsBuilder.path("/produtos/{id}")
                 .buildAndExpand(productDetailData.id())
                 .toUri();
 

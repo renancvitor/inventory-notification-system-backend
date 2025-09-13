@@ -8,9 +8,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
-import com.github.renancvitor.inventory.dto.ProductCreationData;
-import com.github.renancvitor.inventory.dto.ProductDetailData;
-import com.github.renancvitor.inventory.dto.ProductListingData;
+import com.github.renancvitor.inventory.dto.product.ProductCreationData;
+import com.github.renancvitor.inventory.dto.product.ProductDetailData;
+import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.repository.CategoryRepository;
 import com.github.renancvitor.inventory.repository.ProductRepository;
 

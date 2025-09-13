@@ -45,4 +45,5 @@ public class SystemLog {
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
     }
+
 }

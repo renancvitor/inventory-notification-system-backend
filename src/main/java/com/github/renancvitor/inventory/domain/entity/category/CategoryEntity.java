@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "category")
+@Table(name = "categories")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -25,7 +25,7 @@ public class CategoryEntity {
     private Integer id;
 
     @Column(nullable = false, unique = true)
-    private String name;
+    private String categoryName;
 
     public static CategoryEntity fromEnum(CategoryEnum categoryEnum) {
         return new CategoryEntity(categoryEnum.getId(), categoryEnum.name());
