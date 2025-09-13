@@ -76,4 +76,11 @@ public class User implements UserDetails {
         return personName.getEmail();
     }
 
+    public void updatePassword(String newEncryptedPassword) {
+        if (newEncryptedPassword == null || newEncryptedPassword.isBlank()) {
+            throw new IllegalArgumentException("Senha não pode ser nula ou vazia");
+        }
+        this.password = newEncryptedPassword;
+    }
+
 }
