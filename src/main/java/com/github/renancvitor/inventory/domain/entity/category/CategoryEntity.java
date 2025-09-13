@@ -1,6 +1,6 @@
 package com.github.renancvitor.inventory.domain.entity.category;
 
-import com.github.renancvitor.inventory.domain.enums.CategoryEnum;
+import com.github.renancvitor.inventory.domain.enums.category.CategoryEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
