@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -36,15 +37,15 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "people_id", nullable = false, unique = true)
+    @JoinColumn(name = "person_name_id", nullable = false)
     private Person personName;
 
-    @OneToOne(optional = false)
-    @JoinColumn(name = "user_types_id", nullable = false)
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_type_id", nullable = false)
     private UserTypeEntity userType;
 
     @Column(nullable = false)
