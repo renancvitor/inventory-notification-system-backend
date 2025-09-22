@@ -7,7 +7,7 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 
 public record ProductDetailData(
                 Long id,
-                String name,
+                String productName,
                 String category,
                 BigDecimal price,
                 LocalDate validity,
@@ -18,7 +18,7 @@ public record ProductDetailData(
         public ProductDetailData(Product product) {
                 this(
                                 product.getId(),
-                                product.getName(),
+                                product.getProductName(),
                                 product.getCategory().getCategoryName(),
                                 product.getPrice(),
                                 product.getValidity(),

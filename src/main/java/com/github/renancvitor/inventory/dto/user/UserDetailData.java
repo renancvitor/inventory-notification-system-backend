@@ -8,8 +8,8 @@ public record UserDetailData(
     public UserDetailData(User user) {
         this(
                 user.getId(),
-                user.getPersonName().getCpf(),
-                user.getPersonName().getEmail(),
+                user.getPerson().getCpf(),
+                user.getPerson().getEmail(),
                 user.getUserType().getUserTypeName());
     }
 

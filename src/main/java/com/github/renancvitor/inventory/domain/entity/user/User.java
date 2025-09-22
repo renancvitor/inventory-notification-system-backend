@@ -41,8 +41,8 @@ public class User implements UserDetails {
     private String password;
 
     @OneToOne(optional = false)
-    @JoinColumn(name = "person_name_id", nullable = false)
-    private Person personName;
+    @JoinColumn(name = "person_id", nullable = false)
+    private Person person;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_type_id", nullable = false)
@@ -54,9 +54,9 @@ public class User implements UserDetails {
     @Column(nullable = false, name = "first_access")
     private Boolean firstAccess = true;
 
-    public User(String password, Person personName, UserTypeEntity userType) {
+    public User(String password, Person person, UserTypeEntity userType) {
         this.password = password;
-        this.personName = personName;
+        this.person = person;
         this.userType = userType;
         this.active = true;
         this.firstAccess = true;
@@ -74,7 +74,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return personName.getEmail();
+        return person.getEmail();
     }
 
     public void updatePassword(String newEncryptedPassword) {

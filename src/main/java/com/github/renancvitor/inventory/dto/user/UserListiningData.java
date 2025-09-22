@@ -13,8 +13,8 @@ public record UserListiningData(
     public UserListiningData(User user) {
         this(
                 user.getId(),
-                user.getPersonName().getEmail(),
-                user.getPersonName().getPersonName(),
+                user.getPerson().getEmail(),
+                user.getPerson().getPersonName(),
                 user.getUserType().getId(),
                 user.getUserType().getUserTypeName(),
                 user.getActive());

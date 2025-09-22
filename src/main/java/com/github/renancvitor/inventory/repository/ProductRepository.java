@@ -16,7 +16,7 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
 
     Page<Product> findAllByActive(Boolean active, Pageable pageable);
 
-    Optional<Product> findByName(String name);
+    Optional<Product> findByName(String productName);
 
     Page<Product> findByActiveAndCategoryIdAndPriceBetween(
             Boolean active, Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, Pageable pageable);

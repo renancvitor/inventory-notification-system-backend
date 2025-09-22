@@ -12,8 +12,8 @@ public record UserSummaryData(
         this(
                 user.getId(),
                 user.getUserType().getUserTypeName(),
-                user.getPersonName().getPersonName(),
-                user.getPersonName().getEmail());
+                user.getPerson().getPersonName(),
+                user.getPerson().getEmail());
     }
 
 }

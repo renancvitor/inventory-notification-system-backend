@@ -24,7 +24,7 @@ public class TokenService {
             var algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("Inventory Notification System API.")
-                    .withSubject(user.getPersonName().getEmail())
+                    .withSubject(user.getPerson().getEmail())
                     .withClaim("id", user.getId())
                     .withExpiresAt(expirationDate())
                     .sign(algorithm);

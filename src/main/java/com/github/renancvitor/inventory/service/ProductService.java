@@ -15,10 +15,10 @@ import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
-import com.github.renancvitor.inventory.exception.AuthorizationException;
-import com.github.renancvitor.inventory.exception.CategoryNotFoundException;
-import com.github.renancvitor.inventory.exception.DuplicateProductException;
-import com.github.renancvitor.inventory.infra.messaging.LogPublisherService;
+import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
+import com.github.renancvitor.inventory.exception.types.auth.AuthorizationException;
+import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
+import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.repository.CategoryRepository;
 import com.github.renancvitor.inventory.repository.ProductRepository;
 
@@ -27,11 +27,11 @@ public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
-    private final LogPublisherService logPublisherService;
+    private final SystemLogPublisherService logPublisherService;
 
     public ProductService(ProductRepository productRepository,
             CategoryRepository categoryRepository,
-            LogPublisherService logPublisherService) {
+            SystemLogPublisherService logPublisherService) {
         this.productRepository = productRepository;
         this.categoryRepository = categoryRepository;
         this.logPublisherService = logPublisherService;
@@ -70,11 +70,11 @@ public class ProductService {
         }
 
         CategoryEntity category = categoryRepository.findById(data.categoryId())
-                .orElseThrow(() -> new CategoryNotFoundException(data.categoryId()));
+                .orElseThrow(() -> NotFoundExceptionFactory.category(data.categoryId()));
 
-        productRepository.findByName(data.name())
+        productRepository.findByName(data.productName())
                 .ifPresent(p -> {
-                    throw new DuplicateProductException(data.name());
+                    throw new DuplicateProductException(data.productName());
                 });
 
         Product product = new Product(data, category);
@@ -84,7 +84,7 @@ public class ProductService {
                 "PRODUCT_CREATED",
                 "Produto cadastrado pelo usuário " + loggedInUser.getUsername(),
                 "N/A",
-                product.getName());
+                product.getProductName());
 
         return new ProductDetailData(product);
     }

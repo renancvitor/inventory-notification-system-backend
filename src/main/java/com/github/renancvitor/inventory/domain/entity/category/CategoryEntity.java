@@ -24,7 +24,7 @@ public class CategoryEntity {
     @Id
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "category_name", nullable = false, unique = true)
     private String categoryName;
 
     public static CategoryEntity fromEnum(CategoryEnum categoryEnum) {

@@ -34,19 +34,19 @@ public class Product {
     private Long id;
 
     @Column(unique = true, nullable = false)
-    private String name;
+    private String productName;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "category", nullable = false)
+    @JoinColumn(name = "category_id", nullable = false)
     private CategoryEntity category;
 
     @Column(nullable = false)
     private BigDecimal price;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private LocalDate validity;
 
-    @Column(nullable = false)
+    @Column(nullable = true)
     private String description;
 
     @Column(nullable = false)
@@ -59,7 +59,7 @@ public class Product {
     private Boolean active = true;
 
     public Product(ProductCreationData data, CategoryEntity categoryEntity) {
-        this.name = data.name();
+        this.productName = data.productName();
         this.category = categoryEntity;
         this.price = data.price();
         this.validity = data.validity();
