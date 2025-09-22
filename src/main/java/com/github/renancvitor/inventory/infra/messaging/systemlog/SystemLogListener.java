@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging;
+package com.github.renancvitor.inventory.infra.messaging.systemlog;
 
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;

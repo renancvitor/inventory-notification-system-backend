@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging;
+package com.github.renancvitor.inventory.infra.messaging.systemlog;
 
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor
-public class LogPublisherService {
+public class SystemLogPublisherService {
 
     private final ApplicationEventPublisher publisher;
 
