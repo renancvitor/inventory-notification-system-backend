@@ -16,7 +16,7 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 @Service
 public class TokenService {
 
-    @Value("${security.token.secrety}")
+    @Value("${security.token.secret}")
     private String secret;
 
     public String generateToken(User user) {

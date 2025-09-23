@@ -72,7 +72,7 @@ public class ProductService {
         CategoryEntity category = categoryRepository.findById(data.categoryId())
                 .orElseThrow(() -> NotFoundExceptionFactory.category(data.categoryId()));
 
-        productRepository.findByName(data.productName())
+        productRepository.findByProductName(data.productName())
                 .ifPresent(p -> {
                     throw new DuplicateProductException(data.productName());
                 });
