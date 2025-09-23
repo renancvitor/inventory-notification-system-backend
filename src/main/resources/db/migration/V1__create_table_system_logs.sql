@@ -4,5 +4,5 @@ CREATE TABLE system_logs (
     description TEXT NOT NULL,
     old_value TEXT,
     new_value TEXT,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at TIMESTAMP NOT NULL
 );

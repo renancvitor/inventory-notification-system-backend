@@ -1,0 +1,8 @@
+CREATE TABLE people (
+    id BIGSERIAL PRIMARY KEY,
+    person_name VARCHAR(255) NOT NULL UNIQUE,
+    cpf VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    registration_date TIMESTAMP NOT NULL,
+    active BOOLEAN NOT NULL DEFAULT true
+);
