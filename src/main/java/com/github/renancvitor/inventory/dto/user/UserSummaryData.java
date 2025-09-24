@@ -1,6 +1,7 @@
 package com.github.renancvitor.inventory.dto.user;
 
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 
 public record UserSummaryData(
         Long id,
@@ -11,7 +12,7 @@ public record UserSummaryData(
     public UserSummaryData(User user) {
         this(
                 user.getId(),
-                user.getUserType().getUserTypeName(),
+                UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName(),
                 user.getPerson().getPersonName(),
                 user.getPerson().getEmail());
     }

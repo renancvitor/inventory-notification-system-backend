@@ -1,6 +1,7 @@
 package com.github.renancvitor.inventory.dto.user;
 
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 
 public record UserListiningData(
         Long id,
@@ -16,7 +17,7 @@ public record UserListiningData(
                 user.getPerson().getEmail(),
                 user.getPerson().getPersonName(),
                 user.getUserType().getId(),
-                user.getUserType().getUserTypeName(),
+                UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName(),
                 user.getActive());
     }
 
