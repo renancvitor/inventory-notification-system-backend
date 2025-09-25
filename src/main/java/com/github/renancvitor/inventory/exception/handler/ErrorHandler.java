@@ -17,6 +17,7 @@ import com.github.renancvitor.inventory.exception.model.ApiError;
 import com.github.renancvitor.inventory.exception.model.DataValidationError;
 import com.github.renancvitor.inventory.exception.types.auth.AuthorizationException;
 import com.github.renancvitor.inventory.exception.types.common.EntityNotFoundException;
+import com.github.renancvitor.inventory.exception.types.common.JsonSerializationException;
 import com.github.renancvitor.inventory.exception.types.common.ValidationException;
 import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
 import com.github.renancvitor.inventory.infra.messaging.errorlog.ErrorLogPublisherService;
@@ -135,6 +136,15 @@ public class ErrorHandler {
 
         ApiError apiError = new ApiError(HttpStatus.BAD_REQUEST, "Requisição com JSON mal formatado.");
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
+    }
+
+    @ExceptionHandler(JsonSerializationException.class)
+    public ResponseEntity<ApiError> handleJsonSerializationError(JsonSerializationException ex,
+            HttpServletRequest request) {
+        logError(ex, request);
+
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 
 }
