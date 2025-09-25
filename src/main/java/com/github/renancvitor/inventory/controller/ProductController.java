@@ -9,7 +9,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,6 +22,7 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
+import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
 import com.github.renancvitor.inventory.service.ProductService;
 
 import jakarta.validation.Valid;
@@ -58,6 +61,14 @@ public class ProductController {
                 .toUri();
 
         return ResponseEntity.created(uri).body(productDetailData);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProductDetailData> update(@PathVariable Long id, @RequestBody @Valid ProductUpdateData data,
+            @AuthenticationPrincipal User loggedInUser) {
+        ProductDetailData productDetailData = productService.update(id, data, loggedInUser);
+
+        return ResponseEntity.ok(productDetailData);
     }
 
 }
