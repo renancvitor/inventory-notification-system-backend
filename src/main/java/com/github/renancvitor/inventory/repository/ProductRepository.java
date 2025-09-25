@@ -12,6 +12,8 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 public interface ProductRepository extends JpaRepository<Product, Long> {
     Page<Product> findByActive(Boolean active, Pageable pageable);
 
+    Optional<Product> findByIdAndActiveTrue(Long id);
+
     Page<Product> findByActiveAndCategoryId(Boolean active, Integer categoryId, Pageable pageable);
 
     Page<Product> findAllByActive(Boolean active, Pageable pageable);
