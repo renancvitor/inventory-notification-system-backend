@@ -118,4 +118,46 @@ public class ProductService {
         return new ProductDetailData(updatedProduct);
     }
 
+    @Transactional
+    public void delete(Long id, User loggedInUser) {
+        authenticationService.authorize(List.of(UserTypeEnum.ADMIN, UserTypeEnum.PRODUCT_MANAGER));
+
+        Product product = productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.product(id));
+
+        ProductLogData oldData = ProductLogData.fromEntity(product);
+
+        product.setActive(false);
+
+        Product updatedProduct = productRepository.save(product);
+        ProductLogData newData = ProductLogData.fromEntity(updatedProduct);
+
+        logPublisherService.publish(
+                "PRODUCT_DELETED",
+                "Produto inativado (soft delete) pelo usuário " + loggedInUser.getUsername(),
+                oldData,
+                newData);
+    }
+
+    @Transactional
+    public void activate(Long id, User loggedInUser) {
+        authenticationService.authorize(List.of(UserTypeEnum.ADMIN, UserTypeEnum.PRODUCT_MANAGER));
+
+        Product product = productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.product(id));
+
+        ProductLogData oldData = ProductLogData.fromEntity(product);
+
+        product.setActive(true);
+
+        Product updatedProduct = productRepository.save(product);
+        ProductLogData newData = ProductLogData.fromEntity(updatedProduct);
+
+        logPublisherService.publish(
+                "PRODUCT_ACTIVATED",
+                "Produto reativado (soft restore) pelo usuário " + loggedInUser.getUsername(),
+                oldData,
+                newData);
+    }
+
 }
