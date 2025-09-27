@@ -24,4 +24,8 @@ public class NotFoundExceptionFactory {
         return new EntityNotFoundException("Produto", id);
     }
 
+    public static EntityNotFoundException userType(Integer id) {
+        return new EntityNotFoundException("Tipo do Usuário", id);
+    }
+
 }
