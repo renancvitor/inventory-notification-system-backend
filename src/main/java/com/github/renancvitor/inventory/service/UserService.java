@@ -26,7 +26,10 @@ import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPubli
 import com.github.renancvitor.inventory.repository.UserRepository;
 import com.github.renancvitor.inventory.repository.UserTypeRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
     private final PasswordEncoder passwordEncoder;
@@ -34,18 +37,6 @@ public class UserService {
     private final UserTypeRepository userTypeRepository;
     private final AuthenticationService authenticationService;
     private final SystemLogPublisherService logPublisherService;
-
-    public UserService(PasswordEncoder passwordEncoder,
-            UserRepository userRepository,
-            UserTypeRepository userTypeRepository,
-            AuthenticationService authenticationService,
-            SystemLogPublisherService logPublisherService) {
-        this.passwordEncoder = passwordEncoder;
-        this.userRepository = userRepository;
-        this.userTypeRepository = userTypeRepository;
-        this.authenticationService = authenticationService;
-        this.logPublisherService = logPublisherService;
-    }
 
     public Page<UserListiningData> list(Pageable pageable, User loggedInUser, Boolean active) {
         authenticationService.authorize(List.of(UserTypeEnum.ADMIN));

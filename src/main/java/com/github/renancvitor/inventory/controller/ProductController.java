@@ -27,16 +27,14 @@ import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
 import com.github.renancvitor.inventory.service.ProductService;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/produtos")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @GetMapping
     public ResponseEntity<Page<ProductListingData>> list(@RequestParam(required = false) Boolean active,

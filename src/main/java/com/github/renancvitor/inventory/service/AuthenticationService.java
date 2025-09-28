@@ -2,7 +2,6 @@ package com.github.renancvitor.inventory.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,14 +19,14 @@ import com.github.renancvitor.inventory.dto.user.UserSummaryData;
 import com.github.renancvitor.inventory.exception.types.auth.AuthorizationException;
 import com.github.renancvitor.inventory.repository.UserRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class AuthenticationService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private TokenService tokenService;
+    private final UserRepository userRepository;
+    private final TokenService tokenService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

@@ -23,23 +23,16 @@ import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPubli
 import com.github.renancvitor.inventory.repository.CategoryRepository;
 import com.github.renancvitor.inventory.repository.ProductRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
-
-    public ProductService(ProductRepository productRepository,
-            CategoryRepository categoryRepository,
-            SystemLogPublisherService logPublisherService,
-            AuthenticationService authenticationService) {
-        this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
-        this.logPublisherService = logPublisherService;
-        this.authenticationService = authenticationService;
-    }
 
     public Page<ProductListingData> list(Pageable pageable, Boolean active,
             Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, User loggedInUser) {
