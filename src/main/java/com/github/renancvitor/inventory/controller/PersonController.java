@@ -36,7 +36,7 @@ public class PersonController {
 
     @GetMapping
     public ResponseEntity<Page<PersonListiningData>> list(@RequestParam(required = false) Boolean active,
-            @PageableDefault(size = 10, sort = ("name")) Pageable pageable,
+            @PageableDefault(size = 10, sort = ("personName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
         Page<PersonListiningData> page = personService.list(pageable, loggedInUser, active);
         return ResponseEntity.ok(page);
