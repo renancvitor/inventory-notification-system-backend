@@ -25,7 +25,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/usuarios")
+@RequestMapping("/users")
 @RequiredArgsConstructor
 public class UserController {
 
@@ -33,14 +33,14 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<Page<UserListiningData>> list(@RequestParam(required = false) Boolean active,
-            @PageableDefault(size = 10, sort = ("name")) Pageable pageable,
+            @PageableDefault(size = 10, sort = ("personName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
         Page<UserListiningData> page = userService.list(pageable, loggedInUser, active);
 
         return ResponseEntity.ok(page);
     }
 
-    @PutMapping("/{id}/senha")
+    @PutMapping("/{id}/password")
     public ResponseEntity<UserDetailData> updatePassword(@PathVariable Long id,
             @RequestBody @Valid UserPasswordUpdateData data, @AuthenticationPrincipal User loggedInUser) {
         UserDetailData userDetailData = userService.updatePassword(id, data, loggedInUser);
@@ -48,7 +48,7 @@ public class UserController {
         return ResponseEntity.ok(userDetailData);
     }
 
-    @PutMapping("/tipo/{id}")
+    @PutMapping("/type/{id}")
     public ResponseEntity<UserDetailData> updateUserType(@PathVariable Long id,
             @RequestBody @Valid UserTypeUpdateData data, @AuthenticationPrincipal User loggedInUser) {
         UserDetailData userDetailData = userService.updateUserType(id, data, loggedInUser);
@@ -63,7 +63,7 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/ativar")
+    @PutMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable Long id, @AuthenticationPrincipal User loggedInUser) {
         userService.activate(id, loggedInUser);
 

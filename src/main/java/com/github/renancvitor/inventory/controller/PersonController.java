@@ -28,7 +28,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/pessoas")
+@RequestMapping("/person")
 @RequiredArgsConstructor
 public class PersonController {
 
@@ -49,7 +49,7 @@ public class PersonController {
         PersonDetailData personDetailData = personService.create(creationData.person(),
                 creationData.user(),
                 loggedInUser);
-        URI uri = uriComponentsBuilder.path("/pessoas/{id}")
+        URI uri = uriComponentsBuilder.path("/person/{id}")
                 .buildAndExpand(personDetailData.id())
                 .toUri();
 
@@ -62,7 +62,7 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/ativar")
+    @PutMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable Long id, @AuthenticationPrincipal User loggedInUser) {
         personService.activate(id, loggedInUser);
         return ResponseEntity.noContent().build();

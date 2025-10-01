@@ -30,7 +30,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/produtos")
+@RequestMapping("/products")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -41,7 +41,7 @@ public class ProductController {
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
-            @PageableDefault(size = 10, sort = ("name")) Pageable pageable,
+            @PageableDefault(size = 10, sort = ("productName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
 
         Page<ProductListingData> page = productService.list(pageable, active, categoryId, minPrice, maxPrice,
@@ -55,7 +55,7 @@ public class ProductController {
             @AuthenticationPrincipal User loggedInUser) {
         ProductDetailData productDetailData = productService.create(data, loggedInUser);
 
-        URI uri = uriComponentsBuilder.path("/produtos/{id}")
+        URI uri = uriComponentsBuilder.path("/products/{id}")
                 .buildAndExpand(productDetailData.id())
                 .toUri();
 
@@ -76,7 +76,7 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping("/{id}/ativar")
+    @PutMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable Long id, @AuthenticationPrincipal User loggedInUser) {
         productService.activate(id, loggedInUser);
         return ResponseEntity.noContent().build();
