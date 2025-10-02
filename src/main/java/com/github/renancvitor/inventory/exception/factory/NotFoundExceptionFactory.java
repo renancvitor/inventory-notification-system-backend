@@ -28,4 +28,8 @@ public class NotFoundExceptionFactory {
         return new EntityNotFoundException("Tipo do Usuário", id);
     }
 
+    public static EntityNotFoundException movementType(Integer id) {
+        return new EntityNotFoundException("Tipo de Movimentação", id);
+    }
+
 }

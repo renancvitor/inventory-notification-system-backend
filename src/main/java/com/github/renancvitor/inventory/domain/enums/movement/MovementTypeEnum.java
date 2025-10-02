@@ -2,8 +2,18 @@ package com.github.renancvitor.inventory.domain.enums.movement;
 
 public enum MovementTypeEnum {
 
-    INPUT(1, "Entrada"),
-    OUTPUT(2, "Saída");
+    INPUT(1, "Entrada") {
+        @Override
+        public int apply(int stock, int quantity) {
+            return stock + quantity;
+        }
+    },
+    OUTPUT(2, "Saída") {
+        @Override
+        public int apply(int stock, int quantity) {
+            return stock - quantity;
+        }
+    };
 
     private final int id;
     private final String displayName;
@@ -20,6 +30,8 @@ public enum MovementTypeEnum {
     public String getDisplayName() {
         return displayName;
     }
+
+    public abstract int apply(int stock, int quantity);
 
     public static MovementTypeEnum fromId(int id) {
         for (MovementTypeEnum movementTypeEnum : values()) {
