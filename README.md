@@ -39,9 +39,13 @@ Este projeto segue uma **arquitetura em camadas** (controller, service, reposito
 src/main
 ├── java/com/github/renancvitor/inventory
 │ ├── controller/
-│ ├── service/
+│ ├── domain/
+│ ├── dto/
+│ ├── exception/
+│ ├── infra/
 │ ├── repository/
-│ ├── model/
+│ ├── service/
+│ ├── util/
 │ └── InventoryNotificationSystemApplication.java
 ├── resources
 │ └── application.properties
