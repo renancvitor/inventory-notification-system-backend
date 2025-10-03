@@ -12,11 +12,15 @@ import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
+import com.github.renancvitor.inventory.dto.movement.MovementDetailData;
+import com.github.renancvitor.inventory.dto.movement.MovementRequest;
 import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.dto.product.ProductLogData;
 import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
+import com.github.renancvitor.inventory.dto.product.InputProductResponse;
+import com.github.renancvitor.inventory.dto.product.OutputProductResponse;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
@@ -29,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final MovementService movementService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
     private final SystemLogPublisherService logPublisherService;
@@ -151,6 +156,26 @@ public class ProductService {
                 "Produto reativado (soft restore) pelo usuário " + loggedInUser.getUsername(),
                 oldData,
                 newData);
+    }
+
+    @Transactional
+    public OutputProductResponse outputProduct(Long id, MovementRequest request, User loggedInUser) {
+        Product product = productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.product(id));
+
+        MovementDetailData movement = movementService.output(id, request, loggedInUser);
+
+        return new OutputProductResponse(new ProductDetailData(product), movement);
+    }
+
+    @Transactional
+    public InputProductResponse inputProduct(Long id, MovementRequest request, User loggedInUser) {
+        Product product = productRepository.findByIdAndActiveTrue(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.product(id));
+
+        MovementDetailData movement = movementService.input(id, request, loggedInUser);
+
+        return new InputProductResponse(new ProductDetailData(product), movement);
     }
 
 }

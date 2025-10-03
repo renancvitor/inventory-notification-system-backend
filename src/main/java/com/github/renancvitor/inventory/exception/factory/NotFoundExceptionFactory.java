@@ -32,4 +32,8 @@ public class NotFoundExceptionFactory {
         return new EntityNotFoundException("Tipo de Movimentação", id);
     }
 
+    public static EntityNotFoundException movement(Long id) {
+        return new EntityNotFoundException("Movimentação", id);
+    }
+
 }
