@@ -3,7 +3,6 @@ package com.github.renancvitor.inventory.controller;
 import java.math.BigDecimal;
 import java.net.URI;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +28,8 @@ import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
 import com.github.renancvitor.inventory.service.ProductService;
+import com.github.renancvitor.inventory.util.CustomPage;
+import com.github.renancvitor.inventory.util.PageMapper;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,16 +43,16 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity<Page<ProductListingData>> list(@RequestParam(required = false) Boolean active,
+    public ResponseEntity<CustomPage<ProductListingData>> list(@RequestParam(required = false) Boolean active,
             @RequestParam(required = false) Integer categoryId,
             @RequestParam(required = false) BigDecimal minPrice,
             @RequestParam(required = false) BigDecimal maxPrice,
             @PageableDefault(size = 10, sort = ("productName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
 
-        Page<ProductListingData> page = productService.list(pageable, active, categoryId, minPrice, maxPrice,
+        var page = productService.list(pageable, active, categoryId, minPrice, maxPrice,
                 loggedInUser);
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
 
     @PostMapping

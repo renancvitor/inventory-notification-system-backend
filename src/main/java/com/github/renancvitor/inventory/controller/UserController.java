@@ -1,6 +1,5 @@
 package com.github.renancvitor.inventory.controller;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +19,8 @@ import com.github.renancvitor.inventory.dto.user.UserListiningData;
 import com.github.renancvitor.inventory.dto.user.UserPasswordUpdateData;
 import com.github.renancvitor.inventory.dto.user.UserTypeUpdateData;
 import com.github.renancvitor.inventory.service.UserService;
+import com.github.renancvitor.inventory.util.CustomPage;
+import com.github.renancvitor.inventory.util.PageMapper;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,12 +33,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<Page<UserListiningData>> list(@RequestParam(required = false) Boolean active,
-            @PageableDefault(size = 10, sort = ("personName")) Pageable pageable,
+    public ResponseEntity<CustomPage<UserListiningData>> list(@RequestParam(required = false) Boolean active,
+            @PageableDefault(size = 10, sort = ("person.personName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
-        Page<UserListiningData> page = userService.list(pageable, loggedInUser, active);
+        var page = userService.list(pageable, loggedInUser, active);
 
-        return ResponseEntity.ok(page);
+        return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
 
     @PutMapping("/{id}/password")
