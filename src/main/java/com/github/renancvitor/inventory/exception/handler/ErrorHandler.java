@@ -19,6 +19,7 @@ import com.github.renancvitor.inventory.exception.types.auth.AuthorizationExcept
 import com.github.renancvitor.inventory.exception.types.common.EntityNotFoundException;
 import com.github.renancvitor.inventory.exception.types.common.JsonSerializationException;
 import com.github.renancvitor.inventory.exception.types.common.ValidationException;
+import com.github.renancvitor.inventory.exception.types.email.EmailException;
 import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
 import com.github.renancvitor.inventory.infra.messaging.errorlog.ErrorLogPublisherService;
 import com.github.renancvitor.inventory.util.StackTraceUtils;
@@ -144,6 +145,13 @@ public class ErrorHandler {
         logError(ex, request);
 
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
+    }
+
+    public ResponseEntity<ApiError> handleEmailException(EmailException ex, HttpServletRequest request) {
+        logError(ex, request);
+        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR,
+                "Erro ao enviar o e-mail: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiError);
     }
 
