@@ -3,7 +3,7 @@ package com.github.renancvitor.inventory.dto.user;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 
-public record UserListiningData(
+public record UserListingData(
         Long id,
         String email,
         String personName,
@@ -11,7 +11,7 @@ public record UserListiningData(
         String userType,
         Boolean active) {
 
-    public UserListiningData(User user) {
+    public UserListingData(User user) {
         this(
                 user.getId(),
                 user.getPerson().getEmail(),

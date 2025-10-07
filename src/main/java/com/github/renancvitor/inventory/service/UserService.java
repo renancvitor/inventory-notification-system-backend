@@ -14,7 +14,7 @@ import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
 import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.user.UserCreationData;
 import com.github.renancvitor.inventory.dto.user.UserDetailData;
-import com.github.renancvitor.inventory.dto.user.UserListiningData;
+import com.github.renancvitor.inventory.dto.user.UserListingData;
 import com.github.renancvitor.inventory.dto.user.UserLogData;
 import com.github.renancvitor.inventory.dto.user.UserLogPasswordData;
 import com.github.renancvitor.inventory.dto.user.UserPasswordUpdateData;
@@ -38,14 +38,14 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final SystemLogPublisherService logPublisherService;
 
-    public Page<UserListiningData> list(Pageable pageable, User loggedInUser, Boolean active) {
+    public Page<UserListingData> list(Pageable pageable, User loggedInUser, Boolean active) {
         authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
         if (active != null) {
-            return userRepository.findAllByActive(active, pageable).map(UserListiningData::new);
+            return userRepository.findAllByActive(active, pageable).map(UserListingData::new);
         }
 
-        return userRepository.findAll(pageable).map(UserListiningData::new);
+        return userRepository.findAll(pageable).map(UserListingData::new);
     }
 
     @Transactional

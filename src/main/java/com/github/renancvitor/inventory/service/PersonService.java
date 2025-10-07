@@ -12,7 +12,7 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.person.PersonCreationData;
 import com.github.renancvitor.inventory.dto.person.PersonDetailData;
-import com.github.renancvitor.inventory.dto.person.PersonListiningData;
+import com.github.renancvitor.inventory.dto.person.PersonListingData;
 import com.github.renancvitor.inventory.dto.person.PersonLogData;
 import com.github.renancvitor.inventory.dto.user.UserCreationData;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
@@ -25,89 +25,89 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class PersonService {
 
-    private final PersonRepository personRepository;
-    private final UserService userService;
-    private final AuthenticationService authenticationService;
-    private final SystemLogPublisherService logPublisherService;
+        private final PersonRepository personRepository;
+        private final UserService userService;
+        private final AuthenticationService authenticationService;
+        private final SystemLogPublisherService logPublisherService;
 
-    public Page<PersonListiningData> list(Pageable pageable, User loggedInUser, Boolean active) {
-        authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+        public Page<PersonListingData> list(Pageable pageable, User loggedInUser, Boolean active) {
+                authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
-        if (active != null) {
-            return personRepository.findAllByActive(active, pageable).map(PersonListiningData::new);
+                if (active != null) {
+                        return personRepository.findAllByActive(active, pageable).map(PersonListingData::new);
+                }
+
+                return personRepository.findAll(pageable).map(PersonListingData::new);
         }
 
-        return personRepository.findAll(pageable).map(PersonListiningData::new);
-    }
+        @Transactional
+        public PersonDetailData create(PersonCreationData personCreationData, UserCreationData userCreationData,
+                        User loggedInUser) {
+                authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
-    @Transactional
-    public PersonDetailData create(PersonCreationData personCreationData, UserCreationData userCreationData,
-            User loggedInUser) {
-        authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+                Person person = new Person(
+                                personCreationData.personName(),
+                                personCreationData.cpf(),
+                                personCreationData.email());
+                personRepository.save(person);
 
-        Person person = new Person(
-                personCreationData.personName(),
-                personCreationData.cpf(),
-                personCreationData.email());
-        personRepository.save(person);
+                UserCreationData userData = new UserCreationData(
+                                person.getCpf(),
+                                userCreationData.password(),
+                                UserTypeEnum.COMMON.getId());
+                userService.create(person, userData, loggedInUser);
 
-        UserCreationData userData = new UserCreationData(
-                person.getCpf(),
-                userCreationData.password(),
-                UserTypeEnum.COMMON.getId());
-        userService.create(person, userData, loggedInUser);
+                PersonLogData newData = PersonLogData.fromEntity(person);
 
-        PersonLogData newData = PersonLogData.fromEntity(person);
+                logPublisherService.publish(
+                                "PERSON_CREATED",
+                                "Pessoa cadastrada pelo usuário " + loggedInUser.getUsername(),
+                                null,
+                                newData);
 
-        logPublisherService.publish(
-                "PERSON_CREATED",
-                "Pessoa cadastrada pelo usuário " + loggedInUser.getUsername(),
-                null,
-                newData);
+                return new PersonDetailData(person);
+        }
 
-        return new PersonDetailData(person);
-    }
+        @Transactional
+        public void delete(Long id, User loggedInUser) {
+                authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
-    @Transactional
-    public void delete(Long id, User loggedInUser) {
-        authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+                Person person = personRepository.findByIdAndActiveTrue(id)
+                                .orElseThrow(() -> NotFoundExceptionFactory.person(id));
 
-        Person person = personRepository.findByIdAndActiveTrue(id)
-                .orElseThrow(() -> NotFoundExceptionFactory.person(id));
+                PersonLogData oldData = PersonLogData.fromEntity(person);
 
-        PersonLogData oldData = PersonLogData.fromEntity(person);
+                person.setActive(false);
 
-        person.setActive(false);
+                Person updatedPerson = personRepository.save(person);
+                PersonLogData newData = PersonLogData.fromEntity(updatedPerson);
 
-        Person updatedPerson = personRepository.save(person);
-        PersonLogData newData = PersonLogData.fromEntity(updatedPerson);
+                logPublisherService.publish(
+                                "PERSON_DELETED",
+                                "Pessoa inativado (soft delete) pelo usuário " + loggedInUser.getUsername(),
+                                oldData,
+                                newData);
+        }
 
-        logPublisherService.publish(
-                "PERSON_DELETED",
-                "Pessoa inativado (soft delete) pelo usuário " + loggedInUser.getUsername(),
-                oldData,
-                newData);
-    }
+        @Transactional
+        public void activate(Long id, User loggedInUser) {
+                authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
-    @Transactional
-    public void activate(Long id, User loggedInUser) {
-        authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+                Person person = personRepository.findByIdAndActiveFalse(id)
+                                .orElseThrow(() -> NotFoundExceptionFactory.person(id));
 
-        Person person = personRepository.findByIdAndActiveFalse(id)
-                .orElseThrow(() -> NotFoundExceptionFactory.person(id));
+                PersonLogData oldData = PersonLogData.fromEntity(person);
 
-        PersonLogData oldData = PersonLogData.fromEntity(person);
+                person.setActive(true);
 
-        person.setActive(true);
+                Person updatedPerson = personRepository.save(person);
+                PersonLogData newData = PersonLogData.fromEntity(updatedPerson);
 
-        Person updatedPerson = personRepository.save(person);
-        PersonLogData newData = PersonLogData.fromEntity(updatedPerson);
-
-        logPublisherService.publish(
-                "PERSON_ACTIVATED",
-                "Person reativado (soft restore) pelo usuário " + loggedInUser.getUsername(),
-                oldData,
-                newData);
-    }
+                logPublisherService.publish(
+                                "PERSON_ACTIVATED",
+                                "Person reativado (soft restore) pelo usuário " + loggedInUser.getUsername(),
+                                oldData,
+                                newData);
+        }
 
 }

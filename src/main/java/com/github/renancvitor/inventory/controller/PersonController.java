@@ -19,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.person.PersonDetailData;
-import com.github.renancvitor.inventory.dto.person.PersonListiningData;
+import com.github.renancvitor.inventory.dto.person.PersonListingData;
 import com.github.renancvitor.inventory.dto.person.PersonUserCreationData;
 import com.github.renancvitor.inventory.service.PersonService;
 import com.github.renancvitor.inventory.util.CustomPage;
@@ -36,7 +36,7 @@ public class PersonController {
     private final PersonService personService;
 
     @GetMapping
-    public ResponseEntity<CustomPage<PersonListiningData>> list(@RequestParam(required = false) Boolean active,
+    public ResponseEntity<CustomPage<PersonListingData>> list(@RequestParam(required = false) Boolean active,
             @PageableDefault(size = 10, sort = ("personName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
         var page = personService.list(pageable, loggedInUser, active);

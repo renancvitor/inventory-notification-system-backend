@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
 
-public record MovementListiningData(
+public record MovementListingData(
         Long id,
         String productName,
         String movementType,
@@ -14,7 +14,7 @@ public record MovementListiningData(
         BigDecimal unitPrice,
         LocalDateTime movementationDate,
         String personName) {
-    public MovementListiningData(Movement movement) {
+    public MovementListingData(Movement movement) {
         this(
                 movement.getId(),
                 movement.getProduct().getProductName(),

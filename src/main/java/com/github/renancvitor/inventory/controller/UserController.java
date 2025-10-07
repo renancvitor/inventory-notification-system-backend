@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.user.UserDetailData;
-import com.github.renancvitor.inventory.dto.user.UserListiningData;
+import com.github.renancvitor.inventory.dto.user.UserListingData;
 import com.github.renancvitor.inventory.dto.user.UserPasswordUpdateData;
 import com.github.renancvitor.inventory.dto.user.UserTypeUpdateData;
 import com.github.renancvitor.inventory.service.UserService;
@@ -33,7 +33,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public ResponseEntity<CustomPage<UserListiningData>> list(@RequestParam(required = false) Boolean active,
+    public ResponseEntity<CustomPage<UserListingData>> list(@RequestParam(required = false) Boolean active,
             @PageableDefault(size = 10, sort = ("person.personName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
         var page = userService.list(pageable, loggedInUser, active);
