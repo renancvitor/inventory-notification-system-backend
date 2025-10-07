@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -64,6 +65,14 @@ public class Movement {
     @Transient
     public BigDecimal getTotal() {
         return unitPrice.multiply(BigDecimal.valueOf(quantity));
+    }
+
+    @Transient
+    public boolean isOutput() {
+        if (movementType == null)
+            return false;
+        MovementTypeEnum typeEnum = MovementTypeEnum.fromId(movementType.getId());
+        return typeEnum == MovementTypeEnum.OUTPUT;
     }
 
 }

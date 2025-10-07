@@ -30,12 +30,6 @@ public class MovementService {
     private final SystemLogPublisherService logPublisherService;
     private final ProductRepository productRepository;
 
-    /*
-     * @PreAuthorize("hasAnyRole('ADMIN', 'MANAGER', 'OPERATOR')")
-     * 
-     * @PreAuthorize("isAuthenticated()")
-     */
-
     @Transactional
     public MovementDetailData output(Long productId, MovementRequest request, User loggedInUser) {
         return handleMovement(productId, request, MovementTypeEnum.OUTPUT, loggedInUser);
