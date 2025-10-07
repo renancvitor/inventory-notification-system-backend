@@ -52,6 +52,9 @@ public class Product {
     @Column(nullable = false)
     private Integer stock;
 
+    @Column(name = "minimum_stock")
+    private Integer minimumStock = 0;
+
     @Column(nullable = false)
     private String brand;
 
@@ -65,8 +68,13 @@ public class Product {
         this.validity = data.validity();
         this.description = data.description();
         this.stock = data.stock();
+        this.minimumStock = data.minimumStock();
         this.brand = data.brand();
         this.active = true;
+    }
+
+    public boolean isStockLow() {
+        return this.stock <= this.minimumStock;
     }
 
 }

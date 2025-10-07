@@ -8,6 +8,7 @@ CREATE TABLE products (
     validity DATE,
     description TEXT,
     stock INTEGER NOT NULL,
+    minimum_stock INTEGER,
     brand VARCHAR(255) NOT NULL,
     active BOOLEAN NOT NULL DEFAULT true,
 

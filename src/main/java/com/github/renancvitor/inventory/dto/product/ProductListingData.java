@@ -14,6 +14,7 @@ public record ProductListingData(
         LocalDate validity,
         String description,
         Integer stock,
+        Integer minimumStrock,
         String brand,
         Boolean active) {
     public ProductListingData(Product product) {
@@ -25,6 +26,7 @@ public record ProductListingData(
                 product.getValidity(),
                 product.getDescription(),
                 product.getStock(),
+                product.getMinimumStock(),
                 product.getBrand(),
                 product.getActive());
     }

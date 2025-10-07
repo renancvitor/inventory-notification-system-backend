@@ -14,13 +14,13 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.movement.MovementDetailData;
 import com.github.renancvitor.inventory.dto.movement.MovementRequest;
+import com.github.renancvitor.inventory.dto.product.InputProductResponse;
+import com.github.renancvitor.inventory.dto.product.OutputProductResponse;
 import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.dto.product.ProductLogData;
 import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
-import com.github.renancvitor.inventory.dto.product.InputProductResponse;
-import com.github.renancvitor.inventory.dto.product.OutputProductResponse;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
@@ -33,6 +33,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ProductService {
 
+    private final StockMonitorService stockMonitorService;
     private final MovementService movementService;
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
@@ -102,7 +103,10 @@ public class ProductService {
         product.setPrice(data.price());
         product.setValidity(data.validity());
         product.setDescription(data.description());
+        product.setMinimumStock(data.minimumStock());
         product.setBrand(data.brand());
+
+        stockMonitorService.handleLowStock(product, loggedInUser);
 
         Product updatedProduct = productRepository.save(product);
         ProductLogData newData = ProductLogData.fromEntity(updatedProduct);
@@ -165,6 +169,8 @@ public class ProductService {
 
         MovementDetailData movement = movementService.output(id, request, loggedInUser);
 
+        stockMonitorService.handleLowStock(product, loggedInUser);
+
         return new OutputProductResponse(new ProductDetailData(product), movement);
     }
 
@@ -174,6 +180,8 @@ public class ProductService {
                 .orElseThrow(() -> NotFoundExceptionFactory.product(id));
 
         MovementDetailData movement = movementService.input(id, request, loggedInUser);
+
+        stockMonitorService.handleLowStock(product, loggedInUser);
 
         return new InputProductResponse(new ProductDetailData(product), movement);
     }
