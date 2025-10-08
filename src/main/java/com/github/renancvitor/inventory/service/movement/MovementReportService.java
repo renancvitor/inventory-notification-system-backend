@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
-import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.dto.email.EmailRequest;
 import com.github.renancvitor.inventory.repository.MovementRepository;
 import com.github.renancvitor.inventory.service.email.EmailService;

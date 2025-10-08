@@ -1,6 +1,6 @@
 package com.github.renancvitor.inventory.domain.entity.user;
 
-import com.github.renancvitor.inventory.domain.enums.user.PermissionEnum;
+import com.github.renancvitor.inventory.domain.entity.user.enums.PermissionEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

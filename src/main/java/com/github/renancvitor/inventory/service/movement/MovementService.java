@@ -5,9 +5,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
 import com.github.renancvitor.inventory.dto.movement.MovementDetailData;
 import com.github.renancvitor.inventory.dto.movement.MovementLogData;
 import com.github.renancvitor.inventory.dto.movement.MovementRequest;

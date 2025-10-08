@@ -1,6 +1,6 @@
 package com.github.renancvitor.inventory.domain.entity.movement;
 
-import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

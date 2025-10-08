@@ -3,9 +3,9 @@ package com.github.renancvitor.inventory.domain.entity.movement;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

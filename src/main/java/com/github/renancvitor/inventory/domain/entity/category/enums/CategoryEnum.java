@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.domain.enums.category;
+package com.github.renancvitor.inventory.domain.entity.category.enums;
 
 public enum CategoryEnum {
     FOOD(1, "Alimento"),

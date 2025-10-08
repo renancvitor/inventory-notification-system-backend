@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 
 public class AuthorizationException extends RuntimeException {
 

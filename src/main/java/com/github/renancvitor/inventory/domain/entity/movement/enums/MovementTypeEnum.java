@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.domain.enums.movement;
+package com.github.renancvitor.inventory.domain.entity.movement.enums;
 
 public enum MovementTypeEnum {
 

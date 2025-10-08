@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.movement.MovementDetailData;
 import com.github.renancvitor.inventory.dto.movement.MovementRequest;
 import com.github.renancvitor.inventory.dto.product.InputProductResponse;

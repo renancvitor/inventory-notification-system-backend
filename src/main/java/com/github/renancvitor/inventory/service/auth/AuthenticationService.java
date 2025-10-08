@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.authentication.JWTTokenData;
 import com.github.renancvitor.inventory.dto.authentication.LoginData;
 import com.github.renancvitor.inventory.dto.user.UserSummaryData;

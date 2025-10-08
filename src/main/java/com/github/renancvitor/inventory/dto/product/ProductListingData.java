@@ -3,8 +3,8 @@ package com.github.renancvitor.inventory.dto.product;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.github.renancvitor.inventory.domain.entity.category.enums.CategoryEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
-import com.github.renancvitor.inventory.domain.enums.category.CategoryEnum;
 
 public record ProductListingData(
         Long id,

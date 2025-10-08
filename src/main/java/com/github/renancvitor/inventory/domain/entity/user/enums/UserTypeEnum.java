@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.domain.enums.user;
+package com.github.renancvitor.inventory.domain.entity.user.enums;
 
 public enum UserTypeEnum {
     ADMIN(1, "Administrador"),

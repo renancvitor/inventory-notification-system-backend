@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
-import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 
 public record MovementListingData(
         Long id,

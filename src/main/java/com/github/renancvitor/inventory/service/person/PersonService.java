@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.enums.user.UserTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.dto.person.PersonCreationData;
 import com.github.renancvitor.inventory.dto.person.PersonDetailData;
 import com.github.renancvitor.inventory.dto.person.PersonListingData;
