@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.github.renancvitor.inventory.repository.UserRepository;
-import com.github.renancvitor.inventory.service.TokenService;
+import com.github.renancvitor.inventory.service.auth.TokenService;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

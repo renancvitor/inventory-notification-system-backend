@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.github.renancvitor.inventory.dto.authentication.JWTTokenData;
 import com.github.renancvitor.inventory.dto.authentication.LoginData;
-import com.github.renancvitor.inventory.service.AuthenticationService;
+import com.github.renancvitor.inventory.service.auth.AuthenticationService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

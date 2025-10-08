@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.movement;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -11,6 +11,7 @@ import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.enums.movement.MovementTypeEnum;
 import com.github.renancvitor.inventory.dto.email.EmailRequest;
 import com.github.renancvitor.inventory.repository.MovementRepository;
+import com.github.renancvitor.inventory.service.email.EmailService;
 
 import lombok.RequiredArgsConstructor;
 

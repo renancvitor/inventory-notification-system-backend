@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.email;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

@@ -21,7 +21,7 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.person.PersonDetailData;
 import com.github.renancvitor.inventory.dto.person.PersonListingData;
 import com.github.renancvitor.inventory.dto.person.PersonUserCreationData;
-import com.github.renancvitor.inventory.service.PersonService;
+import com.github.renancvitor.inventory.service.person.PersonService;
 import com.github.renancvitor.inventory.util.CustomPage;
 import com.github.renancvitor.inventory.util.PageMapper;
 

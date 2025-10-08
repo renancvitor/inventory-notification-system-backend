@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.email.EmailRequest;
 import com.github.renancvitor.inventory.dto.email.EmailResponse;
-import com.github.renancvitor.inventory.service.EmailService;
+import com.github.renancvitor.inventory.service.email.EmailService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

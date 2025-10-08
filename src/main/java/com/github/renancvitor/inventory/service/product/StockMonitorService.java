@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.product;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.dto.email.EmailRequest;
+import com.github.renancvitor.inventory.service.email.EmailService;
 
 import lombok.RequiredArgsConstructor;
 

@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.movement;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

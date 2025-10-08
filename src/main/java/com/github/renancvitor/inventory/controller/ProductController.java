@@ -27,7 +27,7 @@ import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 import com.github.renancvitor.inventory.dto.product.ProductDetailData;
 import com.github.renancvitor.inventory.dto.product.ProductListingData;
 import com.github.renancvitor.inventory.dto.product.ProductUpdateData;
-import com.github.renancvitor.inventory.service.ProductService;
+import com.github.renancvitor.inventory.service.product.ProductService;
 import com.github.renancvitor.inventory.util.CustomPage;
 import com.github.renancvitor.inventory.util.PageMapper;
 

@@ -18,7 +18,7 @@ import com.github.renancvitor.inventory.dto.user.UserDetailData;
 import com.github.renancvitor.inventory.dto.user.UserListingData;
 import com.github.renancvitor.inventory.dto.user.UserPasswordUpdateData;
 import com.github.renancvitor.inventory.dto.user.UserTypeUpdateData;
-import com.github.renancvitor.inventory.service.UserService;
+import com.github.renancvitor.inventory.service.user.UserService;
 import com.github.renancvitor.inventory.util.CustomPage;
 import com.github.renancvitor.inventory.util.PageMapper;
 

@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.auth;
 
 import java.time.Instant;
 import java.time.LocalDateTime;

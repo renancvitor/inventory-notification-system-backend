@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.person;
 
 import java.util.List;
 
@@ -18,6 +18,8 @@ import com.github.renancvitor.inventory.dto.user.UserCreationData;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.repository.PersonRepository;
+import com.github.renancvitor.inventory.service.auth.AuthenticationService;
+import com.github.renancvitor.inventory.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 

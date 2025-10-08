@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.user;
 
 import java.util.List;
 
@@ -25,6 +25,7 @@ import com.github.renancvitor.inventory.exception.types.user.AccessDeniedExcepti
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.repository.UserRepository;
 import com.github.renancvitor.inventory.repository.UserTypeRepository;
+import com.github.renancvitor.inventory.service.auth.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 

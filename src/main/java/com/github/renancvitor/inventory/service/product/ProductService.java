@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.service;
+package com.github.renancvitor.inventory.service.product;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,6 +26,8 @@ import com.github.renancvitor.inventory.exception.types.product.DuplicateProduct
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.repository.CategoryRepository;
 import com.github.renancvitor.inventory.repository.ProductRepository;
+import com.github.renancvitor.inventory.service.auth.AuthenticationService;
+import com.github.renancvitor.inventory.service.movement.MovementService;
 
 import lombok.RequiredArgsConstructor;
 
