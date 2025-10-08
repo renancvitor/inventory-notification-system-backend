@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.util;
+package com.github.renancvitor.inventory.infra.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
