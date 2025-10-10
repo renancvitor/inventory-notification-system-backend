@@ -5,6 +5,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application-secret.properties
+EmailTestRunner.java
 
 ### STS ###
 .apt_generated

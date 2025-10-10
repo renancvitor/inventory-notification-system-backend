@@ -6,73 +6,128 @@
 
 src/main
  ├── java/com/github/renanc/vitor/inventory
- │    ├── controller
- │    │    ├── AuthenticationController.java
- │    │    ├── PersonController.java
- │    │    ├── ProductController.java
- │    │    └── UserController.java
- │    ├── domain
- │    │    ├── entity
- │    │    │    ├── category
- │    │    │    │    └── CategoryEntity.java
- │    │    │    ├── errorlog
- │    │    │    │    ├── ErrorLog.java
- │    │    │    │    └── ErrorLogEvent.java
- │    │    │    ├── movement
- │    │    │    │    ├── Movement.java
- │    │    │    │    └── MovementTypeEntity.java
- │    │    │    ├── person
- │    │    │    │    └── Person.java
- │    │    │    ├── product
- │    │    │    │    └── Product.java
- │    │    │    ├── systemlog
- │    │    │         ├── SystemLog.java
- │    │    │    │    └── SystemLogEvent.java
- │    │    │    └── user
- │    │    │         ├── PermissionEntity.java
- │    │    │         ├── User.java
- │    │    │         └── UserTypeEntity.java
- │    │    └── enums
- │    │         ├── category
- │    │         │    └── CategoryEnum.java
- │    │         ├── movement
- │    │         │    └── MovementTypeEnum.java
- │    │         └── user
- │    │              ├── PermissionEnum.java
- │    │              └── UserTypeEnum.java
- │    ├── dto
+ │    ├── application
  │    │    ├── authentication
- │    │    │    ├── JWTTokenData.java
- │    │    │    └── LoginData.java
+ │    │    │    ├── controller
+ │    │    │    │    └── AuthenticationController.java
+ │    │    │    ├── dto
+ │    │    │    │    ├── JWTTokenData.java
+ │    │    │    │    └── LoginData.java
+ │    │    │    └── service
+ │    │    │         ├── AuthenticationService.java
+ │    │    │         └── TokenService.java
+ │    │    ├── category
+ │    │    │    └── repository
+ │    │    │         └── CategoryRepository.java
+ │    │    ├── email
+ │    │    │    ├── controller
+ │    │    │    │    └── EmailController.java
+ │    │    │    ├── dto
+ │    │    │    │    ├── EmailLogData.java
+ │    │    │    │    ├── EmailRequest.java
+ │    │    │    │    └── EmailResponse.java
+ │    │    │    └── service
+ │    │    │         └── EmailService.java
+ │    │    ├── errorlog
+ │    │    │    └── repository
+ │    │    │         └── ErrorLogRepository.java
  │    │    ├── movement
- │    │    │    ├── MovementData.java
- │    │    │    ├── MovementDetailData.java
- │    │    │    ├── MovementListiningData.java
- │    │    │    ├── MovementLogData.java
- │    │    │    └── MovementRequest.java
+ │    │    │    ├── dto
+ │    │    │    │    ├── MovementData.java
+ │    │    │    │    ├── MovementDetailData.java
+ │    │    │    │    ├── MovementListingData.java
+ │    │    │    │    ├── MovementLogData.java
+ │    │    │    │    └── MovementRequest.java
+ │    │    │    ├── repository
+ │    │    │    │    ├── MovementRepository.java
+ │    │    │    │    └── MovementTypeRepository.java
+ │    │    │    └── service
+ │    │    │         ├── MovementReportService.java
+ │    │    │         ├── MovementService.java
+ │    │    │         └── ReportScheduler.java
  │    │    ├── person
- │    │    │    ├── PersonCreationData.java
- │    │    │    ├── PersonDetailData.java
- │    │    │    ├── PersonListiningData.java
- │    │    │    ├── PersonLogData.java
- │    │    │    └── PersonUserCreationData.java
+ │    │    │    ├── controller
+ │    │    │    │    └── PersonController.java
+ │    │    │    ├── dto
+ │    │    │    │    ├── PersonCreationData.java
+ │    │    │    │    ├── PersonDetailData.java
+ │    │    │    │    ├── PersonListingData.java
+ │    │    │    │    ├── PersonLogData.java
+ │    │    │    │    └── PersonUserCreationData.java
+ │    │    │    ├── repository
+ │    │    │    │    └── PersonRepository.java
+ │    │    │    └── service
+ │    │    │         └── PersonService.java
  │    │    ├── product
- │    │    │    ├── InputProductResponse.java
- │    │    │    ├── OutputProductResponse.java
- │    │    │    ├── ProductCreationData.java
- │    │    │    ├── ProductDetailData.java
- │    │    │    ├── ProductListingData.java
- │    │    │    ├── ProductLogData.java
- │    │    │    └── ProductUpdateData.java
+ │    │    │    ├── controller
+ │    │    │    │    └── ProductController.java
+ │    │    │    ├── dto
+ │    │    │    │    ├── InputProductResponse.java
+ │    │    │    │    ├── OutputProductResponse.java
+ │    │    │    │    ├── ProductCreationData.java
+ │    │    │    │    ├── ProductDetailData.java
+ │    │    │    │    ├── ProductListingData.java
+ │    │    │    │    ├── ProductLogData.java
+ │    │    │    │    └── ProductUpdateData.java
+ │    │    │    ├── repository
+ │    │    │    │    └── ProductRepository.java
+ │    │    │    └── service
+ │    │    │         ├── ProductService.java
+ │    │    │         └── StockMonitorService.java
+ │    │    ├── systemlog
+ │    │    │    └── repository
+ │    │    │         └── SystemLogRepository.java
  │    │    └── user
- │    │         ├── UserCreationData.java
- │    │         ├── UserDetailData.java
- │    │         ├── UserListiningData.java
- │    │         ├── UserLogData.java
- │    │         ├── UserLogPasswordData.java
- │    │         ├── UserPasswordUpdateData.java
- │    │         ├── UserSummaryData.java
- │    │         └── UserTypeUpdateData.java
+ │    │         ├── controller
+ │    │         │    └── UserController.java
+ │    │         ├── dto
+ │    │         │    ├── UserCreationData.java
+ │    │         │    ├── UserDetailData.java
+ │    │         │    ├── UserListingData.java
+ │    │         │    ├── UserLogData.java
+ │    │         │    ├── UserLogPasswordData.java
+ │    │         │    ├── UserPasswordUpdateData.java
+ │    │         │    ├── UserSummaryData.java
+ │    │         │    └── UserTypeUpdateData.java
+ │    │         ├── repository
+ │    │         │    ├── UserRepository.java
+ │    │         │    └── UserTypeRepository.java
+ │    │         └── service
+ │    │              └── UserService.java
+ │    ├── domain
+ │    │    └── entity
+ │    │         ├── category
+ │    │         │    ├── enums
+ │    │         |    │    └── CategoryEnum.java
+ │    │         │    └── CategoryEntity.java
+ │    │         ├── errorlog
+ │    │         │    ├── ErrorLog.java
+ │    │         │    └── ErrorLogEvent.java
+ │    │         ├── movement
+ │    │         │    ├── enums
+ │    │         |    │    └── MovementTypeEnum.java
+ │    │         │    ├── Movement.java
+ │    │         │    └── MovementTypeEntity.java
+ │    │         ├── person
+ │    │         │    └── Person.java
+ │    │         ├── product
+ │    │         │    ├── exception
+ │    │         │    │    ├── DuplicateProductException.java
+ │    │         │    │    ├── InsufficientStockException.java
+ │    │         │    │    └── InvalidQuantityException.java
+ │    │         │    └── Product.java
+ │    │         ├── systemlog
+ │    │         │    ├── SystemLog.java
+ │    │         │    └── SystemLogEvent.java
+ │    │         └── user
+ │    │              ├── enums
+ │    │              │    ├── PermissionEnum.java
+ │    │              │    └── UserTypeEnum.java
+ │    │              ├── exception
+ │    │              │    └── AccessDeniedException.java
+ │    │              ├── PermissionEntity.java
+ │    │              ├── User.java
+ │    │              └── UserTypeEntity.java
  │    ├── exception
  │    │    ├── factory
  │    │    │    ├── NotFoundExceptionFactory.java
@@ -82,28 +137,21 @@ src/main
  │    │    ├── model
  │    │    │    ├── ApiError.java
  │    │    │    └── DataValidationError.java
- │    │    ├── types
- │    │    │    ├── auth
- │    │    │    │    └── AuthorizationException.java
- │    │    │    ├── common
- │    │    │    │    ├── EntityNotFoundException.java
- │    │    │    │    ├── JsonSerializationException.java
- │    │    │    │    └── ValidationException.java
- │    │    │    ├── product
- │    │    │    │    ├── DuplicateProductException.java
- │    │    │    │    ├── InsufficientStockException.java
- │    │    │    │    └── InvalidQuantityException.java
- │    │    │    └── user
- │    │    │         └── AccessDeniedException.java
+ │    │    └── types
+ │    │         ├── auth
+ │    │         │    └── AuthorizationException.java
+ │    │         ├── common
+ │    │         │    ├── EntityNotFoundException.java
+ │    │         │    ├── JsonSerializationException.java
+ │    │         │    └── ValidationException.java
+ │    │         └── email
+ │    │              └── EmailException.java
  │    ├── infra
  │    │    ├── config
+ │    │    │    ├── AwsSesConfig.java
  │    │    │    └── WebConfig.java
  │    │    ├── documentation
  │    │    │    └── SpringDocConfigurations.java
- │    │    ├── logging
- │    │    │    ├── LogAspect.java
- │    │    │    ├── Loggable.java
- │    │    │    └── Loggables.java
  │    │    ├── messaging
  │    │    │    ├── errorlog
  │    │    │    │    ├── ErrorLogListener.java
@@ -115,23 +163,6 @@ src/main
  │    │    └── security
  │    │         ├── SecurityConfiguration.java
  │    │         └── SecurityFilter.java
- │    ├── repository
- │    │    ├── CategoryRepository.java
- │    │    ├── ErrorLogRepository.java
- │    │    ├── MovementRepository.java
- │    │    ├── MovementTypeRepository.java
- │    │    ├── PersonRepository.java
- │    │    ├── ProductRepository.java
- │    │    ├── SystemLogRepository.java
- │    │    ├── UserRepository.java
- │    │    └── UserTypeRepository.java
- │    ├── service
- │    │    ├── AuthenticationService.java
- │    │    ├── MovementService.java
- │    │    ├── PersonService.java
- │    │    ├── ProductService.java
- │    │    ├── TokenService.java
- │    │    └── UserService.java
  │    ├── utils
  │    │    ├── CustomPage.java
  │    │    ├── PageMapper.java
