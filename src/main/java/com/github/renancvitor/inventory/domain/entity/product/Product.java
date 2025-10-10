@@ -3,8 +3,8 @@ package com.github.renancvitor.inventory.domain.entity.product;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
-import com.github.renancvitor.inventory.dto.product.ProductCreationData;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

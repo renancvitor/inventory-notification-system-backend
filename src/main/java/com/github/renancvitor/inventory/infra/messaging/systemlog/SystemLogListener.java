@@ -3,9 +3,9 @@ package com.github.renancvitor.inventory.infra.messaging.systemlog;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import com.github.renancvitor.inventory.application.systemlog.repository.SystemLogRepository;
 import com.github.renancvitor.inventory.domain.entity.systemlog.SystemLog;
 import com.github.renancvitor.inventory.domain.entity.systemlog.SystemLogEvent;
-import com.github.renancvitor.inventory.repository.SystemLogRepository;
 
 import lombok.AllArgsConstructor;
 

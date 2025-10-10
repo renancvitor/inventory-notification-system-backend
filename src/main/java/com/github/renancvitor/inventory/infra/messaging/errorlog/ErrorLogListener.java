@@ -3,9 +3,9 @@ package com.github.renancvitor.inventory.infra.messaging.errorlog;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
+import com.github.renancvitor.inventory.application.errorlog.repository.ErrorLogRepository;
 import com.github.renancvitor.inventory.domain.entity.errorlog.ErrorLog;
 import com.github.renancvitor.inventory.domain.entity.errorlog.ErrorLogEvent;
-import com.github.renancvitor.inventory.repository.ErrorLogRepository;
 
 import lombok.AllArgsConstructor;
 
