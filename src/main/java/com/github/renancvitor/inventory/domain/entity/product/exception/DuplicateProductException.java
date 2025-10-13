@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.exception.types.product;
+package com.github.renancvitor.inventory.domain.entity.product.exception;
 
 public class DuplicateProductException extends RuntimeException {
 

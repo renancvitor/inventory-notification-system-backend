@@ -14,10 +14,10 @@ import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntit
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
+import com.github.renancvitor.inventory.domain.entity.product.exception.InsufficientStockException;
+import com.github.renancvitor.inventory.domain.entity.product.exception.InvalidQuantityException;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
-import com.github.renancvitor.inventory.exception.types.product.InsufficientStockException;
-import com.github.renancvitor.inventory.exception.types.product.InvalidQuantityException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
 import lombok.RequiredArgsConstructor;

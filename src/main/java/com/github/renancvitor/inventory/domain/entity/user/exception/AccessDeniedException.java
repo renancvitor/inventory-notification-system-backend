@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.exception.types.user;
+package com.github.renancvitor.inventory.domain.entity.user.exception;
 
 public class AccessDeniedException extends RuntimeException {
 

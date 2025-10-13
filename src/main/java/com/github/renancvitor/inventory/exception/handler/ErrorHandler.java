@@ -13,6 +13,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.github.renancvitor.inventory.domain.entity.product.exception.DuplicateProductException;
 import com.github.renancvitor.inventory.exception.model.ApiError;
 import com.github.renancvitor.inventory.exception.model.DataValidationError;
 import com.github.renancvitor.inventory.exception.types.auth.AuthorizationException;
@@ -20,7 +21,6 @@ import com.github.renancvitor.inventory.exception.types.common.EntityNotFoundExc
 import com.github.renancvitor.inventory.exception.types.common.JsonSerializationException;
 import com.github.renancvitor.inventory.exception.types.common.ValidationException;
 import com.github.renancvitor.inventory.exception.types.email.EmailException;
-import com.github.renancvitor.inventory.exception.types.product.DuplicateProductException;
 import com.github.renancvitor.inventory.infra.messaging.errorlog.ErrorLogPublisherService;
 import com.github.renancvitor.inventory.util.StackTraceUtils;
 

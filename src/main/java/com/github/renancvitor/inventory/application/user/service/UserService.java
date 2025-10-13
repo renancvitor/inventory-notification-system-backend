@@ -22,9 +22,9 @@ import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.user.exception.AccessDeniedException;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.exception.types.common.ValidationException;
-import com.github.renancvitor.inventory.exception.types.user.AccessDeniedException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
 import lombok.RequiredArgsConstructor;
