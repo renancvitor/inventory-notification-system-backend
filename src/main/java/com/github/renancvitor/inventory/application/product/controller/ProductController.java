@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.renancvitor.inventory.application.movement.dto.MovementRequest;
+import com.github.renancvitor.inventory.application.movement.dto.MovementWithOrderRequest;
 import com.github.renancvitor.inventory.application.product.dto.InputProductResponse;
 import com.github.renancvitor.inventory.application.product.dto.OutputProductResponse;
 import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
@@ -92,7 +92,7 @@ public class ProductController {
     @PostMapping("/{id}/restock")
     public ResponseEntity<InputProductResponse> restock(
             @PathVariable Long id,
-            @Valid @RequestBody MovementRequest request,
+            @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         InputProductResponse response = productService.inputProduct(id, request, loggedInUser);
@@ -103,7 +103,7 @@ public class ProductController {
     @PostMapping("/{id}/sell")
     public ResponseEntity<OutputProductResponse> sell(
             @PathVariable Long id,
-            @Valid @RequestBody MovementRequest request,
+            @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
@@ -114,7 +114,7 @@ public class ProductController {
     @PostMapping("/{id}/return-to-supplier")
     public ResponseEntity<OutputProductResponse> returnToSupplier(
             @PathVariable Long id,
-            @Valid @RequestBody MovementRequest request,
+            @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
@@ -125,7 +125,7 @@ public class ProductController {
     @PostMapping("/{id}/receive-return")
     public ResponseEntity<InputProductResponse> receiveReturn(
             @PathVariable Long id,
-            @Valid @RequestBody MovementRequest request,
+            @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         InputProductResponse response = productService.inputProduct(id, request, loggedInUser);

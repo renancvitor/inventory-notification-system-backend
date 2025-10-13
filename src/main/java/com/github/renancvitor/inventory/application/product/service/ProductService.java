@@ -11,8 +11,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.category.repository.CategoryRepository;
 import com.github.renancvitor.inventory.application.movement.dto.MovementDetailData;
-import com.github.renancvitor.inventory.application.movement.dto.MovementRequest;
+import com.github.renancvitor.inventory.application.movement.dto.MovementWithOrderRequest;
 import com.github.renancvitor.inventory.application.movement.service.MovementService;
+import com.github.renancvitor.inventory.application.order.dto.OrderDetailData;
+import com.github.renancvitor.inventory.application.order.repository.OrderRepository;
+import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.application.product.dto.InputProductResponse;
 import com.github.renancvitor.inventory.application.product.dto.OutputProductResponse;
 import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
@@ -22,6 +25,7 @@ import com.github.renancvitor.inventory.application.product.dto.ProductLogData;
 import com.github.renancvitor.inventory.application.product.dto.ProductUpdateData;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
+import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
@@ -41,6 +45,8 @@ public class ProductService {
     private final CategoryRepository categoryRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
     public Page<ProductListingData> list(Pageable pageable, Boolean active,
             Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, User loggedInUser) {
@@ -165,27 +171,37 @@ public class ProductService {
     }
 
     @Transactional
-    public OutputProductResponse outputProduct(Long id, MovementRequest request, User loggedInUser) {
+    public OutputProductResponse outputProduct(Long id, MovementWithOrderRequest request, User loggedInUser) {
         Product product = productRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> NotFoundExceptionFactory.product(id));
 
-        MovementDetailData movement = movementService.output(id, request, loggedInUser);
+        OrderDetailData orderDetailData = orderService.create(request.order(), loggedInUser);
+
+        Order order = orderRepository.findById(orderDetailData.id())
+                .orElseThrow(() -> NotFoundExceptionFactory.order(orderDetailData.id()));
+
+        MovementDetailData movement = movementService.output(request.movement(), loggedInUser, order);
 
         stockMonitorService.handleLowStock(product, loggedInUser);
 
-        return new OutputProductResponse(new ProductDetailData(product), movement);
+        return new OutputProductResponse(new ProductDetailData(product), movement, orderDetailData);
     }
 
     @Transactional
-    public InputProductResponse inputProduct(Long id, MovementRequest request, User loggedInUser) {
+    public InputProductResponse inputProduct(Long id, MovementWithOrderRequest request, User loggedInUser) {
         Product product = productRepository.findByIdAndActiveTrue(id)
                 .orElseThrow(() -> NotFoundExceptionFactory.product(id));
 
-        MovementDetailData movement = movementService.input(id, request, loggedInUser);
+        OrderDetailData orderDetailData = orderService.create(request.order(), loggedInUser);
+
+        Order order = orderRepository.findById(orderDetailData.id())
+                .orElseThrow(() -> NotFoundExceptionFactory.order(orderDetailData.id()));
+
+        MovementDetailData movement = movementService.input(request.movement(), loggedInUser, order);
 
         stockMonitorService.handleLowStock(product, loggedInUser);
 
-        return new InputProductResponse(new ProductDetailData(product), movement);
+        return new InputProductResponse(new ProductDetailData(product), movement, orderDetailData);
     }
 
 }

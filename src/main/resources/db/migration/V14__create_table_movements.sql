@@ -7,11 +7,15 @@ CREATE TABLE movements (
 
     quantity INTEGER NOT NULL,
     unit_price NUMERIC(15,2) NOT NULL,
+    total_value NUMERIC(15,2) NOT NULL,
     movementation_date TIMESTAMP NOT NULL,
 
     user_id BIGINT NOT NULL,
 
+    order_id BIGINT NOT NULL,
+
     CONSTRAINT fk_product FOREIGN KEY (product_id) REFERENCES products(id),
     CONSTRAINT fk_movement_type FOREIGN KEY (movement_type_id) REFERENCES movement_types(id),
-    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id)
+    CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users(id),
+    CONSTRAINT fk_order FOREIGN KEY (order_id) REFERENCES orders(id)
 );

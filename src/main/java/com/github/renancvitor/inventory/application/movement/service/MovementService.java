@@ -5,13 +5,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.github.renancvitor.inventory.application.movement.dto.MovementDetailData;
 import com.github.renancvitor.inventory.application.movement.dto.MovementLogData;
-import com.github.renancvitor.inventory.application.movement.dto.MovementRequest;
+import com.github.renancvitor.inventory.application.movement.dto.MovementOrderRequest;
 import com.github.renancvitor.inventory.application.movement.repository.MovementRepository;
 import com.github.renancvitor.inventory.application.movement.repository.MovementTypeRepository;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
@@ -31,22 +32,23 @@ public class MovementService {
     private final ProductRepository productRepository;
 
     @Transactional
-    public MovementDetailData output(Long productId, MovementRequest request, User loggedInUser) {
-        return handleMovement(productId, request, MovementTypeEnum.OUTPUT, loggedInUser);
+    public MovementDetailData output(MovementOrderRequest request, User loggedInUser, Order order) {
+        return handleMovement(request, loggedInUser, order);
     }
 
     @Transactional
-    public MovementDetailData input(Long productId, MovementRequest request, User loggedInUser) {
-        return handleMovement(productId, request, MovementTypeEnum.INPUT, loggedInUser);
+    public MovementDetailData input(MovementOrderRequest request, User loggedInUser, Order order) {
+        return handleMovement(request, loggedInUser, order);
     }
 
-    private MovementDetailData handleMovement(Long productId, MovementRequest request, MovementTypeEnum movementType,
-            User loggedInUser) {
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> NotFoundExceptionFactory.product(productId));
+    private MovementDetailData handleMovement(MovementOrderRequest request, User loggedInUser, Order order) {
+        Product product = productRepository.findById(request.productId())
+                .orElseThrow(() -> NotFoundExceptionFactory.product(request.productId()));
 
-        MovementTypeEntity movementTypeEntity = movementTypeRepository.findById(movementType.getId())
-                .orElseThrow(() -> NotFoundExceptionFactory.movementType(movementType.getId()));
+        MovementTypeEntity movementTypeEntity = movementTypeRepository.findById(request.movementTypeId())
+                .orElseThrow(() -> NotFoundExceptionFactory.movementType(request.movementTypeId()));
+
+        MovementTypeEnum movementType = MovementTypeEnum.fromId(request.movementTypeId());
 
         int quantity = request.quantity();
         validateStock(product, quantity, movementType);
@@ -62,6 +64,7 @@ public class MovementService {
         movement.setQuantity(quantity);
         movement.setUnitPrice(request.unitPrice());
         movement.setUser(loggedInUser);
+        movement.setOrder(order);
 
         movementRepository.save(movement);
 

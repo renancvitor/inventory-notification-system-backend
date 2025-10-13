@@ -36,4 +36,8 @@ public class NotFoundExceptionFactory {
         return new EntityNotFoundException("Movimentação", id);
     }
 
+    public static EntityNotFoundException order(Long id) {
+        return new EntityNotFoundException("Pedido", id);
+    }
+
 }

@@ -4,7 +4,9 @@ public enum PermissionEnum {
 
     MANAGE_USERS(1, "Gerenciar usuários"),
     MANAGE_PRODUCTS(2, "Gerenciar produtos"),
-    MOVE_PRODUCTS(3, "Movimentar produtos");
+    MOVE_PRODUCTS(3, "Movimentar produtos"),
+    APPROVE_ORDER(4, "Aprovar pedido"),
+    REJECT_ORDER(5, "Reprovar pedido");
 
     private final int id;
     private final String displayName;
