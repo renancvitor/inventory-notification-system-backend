@@ -15,7 +15,7 @@ CREATE TABLE orders (
 
     updated_date TIMESTAMP NOT NULL,
 
-    CONSTRAINT fk_order_status FOREIGN KEY (order_status_id) REFERENCES order_statuses(id),
+    CONSTRAINT fk_order_status FOREIGN KEY (order_status_id) REFERENCES order_status(id),
     CONSTRAINT fk_requested_by FOREIGN KEY (requested_by) REFERENCES users(id),
     CONSTRAINT fk_approved_by FOREIGN KEY (approved_by) REFERENCES users(id),
     CONSTRAINT fk_rejected_by FOREIGN KEY (rejected_by) REFERENCES users(id)
