@@ -4,58 +4,65 @@
 
 ---
 
-<h2 align="center"> 🔗 Frontend</h2>
+<h2 align="center">🔗 Frontend</h2>
 O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disponível em um repositório dedicado:
 
 - 🌐 [Sistema de Notificação de Estoque — Frontend](#)  <!-- atualizar link quando disponível -->
+> 🚧 O frontend ainda está em desenvolvimento. O link será adicionado assim que o repositório estiver disponível.
+
 
 ---
 
-<h2 align="center"> Visão Geral do Projeto</h2>
-**Sistema de Notificação de Estoque** é um backend desenvolvido com **Spring Boot**, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque ou prestes a vencer.  
-Este projeto segue uma **arquitetura em camadas** (controller, service, repository, model) e aplica boas práticas de organização de código, escalabilidade e manutenção.
+<h2 align="center">Visão Geral do Projeto</h2>
+<b>Sistema de Notificação de Estoque</b> é um backend desenvolvido com <b>Spring Boot</b>, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque ou prestes a vencer.  
+Este projeto segue uma <b>arquitetura em camadas</b> (controller, service, repository, model) e aplica boas práticas de organização de código, escalabilidade e manutenção.
 
 ---
 
-<h2 align="center"> Tecnologias Utilizadas</h2>
+<h2 align="center">Tecnologias Utilizadas</h2>
 
-- ☕ Java 17+ + 🌱 Spring Boot 3
-- 📦 [JPA](https://spring.io/projects/spring-data-jpa) + 🛠️ [Hibernate](https://hibernate.org/)
-- 📦 Maven: Gerenciamento de dependências e build
-- 🐘 PostgreSQL: Banco de dados
-- 🛠️ Controle de versionamento de banco com [Flyway](https://flywaydb.org/)
-- 🔧 Lombok
-- 🔄 Spring Boot DevTools
-- 🌐 Spring Web
-- ✅ Validações (Bean Validation)
-- 📄 [Swagger (OpenAPI)](https://swagger.io/specification/)
-- 🐧 [WSL](https://ubuntu.com/desktop/wsl) e 🐳 [Docker CLI](https://www.docker.com/products/cli/)
+- ☕ **Backend**
+  - ☕ Java 17+ + 🌱 Spring Boot 3
+  - 🌐 Spring Web
+  - 📦 [JPA](https://spring.io/projects/spring-data-jpa) + 🛠️ [Hibernate](https://hibernate.org/)
+  - ✅ Validações (Bean Validation)
+  - 🔄 Spring Boot DevTools
+  - 🔧 Lombok
+  - 📄 [Swagger (OpenAPI)](https://swagger.io/specification/)
+ 
+- 🗄️ **Banco de Dados**
+  - 🛠️ Controle de versionamento de banco com [Flyway](https://flywaydb.org/)
+  - 🐘 PostgreSQL: Banco de dados
+  
+- 🧰 **Ferramentas e Build**
+  - 📦 Maven: Gerenciamento de dependências e build
+  - 🐧 [WSL](https://ubuntu.com/desktop/wsl) e 🐳 [Docker CLI](https://www.docker.com/products/cli/)
 
 ---
 
-<h2 align="center"> Estrutura do Projeto</h2>
+<h2 align="center">Estrutura do Projeto</h2>
 
 ```plaintext
 src/main
 ├── java/com/github/renancvitor/inventory
-│ ├── controller/
-│ ├── domain/
-│ ├── dto/
-│ ├── exception/
-│ ├── infra/
-│ ├── repository/
-│ ├── service/
-│ ├── util/
-│ └── InventoryNotificationSystemApplication.java
+│    ├── application/   # Camada de aplicação (controllers, services, DTOs, repositories)
+│    ├── domain/        # Entidades de domínio, enums e exceções específicas
+│    ├── exception/     # Tratamento e modelagem de exceções globais
+│    ├── infra/         # Configurações, segurança, logs e integrações externas
+│    ├── utils/         # Utilitários e helpers
+│    └── InventoryNotificationSystemBackendApplication.java
 ├── resources
-│ └── application.properties
+│    ├── db/            # Scripts Flyway (criação e seed de tabelas)
+│    └── application.properties
 └── test/java/com/github/renancvitor/inventory
-└── (future tests)
+     └── (future tests)
 ```
+> 🔗 [Veja a estrutura completa do projeto aqui](./docs/project-structure.md)
 
 ---
 
-<h2 align="center"> Como Executar</h2>
+<h2 align="center">Como Executar</h2>
+
 ### Pré-requisitos
 - Java 17+
 - PostgreSQL rodando localmente
@@ -79,7 +86,7 @@ cd inventory-notification-system-backend
 
 ---
 
-<h2 align="center"> Contribuições</h2>
+<h2 align="center">Contribuições</h2>
 
 Se você quiser contribuir para o projeto, siga estas etapas:
 
@@ -92,7 +99,7 @@ Obrigado pelo interesse em contribuir!
 
 ---
 
-<h2 align="center"> Contato</h2>
+<h2 align="center">Contato</h2>
 
 Se tiver dúvidas ou sugestões, sinta-se à vontade para entrar em contato:
 
@@ -101,6 +108,6 @@ Se tiver dúvidas ou sugestões, sinta-se à vontade para entrar em contato:
 
 ---
 
-<h2 align="center"> Licença</h2>
+<h2 align="center">Licença</h2>
 
 📌 Este projeto está licenciado sob a [Licença MIT](LICENSE), o que significa que você pode utilizá-lo, modificar, compartilhar e distribuir livremente, desde que mantenha os devidos créditos aos autores e inclua uma cópia da licença original - veja o arquivo [LICENSE](LICENSE) para detalhes ou acesse a [licença MIT oficial](https://opensource.org/licenses/MIT).

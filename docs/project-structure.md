@@ -45,6 +45,18 @@ src/main
  │    │    │         ├── MovementReportService.java
  │    │    │         ├── MovementService.java
  │    │    │         └── ReportScheduler.java
+ │    │    ├── order
+ │    │    │    ├── controller
+ │    │    │    ├── dto
+ │    │    │    │    ├── OrderCreationData.java
+ │    │    │    │    ├── OrderDetailData.java
+ │    │    │    │    ├── OrderLogData.java
+ │    │    │    │    └── OrderUpdateData.java
+ │    │    │    ├── repository
+ │    │    │    │    ├── OrderRepository.java
+ │    │    │    │    └── OrderStatusRepository.java
+ │    │    │    └── service
+ │    │    │         └── OrderService.java
  │    │    ├── person
  │    │    │    ├── controller
  │    │    │    │    └── PersonController.java
@@ -108,6 +120,13 @@ src/main
  │    │         |    │    └── MovementTypeEnum.java
  │    │         │    ├── Movement.java
  │    │         │    └── MovementTypeEntity.java
+ │    │         ├── order
+ │    │         │    ├── enums
+ │    │         |    │    └── OrderStatusEnum.java
+ │    │         │    ├── exception
+ │    │         │    │    └── OrderStatusException.java
+ │    │         │    ├── Order.java
+ │    │         │    └── OrderStatusEntity.java
  │    │         ├── person
  │    │         │    └── Person.java
  │    │         ├── product
@@ -182,9 +201,12 @@ src/main
  │    │    ├── V10__seed_categories.sql
  │    │    ├── V11__create_table_error_logs.sql
  │    │    ├── V12__insert_admin_user.sql
- │    │    ├── V13__create_table_movement_types.sql
- │    │    ├── V14__create_table_movements.sql
- │    │    └── V15__seed_movement_types.sql
+ │    │    ├── V13__create_table_order_status.sql
+ │    │    ├── V14__create_table_orders.sql
+ │    │    ├── V15__seed_order_status.sql
+ │    │    ├── V16__create_table_movement_types.sql
+ │    │    ├── V17__create_table_movements.sql
+ │    │    └── V18__seed_movement_types.sql
  │    ├── application-dev.properties
  │    ├── application-prod.properties
  │    ├── application-test.properties
