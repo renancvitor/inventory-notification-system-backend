@@ -89,24 +89,13 @@ public class ProductController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/restock")
-    public ResponseEntity<InputProductResponse> restock(
+    @PostMapping("/{id}/return-to-stock")
+    public ResponseEntity<InputProductResponse> returnToStock(
             @PathVariable Long id,
             @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         InputProductResponse response = productService.inputProduct(id, request, loggedInUser);
-        return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/sell")
-    public ResponseEntity<OutputProductResponse> sell(
-            @PathVariable Long id,
-            @Valid @RequestBody MovementWithOrderRequest request,
-            @AuthenticationPrincipal User loggedInUser) {
-
-        OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
         return ResponseEntity.ok(response);
     }
 
@@ -122,13 +111,24 @@ public class ProductController {
     }
 
     @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/receive-return")
-    public ResponseEntity<InputProductResponse> receiveReturn(
+    @PostMapping("/{id}/purchase")
+    public ResponseEntity<InputProductResponse> purchase(
             @PathVariable Long id,
             @Valid @RequestBody MovementWithOrderRequest request,
             @AuthenticationPrincipal User loggedInUser) {
 
         InputProductResponse response = productService.inputProduct(id, request, loggedInUser);
+        return ResponseEntity.ok(response);
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @PostMapping("/{id}/consume")
+    public ResponseEntity<OutputProductResponse> consume(
+            @PathVariable Long id,
+            @Valid @RequestBody MovementWithOrderRequest request,
+            @AuthenticationPrincipal User loggedInUser) {
+
+        OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
         return ResponseEntity.ok(response);
     }
 
