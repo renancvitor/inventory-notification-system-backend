@@ -55,6 +55,7 @@ public class MovementReportService {
         html.append("<th style='border: 1px solid #ccc; padding: 8px;'>Tipo</th>");
         html.append("<th style='border: 1px solid #ccc; padding: 8px;'>Quantidade</th>");
         html.append("<th style='border: 1px solid #ccc; padding: 8px;'>Valor</th>");
+        html.append("<th style='border: 1px solid #ccc; padding: 8px;'>Pedido</th>");
         html.append("</tr>");
         html.append("</thead>");
         html.append("<tbody>");
@@ -72,6 +73,10 @@ public class MovementReportService {
             html.append("</td>");
             html.append("<td>").append(movement.getQuantity()).append("</td>");
             html.append("<td>R$ ").append(movement.getTotal()).append("</td>");
+
+            html.append("<td>")
+                    .append(movement.getOrder() != null ? movement.getOrder().getId() : "-")
+                    .append("</td>");
             html.append("</tr>");
         }
 
