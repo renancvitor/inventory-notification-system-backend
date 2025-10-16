@@ -76,7 +76,7 @@ public class UserService {
         UserLogPasswordData oldData = UserLogPasswordData.fromEntity(user);
 
         if (!user.getId().equals(id)) {
-            throw new AccessDeniedException();
+            throw new AccessDeniedException("Você só pode alterar a sua própria senha.");
         }
 
         if (!passwordEncoder.matches(data.currentPassword(), user.getPassword())) {

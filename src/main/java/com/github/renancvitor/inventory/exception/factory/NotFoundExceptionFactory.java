@@ -40,4 +40,8 @@ public class NotFoundExceptionFactory {
         return new EntityNotFoundException("Pedido", id);
     }
 
+    public static EntityNotFoundException orderStatus(Integer id) {
+        return new EntityNotFoundException("Status do Pedido", id);
+    }
+
 }
