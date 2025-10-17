@@ -115,7 +115,7 @@ public class OrderService {
 
     @Transactional
     public OrderDetailData update(Long id, OrderUpdateData data, User loggedInUser) {
-        Order order = orderRepository.findByIdAndStatusPending(id)
+        Order order = orderRepository.findById(id)
                 .orElseThrow(() -> NotFoundExceptionFactory.order(id));
 
         if (!order.getRequestedBy().equals(loggedInUser)) {
