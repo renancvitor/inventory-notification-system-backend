@@ -1,7 +1,7 @@
 package com.github.renancvitor.inventory.application.product.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import com.github.renancvitor.inventory.domain.entity.category.enums.CategoryEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
@@ -13,8 +13,12 @@ public record ProductLogData(
                 String category,
                 String brand,
                 BigDecimal price,
-                LocalDate validity) implements LoggableData {
+                String validity) implements LoggableData {
         public static ProductLogData fromEntity(Product product) {
+                String formattedDate = product.getValidity() != null
+                                ? product.getValidity().format(DateTimeFormatter.ISO_LOCAL_DATE)
+                                : null;
+
                 return new ProductLogData(
                                 product.getId(),
                                 product.getProductName(),
@@ -24,6 +28,6 @@ public record ProductLogData(
                                                 : null,
                                 product.getBrand(),
                                 product.getPrice(),
-                                product.getValidity());
+                                formattedDate);
         }
 }
