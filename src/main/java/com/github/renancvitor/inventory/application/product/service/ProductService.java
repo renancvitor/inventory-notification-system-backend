@@ -154,7 +154,7 @@ public class ProductService {
         public void activate(Long id, User loggedInUser) {
                 authenticationService.authorize(List.of(UserTypeEnum.ADMIN, UserTypeEnum.PRODUCT_MANAGER));
 
-                Product product = productRepository.findByIdAndActiveTrue(id)
+                Product product = productRepository.findByIdAndActiveFalse(id)
                                 .orElseThrow(() -> NotFoundExceptionFactory.product(id));
 
                 ProductLogData oldData = ProductLogData.fromEntity(product);
