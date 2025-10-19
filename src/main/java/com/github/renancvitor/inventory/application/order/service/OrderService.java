@@ -143,6 +143,11 @@ public class OrderService {
                             .orElseThrow(
                                     () -> NotFoundExceptionFactory.movementType(movementRequest.movementTypeId())));
                     movement.setQuantity(movementRequest.quantity());
+                    movement.setUnitPrice(movementRequest.unitPrice());
+                    movement.updateTotalValue();
+                    movement.setMovementationDate(LocalDateTime.now());
+                    movement.setUser(loggedInUser);
+                    movement.setOrder(order);
 
                     return movement;
                 })
