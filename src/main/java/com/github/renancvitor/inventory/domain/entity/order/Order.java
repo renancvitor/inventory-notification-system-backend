@@ -87,4 +87,11 @@ public class Order {
         this.updatedAt = LocalDateTime.now();
     }
 
+    public void setMovements(List<Movement> movements) {
+        this.movements.clear();
+        if (movements != null) {
+            this.movements.addAll(movements);
+        }
+    }
+
 }
