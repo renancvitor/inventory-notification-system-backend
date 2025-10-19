@@ -19,9 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import com.github.renancvitor.inventory.application.movement.dto.MovementWithOrderRequest;
-import com.github.renancvitor.inventory.application.product.dto.InputProductResponse;
-import com.github.renancvitor.inventory.application.product.dto.OutputProductResponse;
 import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
 import com.github.renancvitor.inventory.application.product.dto.ProductDetailData;
 import com.github.renancvitor.inventory.application.product.dto.ProductListingData;
@@ -86,50 +83,6 @@ public class ProductController {
     public ResponseEntity<Void> activate(@PathVariable Long id, @AuthenticationPrincipal User loggedInUser) {
         productService.activate(id, loggedInUser);
         return ResponseEntity.noContent().build();
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/return-to-stock")
-    public ResponseEntity<InputProductResponse> returnToStock(
-            @PathVariable Long id,
-            @Valid @RequestBody MovementWithOrderRequest request,
-            @AuthenticationPrincipal User loggedInUser) {
-
-        InputProductResponse response = productService.inputProduct(id, request, loggedInUser);
-        return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/return-to-supplier")
-    public ResponseEntity<OutputProductResponse> returnToSupplier(
-            @PathVariable Long id,
-            @Valid @RequestBody MovementWithOrderRequest request,
-            @AuthenticationPrincipal User loggedInUser) {
-
-        OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
-        return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/purchase")
-    public ResponseEntity<InputProductResponse> purchase(
-            @PathVariable Long id,
-            @Valid @RequestBody MovementWithOrderRequest request,
-            @AuthenticationPrincipal User loggedInUser) {
-
-        InputProductResponse response = productService.inputProduct(id, request, loggedInUser);
-        return ResponseEntity.ok(response);
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PostMapping("/{id}/consume")
-    public ResponseEntity<OutputProductResponse> consume(
-            @PathVariable Long id,
-            @Valid @RequestBody MovementWithOrderRequest request,
-            @AuthenticationPrincipal User loggedInUser) {
-
-        OutputProductResponse response = productService.outputProduct(id, request, loggedInUser);
-        return ResponseEntity.ok(response);
     }
 
 }
