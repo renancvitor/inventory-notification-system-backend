@@ -94,6 +94,10 @@ public class OrderService {
         order.setRequestedBy(loggedInUser);
         order.setDescription(data.description());
 
+        OrderStatusEntity pendingStatus = orderStatusRepository.findById(OrderStatusEnum.PENDING.getId())
+                .orElseThrow(() -> NotFoundExceptionFactory.orderStatus(OrderStatusEnum.PENDING.getId()));
+        order.setOrderStatus(pendingStatus);
+
         List<Movement> movements = data.movements().stream()
                 .map(req -> convertToEntity(req, loggedInUser, order))
                 .toList();
