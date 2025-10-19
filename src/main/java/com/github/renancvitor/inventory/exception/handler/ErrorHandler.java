@@ -36,9 +36,14 @@ public class ErrorHandler {
     }
 
     private void logError(Exception ex, HttpServletRequest request) {
+        String message = ex.getMessage();
+        if (message == null || message.isBlank()) {
+            message = "No message available";
+        }
+
         errorLogPublisherService.publish(
                 ex.getClass().getSimpleName(),
-                ex.getMessage(),
+                message,
                 StackTraceUtils.formatStackTrace(ex, 10),
                 request.getRequestURI());
     }
