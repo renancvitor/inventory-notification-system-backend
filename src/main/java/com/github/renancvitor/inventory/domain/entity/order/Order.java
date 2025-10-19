@@ -76,19 +76,15 @@ public class Order {
     public void updateTotalValue() {
         if (movements != null && !movements.isEmpty()) {
             this.totalValue = movements.stream()
-                    .map(Movement::getTotalValue)
+                    .map(m -> m.getTotalValue() != null ? m.getTotalValue() : BigDecimal.ZERO)
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
             this.totalValue = BigDecimal.ZERO;
         }
 
-        if (this.createdAt == null) {
+        if (this.createdAt == null)
             this.createdAt = LocalDateTime.now();
-        }
-
-        if (this.updatedAt == null) {
-            this.updatedAt = LocalDateTime.now();
-        }
+        this.updatedAt = LocalDateTime.now();
     }
 
 }

@@ -53,7 +53,7 @@ public class Movement {
     private BigDecimal unitPrice;
 
     @Column(name = "total_value", nullable = false)
-    private BigDecimal totalValue;
+    private BigDecimal totalValue = BigDecimal.ZERO;
 
     @Column(name = "movementation_date", nullable = false)
     private LocalDateTime movementationDate;
@@ -97,6 +97,24 @@ public class Movement {
             return false;
         MovementTypeEnum typeEnum = MovementTypeEnum.fromId(movementType.getId());
         return typeEnum == MovementTypeEnum.OUTPUT;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
+        updateTotalValue();
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
+        updateTotalValue();
+    }
+
+    private void updateTotalValue() {
+        if (this.unitPrice != null && this.quantity != null) {
+            this.totalValue = unitPrice.multiply(BigDecimal.valueOf(quantity));
+        } else {
+            this.totalValue = BigDecimal.ZERO;
+        }
     }
 
 }
