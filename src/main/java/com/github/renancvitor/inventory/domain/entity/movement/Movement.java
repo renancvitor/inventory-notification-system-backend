@@ -109,7 +109,7 @@ public class Movement {
         updateTotalValue();
     }
 
-    private void updateTotalValue() {
+    public void updateTotalValue() {
         if (this.unitPrice != null && this.quantity != null) {
             this.totalValue = unitPrice.multiply(BigDecimal.valueOf(quantity));
         } else {
