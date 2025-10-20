@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import com.github.renancvitor.inventory.application.product.dto.ProductListingDa
 import com.github.renancvitor.inventory.application.product.dto.ProductLogData;
 import com.github.renancvitor.inventory.application.product.dto.ProductUpdateData;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
+import com.github.renancvitor.inventory.application.product.repository.ProductSpecifications;
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.product.exception.DuplicateProductException;
@@ -38,23 +40,25 @@ public class ProductService {
 
         public Page<ProductListingData> list(Pageable pageable, Boolean active,
                         Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, User loggedInUser) {
-                Page<Product> page;
+                Specification<Product> specification = Specification.unrestricted();
 
-                if (active != null && categoryId != null && minPrice != null && maxPrice != null) {
-                        page = productRepository.findByActiveAndCategoryIdAndPriceBetween(active, categoryId, minPrice,
-                                        maxPrice,
-                                        pageable);
-                } else if (active != null && categoryId != null) {
-                        page = productRepository.findByActiveAndCategoryId(active, categoryId, pageable);
-                } else if (active != null) {
-                        page = productRepository.findByActive(active, pageable);
-                } else if (categoryId != null) {
-                        page = productRepository.findByCategoryId(categoryId, pageable);
-                } else {
-                        page = productRepository.findAll(pageable);
+                if (active != null) {
+                        specification = specification.and(ProductSpecifications.active(active));
                 }
 
-                return page.map(ProductListingData::new);
+                if (categoryId != null) {
+                        specification = specification.and(ProductSpecifications.categoryId(categoryId));
+                }
+
+                if (minPrice != null) {
+                        specification = specification.and(ProductSpecifications.minPrice(minPrice));
+                }
+
+                if (maxPrice != null) {
+                        specification = specification.and(ProductSpecifications.maxPrice(maxPrice));
+                }
+
+                return productRepository.findAll(specification, pageable).map(ProductListingData::new);
         }
 
         @Transactional
