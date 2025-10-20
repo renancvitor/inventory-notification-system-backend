@@ -1,4 +1,4 @@
-<h1 align="center"> Sistema de Notificação de Estoque — API REST <br>
+<h1 align="center">Sistema de Notificação de Estoque — API REST <br>
 <img src="https://img.shields.io/badge/Status-In%20Progress-yellow" width="150" height="30" />
 </h1>
 
@@ -52,7 +52,7 @@ A arquitetura em camadas e as boas práticas aplicadas tornam o código organiza
 
 ---
 
-<h2 align="center"> Ferramentas Utilizadas</h2>
+<h2 align="center">Ferramentas Utilizadas</h2>
 
 - 💻 [Visual Studio Code](https://code.visualstudio.com/): Ambiente de desenvolvimento integrado (IDE) leve e extensível.
 - 🐘 [PostgreSQL](https://www.postgresql.org/): Sistema de gerenciamento de banco de dados relacional de código aberto, usado via CLI em contêiner Docker.
@@ -60,13 +60,25 @@ A arquitetura em camadas e as boas práticas aplicadas tornam o código organiza
 
 ---
 
-<h2 align="center"> Migrations e Versionamento de Banco</h2>
+<h2 align="center">Migrations e Versionamento de Banco</h2>
 
 O projeto utiliza o [Flyway](https://flywaydb.org/) para gerenciar as **migrations de banco de dados** no [PostgreSQL](https://www.postgresql.org/). Todas as alterações de estrutura no banco, como criação de tabelas e mudanças de schema, são versionadas e controladas. Isso garante consistência entre os ambientes de desenvolvimento e produção.
 
 ---
 
-<h2 align="center"> Funcionalidades</h2>
+<h2 align="center">Estratégia de Filtragem nas Listagens</h2>
+
+Neste projeto adotei duas abordagens para filtragem em consultas:
+
+- Para **consultas com múltiplos filtros opcionais**, utilizei a abordagem baseada em `Specifications` do [Spring Data JPA](https://spring.io/projects/spring-data-jpa). Isso garante flexibilidade, escalabilidade e código mais limpo para cenários complexos.
+
+- Para **consultas simples, com filtros únicos ou poucos parâmetros fixos**, usei métodos diretos do repositório (`findBy...`), para manter simplicidade e performance sem overengineering.
+
+Essa decisão busca balancear clareza, manutenção e boas práticas técnicas, garantindo que o código seja fácil de entender e evoluir.
+
+---
+
+<h2 align="center">Funcionalidades</h2>
 
 O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring Boot](https://spring.io/projects/spring-boot), com foco em boas práticas e organização de **API REST**.
 
@@ -117,7 +129,7 @@ O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring
 
 <!-- ---
 
-<h2 align="center"> Documentação Visual (em construção)</h2>
+<h2 align="center">Documentação Visual (em construção)</h2>
 
  ### 🌐 **API - Swagger**
 
@@ -181,7 +193,7 @@ src/main
 
 ---
 
-<h2 align="center"> Como Executar o Projeto</h2>
+<h2 align="center">Como Executar o Projeto</h2>
 
 ### Pré-requisitos:
 - ☕ [Java 17](https://www.java.com/pt-BR/) ou superior
