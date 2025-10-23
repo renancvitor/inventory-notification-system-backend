@@ -108,6 +108,12 @@
 			<version>2.29.3</version> <!-- verifique a versão mais recente -->
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
