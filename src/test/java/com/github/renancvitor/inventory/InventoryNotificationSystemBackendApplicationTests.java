@@ -8,7 +8,8 @@ import org.springframework.test.context.ActiveProfiles;
 import com.github.renancvitor.inventory.application.email.service.EmailService;
 import com.github.renancvitor.inventory.infra.config.AwsSasConfig;
 
-@SpringBootTest(classes = InventoryNotificationSystemBackendApplication.class)
+@SpringBootTest(classes = {
+		InventoryNotificationSystemBackendApplication.class }, webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("test")
 class InventoryNotificationSystemBackendApplicationTests {
 
