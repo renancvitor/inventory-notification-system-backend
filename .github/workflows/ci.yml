@@ -29,8 +29,5 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
 
-      - name: Build (sem testes)
+      - name: Build & Tests
         run: mvn clean install
-
-#      - name: Build e Testes
-#        run: mvn clean install

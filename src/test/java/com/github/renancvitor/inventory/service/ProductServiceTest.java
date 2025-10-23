@@ -24,6 +24,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.test.context.ActiveProfiles;
 
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.category.repository.CategoryRepository;
@@ -37,6 +38,7 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
 @ExtendWith(MockitoExtension.class)
+@ActiveProfiles("test")
 public class ProductServiceTest {
 
         @Mock
