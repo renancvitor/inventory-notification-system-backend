@@ -7,7 +7,7 @@ target/
 application-secret.properties
 EmailTestRunner.java
 MockUtils.java
-src/test/java/com/github/renancvitor/inventory/utils
+### src/test/java/com/github/renancvitor/inventory/utils
 
 ### STS ###
 .apt_generated
