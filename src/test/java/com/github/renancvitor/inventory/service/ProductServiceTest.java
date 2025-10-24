@@ -5,8 +5,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -36,6 +40,7 @@ import com.github.renancvitor.inventory.application.category.repository.Category
 import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
 import com.github.renancvitor.inventory.application.product.dto.ProductDetailData;
 import com.github.renancvitor.inventory.application.product.dto.ProductListingData;
+import com.github.renancvitor.inventory.application.product.dto.ProductUpdateData;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.application.product.service.ProductService;
 import com.github.renancvitor.inventory.application.product.service.StockMonitorService;
@@ -51,6 +56,7 @@ import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.exception.types.auth.AuthorizationException;
 import com.github.renancvitor.inventory.exception.types.common.EntityNotFoundException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
+import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -82,19 +88,10 @@ public class ProductServiceTest {
         class ListMethodsTests {
 
                 private Product product;
-                private CategoryEntity categoryEntity;
 
                 @BeforeEach
                 void setUp() {
-                        categoryEntity = new CategoryEntity();
-                        categoryEntity.setId(1);
-                        categoryEntity.setCategoryName(CategoryEnum.OTHERS.name());
-
-                        product = new Product();
-                        product.setId(1L);
-                        product.setProductName("Produto Teste");
-                        product.setPrice(BigDecimal.valueOf(100));
-                        product.setCategory(categoryEntity);
+                        product = TestEntityFactory.createProduct();
                 }
 
                 // === Casos positivos ===
@@ -254,16 +251,8 @@ public class ProductServiceTest {
 
                 @BeforeEach
                 void setUp() {
-                        categoryEntity = new CategoryEntity();
-                        categoryEntity.setId(1);
-                        categoryEntity.setCategoryName(CategoryEnum.OTHERS.name());
-
-                        Person person = new Person();
-                        person.setEmail("teste@exemplo.com");
-                        person.setPersonName("Usuário Teste");
-
-                        loggedInUser = new User();
-                        loggedInUser.setPerson(person);
+                        categoryEntity = TestEntityFactory.createCategory();
+                        loggedInUser = TestEntityFactory.createUser();
                 }
 
                 // === Casos positivos ===
@@ -294,9 +283,7 @@ public class ProductServiceTest {
 
                 @Test
                 void shouldCreateProductWithAdminUser() {
-                        userTypeEntity = new UserTypeEntity();
-                        userTypeEntity.setId(1);
-                        userTypeEntity.setUserTypeName(UserTypeEnum.ADMIN.name());
+                        userTypeEntity = TestEntityFactory.creaUserTypeAdmin();
 
                         loggedInUser.setUserType(userTypeEntity);
 
@@ -323,9 +310,7 @@ public class ProductServiceTest {
 
                 @Test
                 void shouldCreateProductWithProductManagerUser() {
-                        userTypeEntity = new UserTypeEntity();
-                        userTypeEntity.setId(1);
-                        userTypeEntity.setUserTypeName(UserTypeEnum.PRODUCT_MANAGER.name());
+                        userTypeEntity = TestEntityFactory.creaUserTypeProductManager();
 
                         loggedInUser.setUserType(userTypeEntity);
 
@@ -353,9 +338,7 @@ public class ProductServiceTest {
                 // === Casos negativos ===
                 @Test
                 void shouldNotCreateProductWithNotAuthorizedUser() {
-                        userTypeEntity = new UserTypeEntity();
-                        userTypeEntity.setId(3);
-                        userTypeEntity.setUserTypeName(UserTypeEnum.COMMON.name());
+                        userTypeEntity = TestEntityFactory.creaUserTypeCommon();
 
                         Person person = new Person();
                         person.setEmail("teste@exemplo.com");
@@ -427,6 +410,138 @@ public class ProductServiceTest {
 
                         assertThrows(DuplicateProductException.class,
                                         () -> productService.create(data, loggedInUser));
+
+                        verify(productRepository, never()).save(any(Product.class));
+                }
+        }
+
+        // ======== UPDATE ========
+        @Nested
+        class UpdateMethosTests {
+
+                private User loggedInUser;
+                private UserTypeEntity userTypeEntity;
+                private Person person;
+                private CategoryEntity categoryEntity;
+
+                @BeforeEach
+                void setup() {
+                        loggedInUser = TestEntityFactory.createUser();
+                        categoryEntity = TestEntityFactory.createCategory();
+                }
+
+                // === Caso positivo ===
+                @Test
+                void shouldUpdateProductWithValidData() {
+                        CategoryEntity categoryEntity = new CategoryEntity();
+                        categoryEntity.setId(2);
+                        categoryEntity.setCategoryName(CategoryEnum.ELECTRONICS.name());
+
+                        Product product = TestEntityFactory.createProduct();
+
+                        doNothing().when(authenticationService).authorize(any());
+
+                        when(productRepository.findByIdAndActiveTrue(anyLong()))
+                                        .thenReturn(Optional.of(product));
+                        when(categoryRepository.findById(anyInt()))
+                                        .thenReturn(Optional.of(categoryEntity));
+                        when(productRepository.save(any(Product.class)))
+                                        .thenAnswer(invocation -> invocation.getArgument(0));
+
+                        when(productRepository.findByIdAndActiveTrue(anyLong()))
+                                        .thenReturn(Optional.of(product));
+
+                        when(categoryRepository.findById(categoryEntity.getId()))
+                                        .thenReturn(Optional.of(categoryEntity));
+
+                        ProductUpdateData data = new ProductUpdateData(
+                                        "Produto atualizado",
+                                        categoryEntity.getId(),
+                                        BigDecimal.valueOf(50),
+                                        null,
+                                        null,
+                                        null,
+                                        "Marca atualizada");
+
+                        ProductDetailData result = productService.update(product.getId(), data, loggedInUser);
+
+                        assertEquals(data.productName(), result.productName());
+                        assertEquals(CategoryEnum.ELECTRONICS.getDisplayName(), result.category());
+                        assertEquals(data.price(), result.price());
+                        assertEquals(data.brand(), result.brand());
+                }
+
+                // === Casos negativos ===
+                @Test
+                void shouldNotUpdateProductWithNotAuthorizedUser() {
+                        userTypeEntity = TestEntityFactory.creaUserTypeCommon();
+                        person = TestEntityFactory.createPerson();
+
+                        User user = new User();
+                        user.setPerson(person);
+                        user.setUserType(userTypeEntity);
+
+                        Product product = TestEntityFactory.createProduct();
+
+                        ProductUpdateData data = new ProductUpdateData(
+                                        "Produto atualizado",
+                                        categoryEntity.getId(),
+                                        BigDecimal.valueOf(50),
+                                        null,
+                                        null,
+                                        null,
+                                        "Marca atualizada");
+
+                        doThrow(new AuthorizationException(List.of(UserTypeEnum.COMMON.getId())))
+                                        .when(authenticationService)
+                                        .authorize(any());
+
+                        assertThrows(AuthorizationException.class,
+                                        () -> productService.update(product.getId(), data, user));
+
+                        verify(productRepository, never()).save(any(Product.class));
+                }
+
+                @Test
+                void shouldNotUpdateProductWithCategoryNotFound() {
+                        ProductUpdateData data = new ProductUpdateData(
+                                        "Produto atualizado",
+                                        categoryEntity.getId(),
+                                        BigDecimal.valueOf(50),
+                                        null,
+                                        null,
+                                        null,
+                                        "Marca atualizada");
+
+                        Product product = TestEntityFactory.createProduct();
+
+                        lenient().when(categoryRepository.findById(categoryEntity.getId()))
+                                        .thenReturn(Optional.empty());
+
+                        assertThrows(EntityNotFoundException.class,
+                                        () -> productService.update(product.getId(), data, loggedInUser));
+
+                        verify(productRepository, never()).save(any(Product.class));
+                }
+
+                @Test
+                void shouldNotUpdateProductNotFound() {
+                        when(productRepository.findByIdAndActiveTrue(anyLong()))
+                                        .thenReturn(Optional.empty());
+
+                        ProductUpdateData data = new ProductUpdateData(
+                                        "Produto atualizado",
+                                        categoryEntity.getId(),
+                                        BigDecimal.valueOf(50),
+                                        null,
+                                        null,
+                                        null,
+                                        "Marca atualizada");
+
+                        Product product = TestEntityFactory.createProduct();
+
+                        assertThrows(EntityNotFoundException.class,
+                                        () -> productService.update(product.getId(), data, loggedInUser));
 
                         verify(productRepository, never()).save(any(Product.class));
                 }
