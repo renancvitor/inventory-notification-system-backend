@@ -1,6 +1,7 @@
 package com.github.renancvitor.inventory.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -542,6 +543,66 @@ public class ProductServiceTest {
 
                         assertThrows(EntityNotFoundException.class,
                                         () -> productService.update(product.getId(), data, loggedInUser));
+
+                        verify(productRepository, never()).save(any(Product.class));
+                }
+        }
+
+        // ======== DELETE ========
+        @Nested
+        class DeleteMethodsTests {
+
+                private User loggedInUser;
+                private UserTypeEntity userTypeEntity;
+                private Product product;
+
+                @BeforeEach
+                void setup() {
+                        loggedInUser = TestEntityFactory.createUser();
+                        userTypeEntity = TestEntityFactory.creaUserTypeAdmin();
+                        product = TestEntityFactory.createProduct();
+                }
+
+                // === Caso positivo ===
+                @Test
+                void shouldDeleteProductWithUserPermission() {
+                        loggedInUser.setUserType(userTypeEntity);
+
+                        when(productRepository.findByIdAndActiveTrue(product.getId()))
+                                        .thenReturn(Optional.of(product));
+
+                        when(productRepository.save(any(Product.class)))
+                                        .thenAnswer(invocation -> invocation.getArgument(0));
+
+                        productService.delete(product.getId(), loggedInUser);
+
+                        assertFalse(product.getActive());
+                        verify(productRepository).save(product);
+                }
+
+                // === Casos negativos ===
+                @Test
+                void shouldNotDeleteProductWithNotAuthorizedUser() {
+                        userTypeEntity = TestEntityFactory.creaUserTypeCommon();
+                        loggedInUser.setUserType(userTypeEntity);
+
+                        doThrow(new AuthorizationException(List.of(UserTypeEnum.COMMON.getId())))
+                                        .when(authenticationService)
+                                        .authorize(any());
+
+                        assertThrows(AuthorizationException.class,
+                                        () -> productService.delete(product.getId(), loggedInUser));
+
+                        verify(productRepository, never()).save(any(Product.class));
+                }
+
+                @Test
+                void shouldNotDeleteProductNotFound() {
+                        when(productRepository.findByIdAndActiveTrue(product.getId()))
+                                        .thenReturn(Optional.empty());
+
+                        assertThrows(EntityNotFoundException.class,
+                                        () -> productService.delete(product.getId(), loggedInUser));
 
                         verify(productRepository, never()).save(any(Product.class));
                 }
