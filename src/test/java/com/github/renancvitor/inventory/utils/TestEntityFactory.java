@@ -12,7 +12,7 @@ import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 
 public class TestEntityFactory {
 
-    public static UserTypeEntity creaUserTypeAdmin() {
+    public static UserTypeEntity createUserTypeAdmin() {
         UserTypeEntity userTypeEntity = new UserTypeEntity();
         userTypeEntity.setId(1);
         userTypeEntity.setUserTypeName(UserTypeEnum.ADMIN.name());
@@ -20,7 +20,7 @@ public class TestEntityFactory {
         return userTypeEntity;
     }
 
-    public static UserTypeEntity creaUserTypeProductManager() {
+    public static UserTypeEntity createUserTypeProductManager() {
         UserTypeEntity userTypeEntity = new UserTypeEntity();
         userTypeEntity.setId(2);
         userTypeEntity.setUserTypeName(UserTypeEnum.PRODUCT_MANAGER.name());
@@ -28,7 +28,7 @@ public class TestEntityFactory {
         return userTypeEntity;
     }
 
-    public static UserTypeEntity creaUserTypeCommon() {
+    public static UserTypeEntity createUserTypeCommon() {
         UserTypeEntity userTypeEntity = new UserTypeEntity();
         userTypeEntity.setId(3);
         userTypeEntity.setUserTypeName(UserTypeEnum.COMMON.name());
