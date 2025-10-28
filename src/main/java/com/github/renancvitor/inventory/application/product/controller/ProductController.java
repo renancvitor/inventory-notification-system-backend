@@ -1,6 +1,5 @@
 package com.github.renancvitor.inventory.application.product.controller;
 
-import java.math.BigDecimal;
 import java.net.URI;
 
 import org.springframework.data.domain.Pageable;
@@ -15,12 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.renancvitor.inventory.application.product.dto.ProductCreationData;
 import com.github.renancvitor.inventory.application.product.dto.ProductDetailData;
+import com.github.renancvitor.inventory.application.product.dto.ProductFilter;
 import com.github.renancvitor.inventory.application.product.dto.ProductListingData;
 import com.github.renancvitor.inventory.application.product.dto.ProductUpdateData;
 import com.github.renancvitor.inventory.application.product.service.ProductService;
@@ -40,14 +39,17 @@ public class ProductController {
 
     @PreAuthorize("isAuthenticated()")
     @GetMapping
-    public ResponseEntity<CustomPage<ProductListingData>> list(@RequestParam(required = false) Boolean active,
-            @RequestParam(required = false) Integer categoryId,
-            @RequestParam(required = false) BigDecimal minPrice,
-            @RequestParam(required = false) BigDecimal maxPrice,
+    public ResponseEntity<CustomPage<ProductListingData>> list(
+            @Valid ProductFilter filter,
             @PageableDefault(size = 10, sort = ("productName")) Pageable pageable,
             @AuthenticationPrincipal User loggedInUser) {
 
-        var page = productService.list(pageable, active, categoryId, minPrice, maxPrice,
+        var page = productService.list(
+                pageable,
+                filter.active(),
+                filter.categoryId(),
+                filter.minPrice(),
+                filter.maxPrice(),
                 loggedInUser);
         return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
