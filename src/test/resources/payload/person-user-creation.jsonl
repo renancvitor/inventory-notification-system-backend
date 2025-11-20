@@ -1,0 +1,33 @@
+# =============================================================================
+# Arquivo de exemplos de payloads para testes do endpoint de criação de Person + User
+#
+# Instruções de uso:
+# 1. Cada linha deste arquivo contém **um JSON válido** que representa uma pessoa + usuário.
+# 2. Para testar a API, copie **apenas UMA linha** por vez e cole no seu client HTTP
+#    preferido (Postman, Insomnia, curl etc.).
+# 3. Não copie múltiplas linhas juntas, pois cada linha é independente e sua API
+#    só aceita um registro por vez.
+# 4. Os campos seguem o DTO `PersonUserCreationData`:
+#      person:
+#          - personName : String (obrigatório)
+#          - cpf        : String (obrigatório, formato XXX.XXX.XXX-XX)
+#          - email      : String (obrigatório, email válido)
+#      user:
+#          - personCpf  : String (deve ser igual ao cpf de person)
+#          - password   : String (obrigatório)
+#          - idUserType : Integer (obrigatório)
+# =============================================================================
+
+{"person":{"personName":"Ana Beatriz Souza","cpf":"123.456.789-01","email":"ana.souza@example.com"},"user":{"personCpf":"123.456.789-01","password":"SenhaForte123!","idUserType":1}}
+{"person":{"personName":"Ricardo Almeida","cpf":"987.654.321-09","email":"ricardo.almeida@example.org"},"user":{"personCpf":"987.654.321-09","password":"R1cardo@2025","idUserType":2}}
+{"person":{"personName":"Mariana Costa","cpf":"321.654.987-22","email":"mariana.costa@example.com"},"user":{"personCpf":"321.654.987-22","password":"MariC0sta!","idUserType":1}}
+{"person":{"personName":"Luís Fernando Rocha","cpf":"654.987.321-44","email":"luis.rocha@example.net"},"user":{"personCpf":"654.987.321-44","password":"Lu1sF#2025","idUserType":1}}
+{"person":{"personName":"Patrícia Gomes","cpf":"159.753.486-30","email":"patricia.gomes@example.com"},"user":{"personCpf":"159.753.486-30","password":"Paty*486","idUserType":3}}
+
+# =============================================================================
+# Dicas:
+# - Cada linha é independente, então você pode iterar sobre elas em scripts para popular
+#   o banco em testes automatizados.
+# - Mantenha este arquivo como referência de payloads válidos.
+# - Se for necessário adicionar mais exemplos, siga a mesma estrutura: um JSON por linha.
+# =============================================================================

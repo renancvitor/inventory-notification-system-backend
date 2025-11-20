@@ -1,0 +1,42 @@
+# =============================================================================
+# Arquivo de exemplos de payloads para testes do endpoint de criação de Product
+#
+# Instruções de uso:
+# 1. Cada linha deste arquivo contém **um JSON válido** que representa um produto.
+# 2. Para testar a API, copie **apenas UMA linha** por vez e cole no seu client HTTP
+#    preferido (Postman, Insomnia, curl etc.).
+# 3. Não copie múltiplas linhas juntas, pois cada linha é independente e sua API
+#    só aceita um registro por vez.
+# 4. Os campos seguem o DTO `ProductCreationData`:
+#      - productName   : String (obrigatório)
+#      - categoryId    : Integer (obrigatório — seguir CategoryEnum)
+#      - price         : BigDecimal (mínimo 0.01)
+#      - validity      : LocalDate (data futura)
+#      - description   : String (opcional)
+#      - stock         : Integer (obrigatório)
+#      - minimumStock  : Integer (opcional)
+#      - brand         : String (obrigatório)
+#
+# CategoryEnum:
+#   1 = FOOD
+#   2 = DRINK
+#   3 = ELECTRONICS
+#   4 = CLOTHING
+#   5 = CLEANING
+#   6 = COSMETICS
+#   7 = OTHERS
+# =============================================================================
+
+{"productName":"Arroz Integral Orgânico 1kg","categoryId":1,"price":12.90,"validity":"2026-01-15","description":"Arroz integral 100% orgânico","stock":150,"minimumStock":25,"brand":"TerraViva"}
+{"productName":"Suco Natural de Laranja 1L","categoryId":2,"price":8.50,"validity":"2025-12-01","description":"Suco natural sem adição de açúcar","stock":90,"minimumStock":15,"brand":"PuraFruta"}
+{"productName":"Carregador Turbo USB-C 30W","categoryId":3,"price":89.99,"validity":"2030-01-01","description":"Carregador rápido compatível com diversas marcas","stock":40,"minimumStock":5,"brand":"PowerTech"}
+{"productName":"Desinfetante Floral 2L","categoryId":5,"price":7.20,"validity":"2027-08-20","description":"Desinfetante com fragrância floral","stock":250,"minimumStock":30,"brand":"HygieniX"}
+{"productName":"Shampoo Anticaspa 300ml","categoryId":6,"price":19.90,"validity":"2028-04-10","description":"Shampoo dermatologicamente testado","stock":120,"minimumStock":20,"brand":"DermaCare"}
+
+# =============================================================================
+# Dicas:
+# - Cada linha é independente, então você pode iterar sobre elas em scripts para
+#   popular o banco em testes automatizados.
+# - Mantenha este arquivo como referência de payloads válidos.
+# - Se for necessário adicionar mais exemplos, siga a mesma estrutura: um JSON por linha.
+# =============================================================================

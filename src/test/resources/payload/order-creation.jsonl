@@ -1,0 +1,44 @@
+# =============================================================================
+# Arquivo de exemplos de payloads para testes do endpoint de criação de Order
+#
+# Instruções de uso:
+# 1. Cada linha deste arquivo contém **um JSON válido** que representa uma ordem.
+# 2. Para testar a API, copie **apenas UMA linha** por vez e cole no seu client HTTP
+#    preferido (Postman, Insomnia, curl etc.).
+# 3. Não copie múltiplas linhas juntas, pois cada linha é independente e sua API
+#    só aceita um registro por vez.
+# 4. Os campos seguem o DTO `OrderCreationData`:
+#      - description : String (opcional)
+#      - movements   : Lista de MovementOrderRequest (obrigatório)
+#
+# Campos do DTO `MovementOrderRequest`:
+#      - productId       : Long (obrigatório)
+#      - movementTypeId  : Integer (obrigatório — ver enum MovementTypeEnum)
+#      - quantity        : Integer (obrigatório, > 0)
+#      - unitPrice       : BigDecimal (mínimo 0.01, max 10 dígitos e 2 casas decimais)
+#
+# MovementTypeEnum:
+#   1 = INPUT  (Entrada)
+#   2 = OUTPUT (Saída)
+#
+# IDs dos produtos utilizados (exemplo):
+#   1 = Arroz Integral Orgânico 1kg
+#   2 = Suco Natural de Laranja 1L
+#   3 = Carregador Turbo USB-C 30W
+#   4 = Desinfetante Floral 2L
+#   5 = Shampoo Anticaspa 300ml
+# =============================================================================
+
+{"description":"Reposição semanal de alimentos","movements":[{"productId":1,"movementTypeId":1,"quantity":50,"unitPrice":12.90},{"productId":2,"movementTypeId":1,"quantity":40,"unitPrice":8.50}]}
+{"description":"Ajuste de estoque após conferência","movements":[{"productId":4,"movementTypeId":1,"quantity":100,"unitPrice":7.20},{"productId":5,"movementTypeId":2,"quantity":10,"unitPrice":19.90}]}
+{"description":"Pedido de venda realizado no balcão","movements":[{"productId":3,"movementTypeId":2,"quantity":3,"unitPrice":89.99},{"productId":5,"movementTypeId":2,"quantity":2,"unitPrice":19.90}]}
+{"description":"Compra mensal de produtos para o estoque","movements":[{"productId":1,"movementTypeId":1,"quantity":200,"unitPrice":12.90},{"productId":4,"movementTypeId":1,"quantity":150,"unitPrice":7.20},{"productId":2,"movementTypeId":1,"quantity":80,"unitPrice":8.50}]}
+{"description":"Movimentações internas e vendas do dia","movements":[{"productId":3,"movementTypeId":1,"quantity":10,"unitPrice":89.99},{"productId":2,"movementTypeId":2,"quantity":5,"unitPrice":8.50},{"productId":1,"movementTypeId":2,"quantity":8,"unitPrice":12.90}]}
+
+# =============================================================================
+# Dicas:
+# - Cada linha é independente, então você pode iterar sobre elas em scripts para
+#   popular o banco em testes automatizados.
+# - Mantenha este arquivo como referência de payloads válidos.
+# - Se for necessário adicionar mais exemplos, siga a mesma estrutura: um JSON por linha.
+# =============================================================================
