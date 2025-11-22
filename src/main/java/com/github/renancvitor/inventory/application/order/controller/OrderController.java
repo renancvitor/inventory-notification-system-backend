@@ -1,12 +1,10 @@
 package com.github.renancvitor.inventory.application.order.controller;
 
-import java.math.BigDecimal;
 import java.net.URI;
-import java.time.LocalDateTime;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -16,12 +14,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.github.renancvitor.inventory.application.order.dto.OrderCreationData;
 import com.github.renancvitor.inventory.application.order.dto.OrderDetailData;
+import com.github.renancvitor.inventory.application.order.dto.OrderFilter;
 import com.github.renancvitor.inventory.application.order.dto.OrderUpdateData;
 import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -41,18 +39,21 @@ public class OrderController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<CustomPage<OrderDetailData>> list(
-            @PageableDefault(size = 10, sort = ("id")) Pageable pageable,
+            @PageableDefault(size = 10, sort = "id") @ParameterObject Pageable pageable,
             @AuthenticationPrincipal User loggedInUser,
-            @RequestParam(required = false) Integer orderStatusId,
-            @RequestParam(required = false) Long requestedBy,
-            @RequestParam(required = false) Long approvedBy,
-            @RequestParam(required = false) Long rejectedBy,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime createdAt,
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime updatedAt,
-            @RequestParam(required = false) BigDecimal totalValue) {
+            @ParameterObject @Valid OrderFilter filter) {
 
-        var page = orderService.list(pageable, loggedInUser, orderStatusId, requestedBy, approvedBy, rejectedBy,
-                createdAt, updatedAt, totalValue);
+        var page = orderService.list(
+                pageable,
+                loggedInUser,
+                filter.orderStatusId(),
+                filter.requestedBy(),
+                filter.approvedBy(),
+                filter.rejectedBy(),
+                filter.createdAt(),
+                filter.updatedAt(),
+                filter.totalValue());
+
         return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
 

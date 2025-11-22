@@ -2,6 +2,7 @@ package com.github.renancvitor.inventory.application.product.controller;
 
 import java.net.URI;
 
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -40,9 +41,9 @@ public class ProductController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping
     public ResponseEntity<CustomPage<ProductListingData>> list(
-            @Valid ProductFilter filter,
-            @PageableDefault(size = 10, sort = ("productName")) Pageable pageable,
-            @AuthenticationPrincipal User loggedInUser) {
+            @ParameterObject @PageableDefault(size = 10, sort = "productName") Pageable pageable,
+            @AuthenticationPrincipal User loggedInUser,
+            @ParameterObject @Valid ProductFilter filter) {
 
         var page = productService.list(
                 pageable,
@@ -51,6 +52,7 @@ public class ProductController {
                 filter.minPrice(),
                 filter.maxPrice(),
                 loggedInUser);
+
         return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
 
