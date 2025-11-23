@@ -27,12 +27,37 @@ public class StockMonitorService {
                 .map(String::trim)
                 .toList();
 
+        if (emailList.isEmpty()) {
+            throw new IllegalStateException("Nenhum destinatário válido configurado para receber avisos de estoque.");
+        }
+
         if (product.isStockLow()) {
+            String body = String.format("""
+                    <p>O produto <strong>%s</strong> está com apenas %d unidades em estoque.</p>
+
+                    <table border="1" cellpadding="6" cellspacing="0" style="border-collapse: collapse;">
+                        <tr>
+                            <th>Produto</th>
+                            <th>Estoque Atual</th>
+                            <th>Estoque Mínimo</th>
+                        </tr>
+                        <tr>
+                            <td>%s</td>
+                            <td>%d</td>
+                            <td>%d</td>
+                        </tr>
+                    </table>
+                    """,
+                    product.getProductName(),
+                    product.getStock(),
+                    product.getProductName(),
+                    product.getStock(),
+                    product.getMinimumStock());
+
             EmailRequest request = new EmailRequest(
                     emailList,
                     "⚠️ Estoque baixo: " + product.getProductName(),
-                    "<p>O produto <strong>" + product.getProductName() + "</strong> está com apenas " +
-                            product.getStock() + " unidades em estoque.</p>");
+                    body);
 
             emailService.sendEmail(request, loggedInUser);
         }

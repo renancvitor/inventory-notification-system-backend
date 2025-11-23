@@ -9,6 +9,7 @@ import com.github.renancvitor.inventory.application.movement.dto.MovementOrderRe
 import com.github.renancvitor.inventory.application.movement.repository.MovementRepository;
 import com.github.renancvitor.inventory.application.movement.repository.MovementTypeRepository;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
+import com.github.renancvitor.inventory.application.product.service.StockMonitorService;
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
@@ -30,6 +31,7 @@ public class MovementService {
     private final MovementTypeRepository movementTypeRepository;
     private final SystemLogPublisherService logPublisherService;
     private final ProductRepository productRepository;
+    private final StockMonitorService stockMonitorService;
 
     @Transactional
     public MovementDetailData output(MovementOrderRequest request, User loggedInUser, Order order) {
@@ -57,6 +59,8 @@ public class MovementService {
 
         product.setStock(updatedStock);
         productRepository.save(product);
+
+        stockMonitorService.handleLowStock(product, loggedInUser);
 
         Movement movement = new Movement();
         movement.setProduct(product);

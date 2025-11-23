@@ -9,5 +9,5 @@ import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 
 public interface MovementRepository extends JpaRepository<Movement, Long> {
 
-    List<Movement> findByMovementationDate(LocalDateTime date);
+    List<Movement> findByMovementationDateBetween(LocalDateTime start, LocalDateTime end);
 }

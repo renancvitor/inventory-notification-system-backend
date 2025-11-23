@@ -2,8 +2,10 @@ package com.github.renancvitor.inventory;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
+@EnableScheduling
 public class InventoryNotificationSystemBackendApplication {
 
 	public static void main(String[] args) {
