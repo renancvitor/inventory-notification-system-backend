@@ -59,7 +59,6 @@ public class Order {
     private User rejectedBy;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Column(name = "movements_list", nullable = false)
     private List<Movement> movements = new ArrayList<>();
 
     @Column(name = "total_value", nullable = false)
@@ -71,12 +70,15 @@ public class Order {
     @Column(name = "updated_date", nullable = false)
     private LocalDateTime updatedAt;
 
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<OrderItem> items = new ArrayList<>();
+
     @PrePersist
     @PreUpdate
     public void updateTotalValue() {
-        if (movements != null && !movements.isEmpty()) {
-            this.totalValue = movements.stream()
-                    .map(m -> m.getTotalValue() != null ? m.getTotalValue() : BigDecimal.ZERO)
+        if (items != null && !items.isEmpty()) {
+            this.totalValue = items.stream()
+                    .map(i -> i.getUnitPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
                     .reduce(BigDecimal.ZERO, BigDecimal::add);
         } else {
             this.totalValue = BigDecimal.ZERO;
@@ -91,6 +93,13 @@ public class Order {
         this.movements.clear();
         if (movements != null) {
             this.movements.addAll(movements);
+        }
+    }
+
+    public void setItems(List<OrderItem> items) {
+        this.items.clear();
+        if (items != null) {
+            this.items.addAll(items);
         }
     }
 
