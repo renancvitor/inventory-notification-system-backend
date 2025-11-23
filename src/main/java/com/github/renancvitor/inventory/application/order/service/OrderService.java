@@ -11,12 +11,14 @@ import org.springframework.stereotype.Service;
 
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.movement.dto.MovementOrderRequest;
+import com.github.renancvitor.inventory.application.movement.repository.MovementRepository;
 import com.github.renancvitor.inventory.application.movement.repository.MovementTypeRepository;
 import com.github.renancvitor.inventory.application.movement.service.MovementService;
 import com.github.renancvitor.inventory.application.order.dto.OrderCreationData;
 import com.github.renancvitor.inventory.application.order.dto.OrderDetailData;
 import com.github.renancvitor.inventory.application.order.dto.OrderLogData;
 import com.github.renancvitor.inventory.application.order.dto.OrderUpdateData;
+import com.github.renancvitor.inventory.application.order.repository.OrderItemRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderSpecifications;
 import com.github.renancvitor.inventory.application.order.repository.OrderStatusRepository;
@@ -25,6 +27,7 @@ import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
+import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 import com.github.renancvitor.inventory.domain.entity.order.exceptions.OrderStatusException;
@@ -46,6 +49,8 @@ public class OrderService {
     private final MovementTypeRepository movementTypeRepository;
     private final ProductRepository productRepository;
     private final MovementService movementService;
+    private final MovementRepository movementRepository;
+    private final OrderItemRepository orderItemRepository;
     private final OrderStatusRepository orderStatusRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
@@ -98,16 +103,21 @@ public class OrderService {
                 .orElseThrow(() -> NotFoundExceptionFactory.orderStatus(OrderStatusEnum.PENDING.getId()));
         order.setOrderStatus(pendingStatus);
 
-        List<Movement> movements = data.movements().stream()
-                .map(req -> convertToEntity(req, loggedInUser, order))
-                .toList();
-
-        order.setMovements(movements);
+        List<OrderItem> items = data.items().stream()
+                .map(dto -> {
+                    OrderItem item = new OrderItem();
+                    item.setOrder(order);
+                    item.setProduct(productRepository.findById(dto.productId()).orElseThrow());
+                    item.setMovementType(movementTypeRepository.findById(dto.movementTypeId()).orElseThrow());
+                    item.setQuantity(dto.quantity());
+                    item.setUnitPrice(dto.unitPrice());
+                    return item;
+                }).toList();
+        order.setItems(items);
 
         orderRepository.save(order);
 
         OrderLogData newData = OrderLogData.fromEntity(order);
-
         logPublisherService.publish(
                 "ORDER_CREATED",
                 "Pedido criado pelo usuário " + loggedInUser.getUsername(),
@@ -208,22 +218,6 @@ public class OrderService {
 
         OrderLogData oldData = OrderLogData.fromEntity(order);
 
-        for (Movement movement : order.getMovements()) {
-            MovementTypeEnum type = MovementTypeEnum.fromId(movement.getMovementType().getId());
-
-            MovementOrderRequest request = new MovementOrderRequest(
-                    movement.getProduct().getId(),
-                    movement.getMovementType().getId(),
-                    movement.getQuantity(),
-                    movement.getUnitPrice());
-
-            switch (type) {
-                case INPUT -> movementService.input(request, loggedInUser, order);
-                case OUTPUT -> movementService.output(request, loggedInUser, order);
-                default -> throw new IllegalArgumentException("Tipo de movimentação não suportado: " + type);
-            }
-        }
-
         order.setOrderStatus(
                 orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId())
                         .orElseThrow(() -> new OrderStatusException("Status 'Aprovado' não encontrado.")));
@@ -231,6 +225,22 @@ public class OrderService {
         order.setApprovedBy(loggedInUser);
 
         Order updatedOrder = orderRepository.save(order);
+
+        for (OrderItem item : order.getItems()) {
+            MovementOrderRequest request = new MovementOrderRequest(
+                    item.getProduct().getId(),
+                    item.getMovementType().getId(),
+                    item.getQuantity(),
+                    item.getUnitPrice());
+
+            MovementTypeEnum type = MovementTypeEnum.fromId(item.getMovementType().getId());
+            if (type == MovementTypeEnum.INPUT) {
+                movementService.input(request, loggedInUser, order);
+            } else {
+                movementService.output(request, loggedInUser, order);
+            }
+        }
+
         OrderLogData newData = OrderLogData.fromEntity(updatedOrder);
 
         logPublisherService.publish(
