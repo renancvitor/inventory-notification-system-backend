@@ -1,9 +1,11 @@
 package com.github.renancvitor.inventory.utils;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.category.enums.CategoryEnum;
+import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -71,6 +73,24 @@ public class TestEntityFactory {
         product.setCategory(categoryEntity);
 
         return product;
+    }
+
+    public static Movement createMovement() {
+
+        Product product = createProduct();
+        product.setStock(100);
+
+        Movement movement = new Movement();
+        movement.setId(1L);
+        movement.setProduct(product);
+        movement.setQuantity(10);
+        movement.setUnitPrice(new BigDecimal("5.50"));
+        movement.setTotalValue(new BigDecimal("55.00"));
+        movement.setMovementationDate(LocalDateTime.now());
+        movement.setUser(createUser());
+        movement.setOrder(null);
+
+        return movement;
     }
 
 }
