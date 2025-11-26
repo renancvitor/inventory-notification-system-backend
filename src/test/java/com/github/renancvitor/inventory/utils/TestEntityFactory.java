@@ -2,10 +2,17 @@ package com.github.renancvitor.inventory.utils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
 import com.github.renancvitor.inventory.domain.entity.category.enums.CategoryEnum;
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
+import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
+import com.github.renancvitor.inventory.domain.entity.order.Order;
+import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
+import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
+import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -76,7 +83,6 @@ public class TestEntityFactory {
     }
 
     public static Movement createMovement() {
-
         Product product = createProduct();
         product.setStock(100);
 
@@ -91,6 +97,37 @@ public class TestEntityFactory {
         movement.setOrder(null);
 
         return movement;
+    }
+
+    public static OrderItem createOrderItem() {
+        Product product = createProduct();
+
+        OrderItem orderItem = new OrderItem();
+        orderItem.setId(1L);
+        orderItem.setOrder(createOrder());
+        orderItem.setProduct(product);
+        orderItem.setMovementType(MovementTypeEntity.fromEnum(MovementTypeEnum.INPUT));
+        orderItem.setQuantity(12);
+        orderItem.setUnitPrice(BigDecimal.valueOf(10));
+        orderItem.setTotalValue(BigDecimal.valueOf(120));
+
+        return orderItem;
+    }
+
+    public static Order createOrder() {
+        OrderItem orderItem = createOrderItem();
+
+        Order order = new Order();
+        order.setId(1L);
+        order.setCreatedAt(LocalDateTime.now());
+        order.setOrderStatus(OrderStatusEntity.fromEnum(OrderStatusEnum.PENDING));
+        order.setRejectedBy(createUser());
+        order.setMovements(List.of(createMovement()));
+        order.setTotalValue(BigDecimal.valueOf(120));
+        order.setDescription("Description");
+        order.setItems(List.of(orderItem));
+
+        return order;
     }
 
 }
