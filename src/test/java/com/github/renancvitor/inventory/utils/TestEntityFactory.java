@@ -2,6 +2,7 @@ package com.github.renancvitor.inventory.utils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.renancvitor.inventory.domain.entity.category.CategoryEntity;
@@ -60,6 +61,7 @@ public class TestEntityFactory {
 
         User user = new User();
         user.setPerson(person);
+
         return user;
     }
 
@@ -67,6 +69,7 @@ public class TestEntityFactory {
         CategoryEntity categoryEntity = new CategoryEntity();
         categoryEntity.setId(1);
         categoryEntity.setCategoryName(CategoryEnum.OTHERS.name());
+
         return categoryEntity;
     }
 
@@ -82,6 +85,22 @@ public class TestEntityFactory {
         return product;
     }
 
+    public static MovementTypeEntity createMovementTypeInput() {
+        MovementTypeEntity type = new MovementTypeEntity();
+        type.setId(1);
+        type.setMovementTypeName(MovementTypeEnum.INPUT.name());
+
+        return type;
+    }
+
+    public static MovementTypeEntity createMovementTypeOutput() {
+        MovementTypeEntity type = new MovementTypeEntity();
+        type.setId(2);
+        type.setMovementTypeName(MovementTypeEnum.OUTPUT.name());
+
+        return type;
+    }
+
     public static Movement createMovement() {
         Product product = createProduct();
         product.setStock(100);
@@ -89,6 +108,7 @@ public class TestEntityFactory {
         Movement movement = new Movement();
         movement.setId(1L);
         movement.setProduct(product);
+        movement.setMovementType(createMovementTypeOutput());
         movement.setQuantity(10);
         movement.setUnitPrice(new BigDecimal("5.50"));
         movement.setTotalValue(new BigDecimal("55.00"));
@@ -99,13 +119,18 @@ public class TestEntityFactory {
         return movement;
     }
 
-    public static OrderItem createOrderItem() {
-        Product product = createProduct();
+    public static OrderStatusEntity createStatusPending() {
+        OrderStatusEntity orderStatusEntity = new OrderStatusEntity();
+        orderStatusEntity.setId(1);
+        orderStatusEntity.setOrderStatusName(OrderStatusEnum.PENDING.name());
 
+        return orderStatusEntity;
+    }
+
+    public static OrderItem createOrderItem() {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(1L);
-        orderItem.setOrder(createOrder());
-        orderItem.setProduct(product);
+        orderItem.setProduct(createProduct());
         orderItem.setMovementType(MovementTypeEntity.fromEnum(MovementTypeEnum.INPUT));
         orderItem.setQuantity(12);
         orderItem.setUnitPrice(BigDecimal.valueOf(10));
@@ -115,17 +140,15 @@ public class TestEntityFactory {
     }
 
     public static Order createOrder() {
-        OrderItem orderItem = createOrderItem();
-
         Order order = new Order();
         order.setId(1L);
         order.setCreatedAt(LocalDateTime.now());
-        order.setOrderStatus(OrderStatusEntity.fromEnum(OrderStatusEnum.PENDING));
+        order.setOrderStatus(createStatusPending());
         order.setRejectedBy(createUser());
         order.setMovements(List.of(createMovement()));
         order.setTotalValue(BigDecimal.valueOf(120));
         order.setDescription("Description");
-        order.setItems(List.of(orderItem));
+        order.setItems(new ArrayList<>());
 
         return order;
     }
