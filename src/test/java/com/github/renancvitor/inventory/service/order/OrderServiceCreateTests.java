@@ -151,7 +151,10 @@ public class OrderServiceCreateTests {
         @Test
         void shouldThrowWhenProductNotFound() {
             OrderItemRequest item = new OrderItemRequest(
-                    99L, 1, 5, BigDecimal.valueOf(10));
+                    99L,
+                    1,
+                    5,
+                    BigDecimal.valueOf(10));
 
             OrderCreationData data = new OrderCreationData(
                     "Description", List.of(item));
@@ -171,7 +174,10 @@ public class OrderServiceCreateTests {
         @Test
         void shouldThrowWhenMovementTypeNotFound() {
             OrderItemRequest item = new OrderItemRequest(
-                    1L, 999, 5, BigDecimal.valueOf(10));
+                    1L,
+                    999,
+                    5,
+                    BigDecimal.valueOf(10));
 
             OrderCreationData data = new OrderCreationData(
                     "Description", List.of(item));
@@ -194,7 +200,10 @@ public class OrderServiceCreateTests {
         @Test
         void shouldThrowWhenRepositorySaveFails() {
             OrderItemRequest item = new OrderItemRequest(
-                    1L, 1, 5, BigDecimal.valueOf(10));
+                    1L,
+                    1,
+                    5,
+                    BigDecimal.valueOf(10));
 
             OrderCreationData data = new OrderCreationData(
                     "Description", List.of(item));
@@ -220,7 +229,10 @@ public class OrderServiceCreateTests {
         @Test
         void shouldThrowWhenLogPublisherFails() {
             OrderItemRequest item = new OrderItemRequest(
-                    1L, 1, 5, BigDecimal.valueOf(10));
+                    1L,
+                    1,
+                    5,
+                    BigDecimal.valueOf(10));
 
             OrderCreationData data = new OrderCreationData(
                     "Description", List.of(item));
