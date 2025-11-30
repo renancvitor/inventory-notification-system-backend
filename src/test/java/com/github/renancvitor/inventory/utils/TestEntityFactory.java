@@ -127,6 +127,14 @@ public class TestEntityFactory {
         return orderStatusEntity;
     }
 
+    public static OrderStatusEntity createStatusApproved() {
+        OrderStatusEntity orderStatusEntity = new OrderStatusEntity();
+        orderStatusEntity.setId(2);
+        orderStatusEntity.setOrderStatusName(OrderStatusEnum.APPROVED.name());
+
+        return orderStatusEntity;
+    }
+
     public static OrderItem createOrderItem() {
         OrderItem orderItem = new OrderItem();
         orderItem.setId(1L);
