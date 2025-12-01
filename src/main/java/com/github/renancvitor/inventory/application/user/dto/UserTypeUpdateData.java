@@ -1,5 +1,8 @@
 package com.github.renancvitor.inventory.application.user.dto;
 
-public record UserTypeUpdateData(Integer idUserType) {
+import jakarta.validation.constraints.NotNull;
+
+public record UserTypeUpdateData(
+        @NotNull Integer idUserType) {
 
 }
