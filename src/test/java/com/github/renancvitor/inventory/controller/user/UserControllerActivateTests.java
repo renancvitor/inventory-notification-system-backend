@@ -27,7 +27,7 @@ import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
-public class UserControllerDeleteTests {
+public class UserControllerActivateTests {
 
     @Mock
     private UserService userService;
@@ -48,15 +48,15 @@ public class UserControllerDeleteTests {
     @Nested
     class PositiveCases {
         @Test
-        void shouldDeleteUserSuccessfully() {
-            doNothing().when(userService).delete(loggedInUser.getId(), loggedInUser);
+        void shouldActivateUserSuccessfully() {
+            doNothing().when(userService).activate(loggedInUser.getId(), loggedInUser);
 
-            ResponseEntity<Void> response = userController.delete(loggedInUser.getId(), loggedInUser);
+            ResponseEntity<Void> response = userController.activate(loggedInUser.getId(), loggedInUser);
 
             assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NO_CONTENT);
             assertThat(response.getBody()).isNull();
 
-            verify(userService).delete(loggedInUser.getId(), loggedInUser);
+            verify(userService).activate(loggedInUser.getId(), loggedInUser);
         }
     }
 
@@ -64,17 +64,17 @@ public class UserControllerDeleteTests {
     class NegativeCases {
         @Test
         void shouldPropagateExceptionWhenServiceFails() {
-            RuntimeException exception = new RuntimeException("Erro ao deletar usuário");
+            RuntimeException exception = new RuntimeException("Erro ao ativar usuário");
 
             doThrow(exception)
                     .when(userService)
-                    .delete(any(), any());
+                    .activate(any(), any());
 
-            assertThatThrownBy(() -> userController.delete(loggedInUser.getId(), loggedInUser))
+            assertThatThrownBy(() -> userController.activate(loggedInUser.getId(), loggedInUser))
                     .isInstanceOf(RuntimeException.class)
-                    .hasMessageContaining("Erro ao deletar usuário");
+                    .hasMessageContaining("Erro ao ativar usuário");
 
-            verify(userService).delete(any(), eq(loggedInUser));
+            verify(userService).activate(any(), eq(loggedInUser));
         }
     }
 
