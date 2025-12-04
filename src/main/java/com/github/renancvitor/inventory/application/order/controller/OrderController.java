@@ -23,8 +23,8 @@ import com.github.renancvitor.inventory.application.order.dto.OrderFilter;
 import com.github.renancvitor.inventory.application.order.dto.OrderUpdateData;
 import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.util.CustomPage;
-import com.github.renancvitor.inventory.util.PageMapper;
+import com.github.renancvitor.inventory.utils.CustomPage;
+import com.github.renancvitor.inventory.utils.PageMapper;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -22,8 +22,8 @@ import com.github.renancvitor.inventory.application.person.dto.PersonListingData
 import com.github.renancvitor.inventory.application.person.dto.PersonUserCreationData;
 import com.github.renancvitor.inventory.application.person.service.PersonService;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.util.CustomPage;
-import com.github.renancvitor.inventory.util.PageMapper;
+import com.github.renancvitor.inventory.utils.CustomPage;
+import com.github.renancvitor.inventory.utils.PageMapper;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.util;
+package com.github.renancvitor.inventory.utils;
 
 import java.util.List;
 

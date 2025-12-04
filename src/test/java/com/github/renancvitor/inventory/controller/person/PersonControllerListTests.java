@@ -37,7 +37,7 @@ import com.github.renancvitor.inventory.application.user.repository.UserTypeRepo
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
-import com.github.renancvitor.inventory.util.CustomPage;
+import com.github.renancvitor.inventory.utils.CustomPage;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
 @ExtendWith(MockitoExtension.class)

@@ -22,7 +22,7 @@ import com.github.renancvitor.inventory.exception.types.common.JsonSerialization
 import com.github.renancvitor.inventory.exception.types.common.ValidationException;
 import com.github.renancvitor.inventory.exception.types.email.EmailException;
 import com.github.renancvitor.inventory.infra.messaging.errorlog.ErrorLogPublisherService;
-import com.github.renancvitor.inventory.util.StackTraceUtils;
+import com.github.renancvitor.inventory.utils.StackTraceUtils;
 
 import jakarta.servlet.http.HttpServletRequest;
 
