@@ -143,10 +143,10 @@ Para ver a interface [Swagger](https://swagger.io/specification/) em ação, ace
 
 ---
 
-<!-- <h2 align="center"> Testes Automatizados</h2>
+<h2 align="center"> Testes Automatizados</h2>
 
-O projeto conta com uma **cobertura significativa de testes unitários e de integração**, garantindo a qualidade e o correto funcionamento dos fluxos principais de negócio da API, incluindo:
-- Cadastro, listagem, ativar/soft delete e edição de cargos, departamentos, pessoas, usuários, orçamentos.
+O projeto conta com uma **cobertura significativa de testes unitários**, garantindo a qualidade e o correto funcionamento dos fluxos principais de negócio da API, incluindo:
+- Cadastro, listagem, ativar/soft delete e edição de pedidos, produtos, pessoas, usuários.
 - Autenticação com [JWT](https://jwt.io/).
 - Validações de regras de negócio.
 - Tratamento global de exceções.
@@ -156,7 +156,7 @@ O projeto conta com uma **cobertura significativa de testes unitários e de inte
 - 🔧 [Mockito](https://site.mockito.org/)
 - 🧪 [Spring Boot Test](https://docs.spring.io/spring-security/reference/servlet/test/index.html)
 
---- -->
+---
 
 <h2 align="center">Testando a API via Insomnia</h2>
 
@@ -175,19 +175,37 @@ Isso irá importar todos os endpoints organizados por pastas, com exemplos de re
 <h2 align="center">Estrutura do Projeto</h2>
 
 ```plaintext
-src/main
-├── java/com/github/renancvitor/inventory
-│    ├── application/   # Camada de aplicação (controllers, services, DTOs, repositories)
-│    ├── domain/        # Entidades de domínio, enums e exceções específicas
-│    ├── exception/     # Tratamento e modelagem de exceções globais
-│    ├── infra/         # Configurações, segurança, logs e integrações externas
-│    ├── utils/         # Utilitários e helpers
-│    └── InventoryNotificationSystemBackendApplication.java
-├── resources
-│    ├── db/            # Scripts Flyway (criação e seed de tabelas)
-│    └── application.properties
-└── test/java/com/github/renancvitor/inventory
-     └── (future tests)
+.github/workflows/                      # Pipelines CI (build, testes, validações)
+docs/                                   # Documentação auxiliar e exportações de API
+ ├── insomnia/                          # Coleção da API para testes via Insomnia
+ └── project-structure.md               # Mapa da arquitetura e organização do projeto
+
+src/main/java/
+ ├── application/                       # Camada de aplicação: DTOs, serviços, controllers, especificações e repositórios
+ ├── domain/                            # Entidades, enums e exceções específicas de cada agregado de domínio
+ ├── exception/                         # Exceções genéricas: factories, handlings e modelos de erro
+ ├── infra/                             # Configurações, segurança, mensageria e integrações externas
+ ├── utils/                             # Utilitários de uso geral (página customizada, mappers, utilidades)
+ └── InventoryNotificationSystemBackendApplication.java
+
+src/main/resources/
+ ├── db/                                # Scripts Flyway (migrations e seeds)
+ ├── application.properties             # Configuração padrão
+ ├── application-*.properties           # Configurações específicas (dev, prod, secret)
+ └── payload/                           # Dados auxiliares em JSONL usados em testes e validações manuais
+
+src/test/java/
+ ├── controller/                        # Testes unitários dos controllers, organizados por domínio e ação
+ ├── service/                           # Testes unitários dos services, com alta cobertura por método
+ ├── utils/                             # Fábrica de entidades e mocks reutilizáveis para testes
+ └── InventoryNotificationSystemBackendApplicationTests.java
+
+src/test/resources/
+ ├── application-test.properties        # Configuração do ambiente de testes
+ └── application-test-secret.properties # Secrets isolados para os testes
+
+LICENSE                                 # Licença do projeto
+README.md                               # Documentação principal do repositório
 ```
 > 🔗 [Veja a estrutura completa do projeto aqui](./docs/project-structure.md)
 

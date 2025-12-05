@@ -4,6 +4,11 @@
 .github/workflows
  └── ci.yml
 
+ .docs
+ ├── insomnia
+ │    └── insomnia-api-export
+ └── project-structure.md
+
 src/main
  ├── java/com/github/renanc/vitor/inventory
  │    ├── application
@@ -20,8 +25,6 @@ src/main
  │    │    │    └── repository
  │    │    │         └── CategoryRepository.java
  │    │    ├── email
- │    │    │    ├── controller
- │    │    │    │    └── EmailController.java
  │    │    │    ├── dto
  │    │    │    │    ├── EmailLogData.java
  │    │    │    │    ├── EmailRequest.java
@@ -37,7 +40,9 @@ src/main
  │    │    │    │    ├── MovementDetailData.java
  │    │    │    │    ├── MovementListingData.java
  │    │    │    │    ├── MovementLogData.java
- │    │    │    │    └── MovementRequest.java
+ │    │    │    │    ├── MovementOrderRequest.java
+ │    │    │    │    ├── MovementRequest.java
+ │    │    │    │    └── MovementWithOrderRequest.java
  │    │    │    ├── repository
  │    │    │    │    ├── MovementRepository.java
  │    │    │    │    └── MovementTypeRepository.java
@@ -47,13 +52,18 @@ src/main
  │    │    │         └── ReportScheduler.java
  │    │    ├── order
  │    │    │    ├── controller
+ │    │    │    │    └── OrderController.java
  │    │    │    ├── dto
  │    │    │    │    ├── OrderCreationData.java
  │    │    │    │    ├── OrderDetailData.java
+ │    │    │    │    ├── OrderFilter.java
+ │    │    │    │    ├── OrderItemRequest.java
  │    │    │    │    ├── OrderLogData.java
  │    │    │    │    └── OrderUpdateData.java
  │    │    │    ├── repository
+ │    │    │    │    ├── OrderItemRepository.java
  │    │    │    │    ├── OrderRepository.java
+ │    │    │    │    ├── OrderSpecifications.java
  │    │    │    │    └── OrderStatusRepository.java
  │    │    │    └── service
  │    │    │         └── OrderService.java
@@ -78,11 +88,13 @@ src/main
  │    │    │    │    ├── OutputProductResponse.java
  │    │    │    │    ├── ProductCreationData.java
  │    │    │    │    ├── ProductDetailData.java
+ │    │    │    │    ├── ProductFilter.java
  │    │    │    │    ├── ProductListingData.java
  │    │    │    │    ├── ProductLogData.java
  │    │    │    │    └── ProductUpdateData.java
  │    │    │    ├── repository
- │    │    │    │    └── ProductRepository.java
+ │    │    │    │    ├── ProductRepository.java
+ │    │    │    │    └── ProductSpecifications.java
  │    │    │    └── service
  │    │    │         ├── ProductService.java
  │    │    │         └── StockMonitorService.java
@@ -126,6 +138,7 @@ src/main
  │    │         │    ├── exception
  │    │         │    │    └── OrderStatusException.java
  │    │         │    ├── Order.java
+ │    │         │    ├── OrderItem.java
  │    │         │    └── OrderStatusEntity.java
  │    │         ├── person
  │    │         │    └── Person.java
@@ -206,15 +219,83 @@ src/main
  │    │    ├── V15__seed_order_status.sql
  │    │    ├── V16__create_table_movement_types.sql
  │    │    ├── V17__create_table_movements.sql
- │    │    └── V18__seed_movement_types.sql
+ │    │    ├── V18__seed_movement_types.sql
+ │    │    └── V19__create_table_order_item.sql
  │    ├── application-dev.properties
  │    ├── application-prod.properties
- │    ├── application-test.properties
+ │    ├── application-secret.properties                               # Oculto, possui dados sensíveis
  │    └── application.properties
  ├── test/java/com/github/renancvitor/inventory
- │    └── (future tests)
+ │    ├── controller
+ │    │    ├── authentication
+ │    │    │    └── AuthenticationControllerTests.java
+ │    │    ├── order
+ │    │    │    ├── OrderControllerApproveTests.java
+ │    │    │    ├── OrderControllerCreationTests.java
+ │    │    │    ├── OrderControllerListTests.java
+ │    │    │    ├── OrderControllerRejectTests.java
+ │    │    │    └── OrderControllerUpdateTests.java
+ │    │    ├── person
+ │    │    │    ├── PersonControllerActivateTests.java
+ │    │    │    ├── PersonControllerCreateTests.java
+ │    │    │    ├── PersonControllerDeleteTests.java
+ │    │    │    └── PersonControllerListTests.java
+ │    │    ├── product
+ │    │    │    ├── ProductControllerActivateTests.java
+ │    │    │    ├── ProductControllerCreateTests.java
+ │    │    │    ├── ProductControllerDeleteTests.java
+ │    │    │    ├── ProductControllerListTests.java
+ │    │    │    └── ProductControllerUpdateTests.java
+ │    │    └── user
+ │    │         ├── UserControllerActivateTests.java
+ │    │         ├── UserControllerDeleteTests.java
+ │    │         ├── UserControllerListTests.java
+ │    │         ├── UserControllerUpdatePasswordTests.java
+ │    │         └── UserControllerUpdateUserTypeTests.java
+ │    ├── service
+ │    │    ├── authentication
+ │    │    │    ├── AuthenticationServiceTests.java
+ │    │    │    └── TokenServiceTests.java
+ │    │    ├── email
+ │    │    │    └── EmailServiceTests.java
+ │    │    ├── movement
+ │    │    │    ├── MovementReportServiceTests.java
+ │    │    │    └── MovementServiceTests.java
+ │    │    ├── order
+ │    │    │    ├── OrderServiceApproveTests.java
+ │    │    │    ├── OrderServiceCreateTests.java
+ │    │    │    ├── OrderServiceListTests.java
+ │    │    │    ├── OrderServiceRejectTests.java
+ │    │    │    └── OrderServiceUpdateTests.java
+ │    │    ├── person
+ │    │    │    ├── PersonServiceActivateTests.java
+ │    │    │    ├── PersonServiceCreateTests.java
+ │    │    │    ├── PersonServiceDeleteTests.java
+ │    │    │    └── PersonServiceListTests.java
+ │    │    ├── product
+ │    │    │    ├── ProductServiceActivateTests.java
+ │    │    │    ├── ProductServiceCreateTests.java
+ │    │    │    ├── ProductServiceDeleteTests.java
+ │    │    │    ├── ProductServiceListTests.java
+ │    │    │    └── ProductServiceUpdateTests.java
+ │    │    └── user
+ │    │         ├── UserServiceActivateTests.java
+ │    │         ├── UserServiceDeleteTests.java
+ │    │         ├── UserServiceListTests.java
+ │    │         ├── UserServiceUpdatePasswordTests.java
+ │    │         └── UserServiceUpdateUserTypeTests.java
+ │    ├── utils
+ │    │    └── TestEntityFactory.java
+ │    └── InventoryNotificationSystemBackendApplicationTests.java
+ ├── resources
+ │    ├── payload
+ │    │    ├── order-creation.jsonl
+ │    │    ├── person-user-creation.jsonl
+ │    │    └── product-creation.jsonl
+ │    ├── application-test-secret.properties
+ │    └── application-test.properties
  ├── LICENSE
  └── README.md
  ```
 
- > Estrutura atualizada em: Outubro/2025
+ > Estrutura atualizada em: Dezembro/2025
