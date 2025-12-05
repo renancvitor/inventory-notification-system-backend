@@ -190,9 +190,9 @@ src/main/java/
 
 src/main/resources/
  ├── db/                                # Scripts Flyway (migrations e seeds)
- ├── application.properties             # Configuração padrão
  ├── application-*.properties           # Configurações específicas (dev, prod, secret)
- └── payload/                           # Dados auxiliares em JSONL usados em testes e validações manuais
+ └── application.properties             # Configuração padrão
+ 
 
 src/test/java/
  ├── controller/                        # Testes unitários dos controllers, organizados por domínio e ação
@@ -201,8 +201,9 @@ src/test/java/
  └── InventoryNotificationSystemBackendApplicationTests.java
 
 src/test/resources/
+ ├── application-test-secret.properties # Secrets isolados para os testes
  ├── application-test.properties        # Configuração do ambiente de testes
- └── application-test-secret.properties # Secrets isolados para os testes
+ └── payload/                           # Dados auxiliares em JSONL usados em testes e validações manuais
 
 LICENSE                                 # Licença do projeto
 README.md                               # Documentação principal do repositório

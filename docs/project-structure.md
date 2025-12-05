@@ -4,7 +4,7 @@
 .github/workflows
  └── ci.yml
 
- .docs
+ docs
  ├── insomnia
  │    └── insomnia-api-export
  └── project-structure.md
