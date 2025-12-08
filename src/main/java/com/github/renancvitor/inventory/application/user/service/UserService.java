@@ -184,7 +184,7 @@ public class UserService {
     }
 
     public boolean strongPassword(String password) {
-        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\\\d)(?=.*[@$!%#?&])[A-Za-z\\\\d@$!%#?&]{8,}$";
+        String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%#?&])[A-Za-z\\d@$!%#?&]{8,}$";
         return password != null && password.matches(regex);
     }
 
