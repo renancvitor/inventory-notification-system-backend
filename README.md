@@ -1,4 +1,4 @@
-<h1 align="center">Sistema de Notificação de Estoque — API REST <br>
+<h1 id="inicio" align="center">Sistema de Notificação de Estoque — API REST <br>
 <img src="https://img.shields.io/badge/Status-In%20Progress-yellow" width="150" height="30" />
 </h1>
 
@@ -10,14 +10,34 @@ O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disp
 - 🌐 [Sistema de Notificação de Estoque — Frontend](#)  <!-- atualizar link quando disponível -->
 > 🚧 O frontend ainda está em desenvolvimento. O link será adicionado assim que o repositório estiver disponível.
 
+---
+
+<h2 align="center">📑 Sumário</h2>
+
+- [Visão Geral do Projeto](#visao-geral-do-projeto)
+- [Tecnologias Utilizadas](#tecnologias-utilizadas)
+- [Ferramentas Utilizadas](#ferramentas-utilizadas)
+- [Migrations e Versionamento de Banco](#migrations-e-versionamento-de-banco)
+- [Estratégia de Filtragem nas Listagens](#estratégia-de-filtragem-nas-listagens)
+- [Funcionalidades](#funcionalidades)
+- [Documentação Visual](#documentação-visual)
+  - [🌐 API - Swagger](#-api---swagger)
+  - [🗂️ Diagrama ER](#-diagrama-er-do-banco-de-dados-postgresql)
+- [Demonstração das Notificações por E-mail](#demonstração-das-notificações-por-e-mail)
+- [Testes Automatizados](#testes-automatizados)
+- [Testando a API via Insomnia](#testando-a-api-via-insomnia)
+- [Estrutura do Projeto](#estrutura-do-projeto)
+- [Como Executar o Projeto](#como-executar-o-projeto)
+- [Contribuições](#contribuições)
+- [Contato](#contato)
+- [Licença](#licenca)
 
 ---
 
-<h2 align="center">Visão Geral do Projeto</h2>
+<h2 id="visao-geral-do-projeto" align="center">Visão Geral do Projeto</h2>
 
-<b>Sistema de Notificação de Estoque</b> é um backend desenvolvido com <b>[Spring Boot](https://spring.io/projects/spring-boot)</b>, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque ou prestes a vencer.<br>
-Desenvolvido principalmente para prática de backend, o projeto também pode atender pequenas empresas que buscam organizar seu fluxo de verbas.  
-Este projeto segue uma <b>arquitetura em camadas</b> (controller, service, repository, model) e aplica boas práticas de organização de código, escalabilidade e manutenção.
+<b>Sistema de Notificação de Estoque</b> é um backend desenvolvido com <b>[Spring Boot](https://spring.io/projects/spring-boot)</b>, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque.<br>
+Desenvolvido principalmente para prática de backend, o projeto também atende pequenas empresas que buscam organizar e monitorar seus processos de estoque. Ele segue uma arquitetura bem organizada em camadas e pacotes funcionais (application, domain, infra, exception e utils), garantindo escalabilidade e manutenção.
 
 O desenvolvimento do projeto consolidou habilidades como:
 - 🏗️ Arquitetura RESTful
@@ -27,15 +47,17 @@ O desenvolvimento do projeto consolidou habilidades como:
 - 📖 Documentação automatizada com [Swagger (OpenAPI)](https://swagger.io/specification/)
 - 🔒 Segurança com [JWT (JSON Web Token)](https://jwt.io/)
 
-A arquitetura em camadas e as boas práticas aplicadas tornam o código organizado, escalável e fácil de manter.
+O uso de boas práticas e a organização do projeto garantem um código escalável, claro e de fácil manutenção.
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
 ---
 
-<h2 align="center">Tecnologias Utilizadas</h2>
+<h2 id="tecnologias-utilizadas" align="center">Tecnologias Utilizadas</h2>
 
 - ☕ **Backend**
   - ☕ [Java 17](https://www.java.com/pt-BR/) ou superior + 🌱 [Spring Boot 3](https://start.spring.io/)
-  - 🌐 [Spring Web](https://spring.io/projects/spring-ws)
+  - 🌐 [Spring Web](https://spring.io/projects/spring-web)
   - 📦 [JPA](https://spring.io/projects/spring-data-jpa) + 🛠️ [Hibernate](https://hibernate.org/)
   - ✅ Validações ([Bean Validation](https://docs.spring.io/spring-framework/reference/core/validation/beanvalidation.html))
   - 🔄 [Spring Boot DevTools](https://docs.spring.io/spring-boot/reference/using/devtools.html)
@@ -50,23 +72,29 @@ A arquitetura em camadas e as boas práticas aplicadas tornam o código organiza
   - 📦 [Maven](https://maven.apache.org/): Gerenciamento de dependências e build
   - 🐧 [WSL](https://ubuntu.com/desktop/wsl) e 🐳 [Docker CLI](https://www.docker.com/products/cli/)
 
+  <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p> 
+
 ---
 
-<h2 align="center">Ferramentas Utilizadas</h2>
+<h2 id="ferramentas-utilizadas" align="center">Ferramentas Utilizadas</h2>
 
 - 💻 [Visual Studio Code](https://code.visualstudio.com/): Ambiente de desenvolvimento integrado (IDE) leve e extensível.
-- 🐘 [PostgreSQL](https://www.postgresql.org/): Sistema de gerenciamento de banco de dados relacional de código aberto, usado via CLI em contêiner Docker.
+- 🐘 [PostgreSQL (Docker)]: Banco de dados utilizado via contêiner Docker.
 - 📡 [Insomnia](https://insomnia.rest/): Ferramenta de teste de APIs REST que permite enviar requisições HTTP, validar respostas e testar endpoints com facilidade. 
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
 ---
 
-<h2 align="center">Migrations e Versionamento de Banco</h2>
+<h2 id="migrations-e-versionamento-de-banco" align="center">Migrations e Versionamento de Banco</h2>
 
 O projeto utiliza o [Flyway](https://flywaydb.org/) para gerenciar as **migrations de banco de dados** no [PostgreSQL](https://www.postgresql.org/). Todas as alterações de estrutura no banco, como criação de tabelas e mudanças de schema, são versionadas e controladas. Isso garante consistência entre os ambientes de desenvolvimento e produção.
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Estratégia de Filtragem nas Listagens</h2>
+<h2 id="estratégia-de-filtragem-nas-listagens" align="center">Estratégia de Filtragem nas Listagens</h2>
 
 Neste projeto adotei duas abordagens para filtragem em consultas:
 
@@ -76,9 +104,11 @@ Neste projeto adotei duas abordagens para filtragem em consultas:
 
 Essa decisão busca balancear clareza, manutenção e boas práticas técnicas, garantindo que o código seja fácil de entender e evoluir.
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Funcionalidades</h2>
+<h2 id="funcionalidades" align="center">Funcionalidades</h2>
 
 O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring Boot](https://spring.io/projects/spring-boot), com foco em boas práticas e organização de **API REST**.
 
@@ -116,7 +146,7 @@ O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring
   - Listar pedidos (com paginação e filtros)
   - Aprovar/Reprovar
   - Controlar status
-  - Atualizado pedido - enquanto status Pendente
+  - Atualizar pedido — permitido apenas enquanto o status for Pendente.
   - Estoque atualizado somente após aprovação do pedido
 
 ### 🛠️ **Validações e Tratamento de Erros**
@@ -127,26 +157,44 @@ O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring
 ### 📊 **Documentação**
 - API documentada com [Swagger UI](https://swagger.io/specification/)
 
-<!-- ---
-
-<h2 align="center">Documentação Visual (em construção)</h2>
-
- ### 🌐 **API - Swagger**
-
-Para ver a interface [Swagger](https://swagger.io/specification/) em ação, acesse as [demonstrações visuais](./docs/documentacao-swagger.md) com GIFs interativos mostrando os principais endpoints da API.
-
-### 🗂️ **Diagrama ER do banco de dados PostgreSQL**
-
-<p align="center">
-  <img src="./docs/controle-verbas-der_1.png" alt="Diagrama ER" width="600"/>
-</p> -->
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
 ---
 
-<h2 align="center"> Testes Automatizados</h2>
+<h2 id="documentação-visual" align="center">Documentação Visual</h2>
+
+ <h3 id="-api---swagger">🌐 <strong>API - Swagger</strong></h3>
+
+Para ver a interface [Swagger](https://swagger.io/specification/) em ação, acesse as [demonstrações visuais](./docs/swagger-documentation.md) com GIFs interativos mostrando os principais endpoints da API.
+
+<h3 id="-diagrama-er-do-banco-de-dados-postgresql">🗂️ <strong>Diagrama ER do banco de dados PostgreSQL</strong></h3>
+
+👉 Veja o diagrama completo aqui:  
+[📊 Diagrama ER — Banco de Dados](./docs/database-diagram.md)
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
+---
+
+<h2 id="demonstração-das-notificações-por-e-mail" align="center">Demonstração das Notificações por E-mail</h2>
+
+O sistema envia notificações automáticas por e-mail para eventos críticos e operacionais,
+como:
+
+- Estoque abaixo do mínimo configurado  
+- Relatório diário consolidado de pedidos gerados
+
+🔗 Veja os exemplos reais dos e-mails enviados:  
+[➡️ Exemplos de Notificações por E-mail](./docs/email-notification.md)
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
+---
+
+<h2 id="testes-automatizados" align="center"> Testes Automatizados</h2>
 
 O projeto conta com uma **cobertura significativa de testes unitários**, garantindo a qualidade e o correto funcionamento dos fluxos principais de negócio da API, incluindo:
-- Cadastro, listagem, ativar/soft delete e edição de pedidos, produtos, pessoas, usuários.
+- Cadastro, listagem, ativar/soft delete e edição dos recursos suportados (pedidos, produtos, pessoas, e usuários).
 - Autenticação com [JWT](https://jwt.io/).
 - Validações de regras de negócio.
 - Tratamento global de exceções.
@@ -156,29 +204,38 @@ O projeto conta com uma **cobertura significativa de testes unitários**, garant
 - 🔧 [Mockito](https://site.mockito.org/)
 - 🧪 [Spring Boot Test](https://docs.spring.io/spring-security/reference/servlet/test/index.html)
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Testando a API via Insomnia</h2>
+<h2 id="testando-a-api-via-insomnia" align="center">Testando a API via Insomnia</h2>
 
 Se preferir usar o [Insomnia](https://insomnia.rest/download) ao invés do Swagger UI, você pode importar diretamente todos os endpoints prontos para teste.
 
 ### Passos:
 
-1. Abra o Insomnia [Insomnia](https://insomnia.rest/).
+1. Abra o [Insomnia](https://insomnia.rest/).
 2. Vá em **File > Import > From File**.
-3. Selecione o arquivo: [`docs/insomnia/insomnia-api-export`](./docs/insominia/insomnia-api-export)
+3. Selecione o arquivo: [`docs/insomnia/insomnia-api-export`](./docs/insomnia/insomnia-api-export)
 
 Isso irá importar todos os endpoints organizados por pastas, com exemplos de requisição e possíveis payloads.
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Estrutura do Projeto</h2>
+<h2 id="estrutura-do-projeto" align="center">Estrutura do Projeto</h2>
 
 ```plaintext
-.github/workflows/                      # Pipelines CI (build, testes, validações)
-docs/                                   # Documentação auxiliar e exportações de API
- ├── insomnia/                          # Coleção da API para testes via Insomnia
- └── project-structure.md               # Mapa da arquitetura e organização do projeto
+.github/workflows/                      # Pipelines de CI: build, testes e validações automatizadas
+docs/                                   # Documentação auxiliar do projeto
+ ├── insomnia/                          # Export da coleção da API para testes via Insomnia
+ ├── gifs/                              # Demonstrações visuais da API (GIFs usados no Swagger documentation)
+ ├── email-notification/                # Exemplos reais de e-mails enviados pelo sistema
+ ├── email-notification.md              # Documento explicando e exibindo as notificações por e-mail
+ ├── inventory-notification-der.png     # Diagrama ER do banco de dados PostgreSQL
+ ├── project-structure.md               # Estrutura detalhada do projeto e organização dos pacotes
+ └── swagger-documentation.md           # Documentação visual da API com GIFs demonstrativos         
 
 src/main/java/
  ├── application/                       # Camada de aplicação: DTOs, serviços, controllers, especificações e repositórios
@@ -210,9 +267,11 @@ README.md                               # Documentação principal do repositór
 ```
 > 🔗 [Veja a estrutura completa do projeto aqui](./docs/project-structure.md)
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Como Executar o Projeto</h2>
+<h2 id="como-executar-o-projeto" align="center">Como Executar o Projeto</h2>
 
 ### Pré-requisitos:
 - ☕ [Java 17](https://www.java.com/pt-BR/) ou superior
@@ -229,11 +288,11 @@ git clone git@github.com:renancvitor/inventory-notification-system-backend.git
 ```bash
 cd inventory-notification-system-backend
 ```
-3. Inicie os serviços necessários no Docker (PostgreSQL e Kafka)
+3. Inicie os serviços necessários no Docker (PostgreSQL)
 ```bash
 docker-compose up -d
 ```
-Isso vai criar os containers do banco de dados e da mensageria. Certifique-se de que as portas configuradas no docker-compose.yml não estejam sendo usadas por outros serviços.
+Isso vai criar o container do banco de dados PostgreSQL. Certifique-se de que as portas configuradas no docker-compose.yml não estejam sendo usadas por outros serviços.
 
 4. Verifique se todos os containers estão disponíveis
 ```bash
@@ -253,9 +312,12 @@ spring.datasource.password=sua_senha
 ```
 7. Acesse a API pelo navegador ou ferramentas como [Insomnia](https://insomnia.rest/) na porta configurada (por padrão http://localhost:8080).<br>
 ⚠️ **Lembre-se de manter o Docker rodando enquanto estiver utilizando a aplicação.**
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Contribuições</h2>
+<h2 id="contribuições" align="center">Contribuições</h2>
 
 Se você quiser contribuir para o projeto, siga estas etapas:
 
@@ -266,17 +328,26 @@ Se você quiser contribuir para o projeto, siga estas etapas:
 
 Obrigado pelo interesse em contribuir!
 
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
 ---
 
-<h2 align="center">Contato</h2>
+<h2 id="contato" align="center">Contato</h2>
 
 Se tiver dúvidas ou sugestões, sinta-se à vontade para entrar em contato:
 
 - 📧 **E-mail**: [renan.vitor.cm@gmail.com](mailto:renan.vitor.cm@gmail.com)
+
 - 🟦 **LinkedIn**: [Renan Vitor](https://www.linkedin.com/in/renan-vitor-developer/)
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
 ---
 
-<h2 align="center">Licença</h2>
+<h2 id="licenca" align="center">Licença</h2>
 
 📌 Este projeto está licenciado sob a [Licença MIT](LICENSE), o que significa que você pode utilizá-lo, modificar, compartilhar e distribuir livremente, desde que mantenha os devidos créditos aos autores e inclua uma cópia da licença original - veja o arquivo [LICENSE](LICENSE) para detalhes ou acesse a [licença MIT oficial](https://opensource.org/licenses/MIT).
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
+---

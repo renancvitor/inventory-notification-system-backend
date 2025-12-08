@@ -5,9 +5,34 @@
  └── ci.yml
 
  docs
+ ├── email-notification
+ │    ├── email-daily-report.png
+ │    └── email-low-stock.png
+ ├── gifs
+ │    ├── complete-and-interactive-documentation.gif
+ │    ├── complete-documentation.gif
+ │    ├── login-api-jwt.gif
+ │    ├── order-approve.gif
+ │    ├── order-creation.gif
+ │    ├── order-list.gif
+ │    ├── order-reject.gif
+ │    ├── order-update.gif
+ │    ├── people-and-users-list.gif
+ │    ├── person-softdelete-activate.gif
+ │    ├── person-user-create.gif
+ │    ├── product-list.gif
+ │    ├── product-registration.gif
+ │    ├── product-softdelete-activate.gif
+ │    ├── product-update.gif
+ │    ├── user-softdelete-activate.gif
+ │    ├── user-type-update.gif
+ │    └── user-update-password.gif
  ├── insomnia
  │    └── insomnia-api-export
- └── project-structure.md
+ ├── email-notification.md
+ ├── inventory-notification-der.png
+ ├── project-structure.md
+ └── swagger-documentation.md
 
 src/main
  ├── java/com/github/renanc/vitor/inventory
@@ -299,3 +324,5 @@ src/main
  ```
 
  > Estrutura atualizada em: Dezembro/2025
+
+ <p align="right"><a href="../README.md">🔄 Voltar para a documentação completa</a></p>

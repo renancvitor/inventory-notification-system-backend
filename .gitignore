@@ -8,6 +8,7 @@ application-secret.properties
 EmailTestRunner.java
 MockUtils.java
 extensoes.txt
+estrutura.sql
 
 ### STS ###
 .apt_generated
