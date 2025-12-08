@@ -1,6 +1,14 @@
 <h1 id="inicio" align="center">Sistema de Notificação de Estoque — API REST <br>
-<img src="https://img.shields.io/badge/Status-In%20Progress-yellow" width="150" height="30" />
+<img src="https://img.shields.io/badge/Status-Completed-brightgreen" width="150" height="30" />
 </h1>
+<!-- Troque o texto e a cor do badge conforme o status do projeto:
+     Status-Completed-brightgreen   → Projeto concluído
+     Status-In%20Progress-yellow    → Projeto em andamento
+     Status-Paused-orange           → Projeto pausado
+     Status-Canceled-red            → Projeto cancelado
+     Exemplo de uso:
+     https://img.shields.io/badge/Status-Completed-brightgreen
+-->
 
 ---
 
