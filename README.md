@@ -87,7 +87,7 @@ O uso de boas práticas e a organização do projeto garantem um código escalá
 <h2 id="ferramentas-utilizadas" align="center">Ferramentas Utilizadas</h2>
 
 - 💻 [Visual Studio Code](https://code.visualstudio.com/): Ambiente de desenvolvimento integrado (IDE) leve e extensível.
-- 🐘 [PostgreSQL (Docker)]: Banco de dados utilizado via contêiner Docker.
+- 🐘 [PostgreSQL](https://www.postgresql.org/): Banco de dados utilizado via contêiner Docker.
 - 📡 [Insomnia](https://insomnia.rest/): Ferramenta de teste de APIs REST que permite enviar requisições HTTP, validar respostas e testar endpoints com facilidade. 
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>

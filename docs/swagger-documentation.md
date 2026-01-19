@@ -1,6 +1,6 @@
 # 🎥 Swagger – Demonstrações Visuais
 
-Este documento apresenta exemplos visuais da interface Swagger utilizada na API Controle Verbas.
+Este documento apresenta exemplos visuais da interface Swagger utilizada na API Sistema de Notificação de Estoque.
 
 ---
 
