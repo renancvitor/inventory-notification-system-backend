@@ -10,35 +10,39 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 
 @Configuration
 public class SpringDocConfiguration {
 
-    @Bean
-    public OpenAPI customOpenAPI() {
-        return new OpenAPI()
-                .components(new Components()
-                        .addSecuritySchemes("bearer-key",
-                                new SecurityScheme()
-                                        .type(SecurityScheme.Type.HTTP)
-                                        .scheme("bearer")
-                                        .bearerFormat("JWT")))
-                .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
-                .info(new Info()
-                        .title("Inventory Notification System")
-                        .version("1.0.0")
-                        .description(
-                                "API REST da aplicação Inventory Notification System." +
-                                        "Forneceções operações de criação, leitura, atualização e remoção (CRUD) para os recursos do sistema. O projeto está em desenvolvimento e esta documentação será atualizada em tempo."
-                                        +
-                                        "Esta API garante validação, autenticação via JWT (JSON Web Token) e tratamento consistente de erros, permitindo integração segura com o Frontend.")
-                        .contact(new Contact()
-                                .name("Renan C. Vitor")
-                                .email("renan.vitor.cm@gmail.com"))
-                        .license(new License()
-                                .name("MIT Licence")
-                                .url("https://github.com/renancvitor/inventory-notification-system-backend/blob/main/LICENSE")));
+        @Bean
+        public OpenAPI customOpenAPI() {
+                return new OpenAPI()
+                                .components(new Components()
+                                                .addSecuritySchemes("bearer-key",
+                                                                new SecurityScheme()
+                                                                                .type(SecurityScheme.Type.HTTP)
+                                                                                .scheme("bearer")
+                                                                                .bearerFormat("JWT")))
+                                .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
+                                .addServersItem(new Server()
+                                                .url("http://localhost:8080")
+                                                .description("Ambiente local"))
+                                .info(new Info()
+                                                .title("Inventory Notification System")
+                                                .version("1.0.0")
+                                                .description(
+                                                                "API REST da aplicação Inventory Notification System." +
+                                                                                "Forneceções operações de criação, leitura, atualização e remoção (CRUD) para os recursos do sistema. O projeto está em desenvolvimento e esta documentação será atualizada em tempo."
+                                                                                +
+                                                                                "Esta API garante validação, autenticação via JWT (JSON Web Token) e tratamento consistente de erros, permitindo integração segura com o Frontend.")
+                                                .contact(new Contact()
+                                                                .name("Renan C. Vitor")
+                                                                .email("renan.vitor.cm@gmail.com"))
+                                                .license(new License()
+                                                                .name("MIT Licence")
+                                                                .url("https://github.com/renancvitor/inventory-notification-system-backend/blob/main/LICENSE")));
 
-    }
+        }
 
 }
