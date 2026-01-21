@@ -1,5 +1,8 @@
 package com.github.renancvitor.inventory.application.movement.service;
 
+import java.time.Instant;
+
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +21,7 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.product.exception.InsufficientStockException;
 import com.github.renancvitor.inventory.domain.entity.product.exception.InvalidQuantityException;
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.domain.events.StockBelowMinimumEvent;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
@@ -32,6 +36,7 @@ public class MovementService {
     private final SystemLogPublisherService logPublisherService;
     private final ProductRepository productRepository;
     private final StockMonitorService stockMonitorService;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Transactional
     public MovementDetailData output(MovementOrderRequest request, User loggedInUser, Order order) {
@@ -60,8 +65,6 @@ public class MovementService {
         product.setStock(updatedStock);
         productRepository.save(product);
 
-        stockMonitorService.handleLowStock(product, loggedInUser);
-
         Movement movement = new Movement();
         movement.setProduct(product);
         movement.setMovementType(movementTypeEntity);
@@ -71,6 +74,17 @@ public class MovementService {
         movement.setOrder(order);
 
         movementRepository.save(movement);
+
+        stockMonitorService.handleLowStock(product, loggedInUser);
+
+        if (product.isStockLow()) {
+            eventPublisher.publishEvent(
+                    new StockBelowMinimumEvent(
+                            product.getId(),
+                            product.getStock(),
+                            product.getMinimumStock(),
+                            Instant.now()));
+        }
 
         MovementLogData newData = MovementLogData.fromEntity(movement);
 

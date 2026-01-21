@@ -1,9 +1,11 @@
 package com.github.renancvitor.inventory.application.order.service;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -35,6 +37,7 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.user.exception.AccessDeniedException;
+import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
@@ -54,6 +57,7 @@ public class OrderService {
     private final OrderStatusRepository orderStatusRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public Page<OrderDetailData> list(Pageable pageable, User loggedInUser,
             Integer orderStatusId, Long requestedBy, Long approvedBy, Long rejectedBy,
@@ -123,6 +127,12 @@ public class OrderService {
                 "Pedido criado pelo usuário " + loggedInUser.getUsername(),
                 null,
                 newData);
+
+        eventPublisher.publishEvent(
+                new OrderCreationEvent(
+                        order.getId(),
+                        order.getRequestedBy().getId(),
+                        order.getTotalValue(), Instant.now()));
 
         return new OrderDetailData(order);
     }
