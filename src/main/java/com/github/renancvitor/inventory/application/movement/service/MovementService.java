@@ -81,6 +81,7 @@ public class MovementService {
             eventPublisher.publishEvent(
                     new StockBelowMinimumEvent(
                             product.getId(),
+                            loggedInUser.getId(),
                             product.getStock(),
                             product.getMinimumStock(),
                             Instant.now()));
