@@ -35,6 +35,7 @@ import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.user.exception.AccessDeniedException;
 import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
+import com.github.renancvitor.inventory.domain.events.OrderEventPublisher;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
@@ -53,6 +54,7 @@ public class OrderService {
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
     private final ApplicationEventPublisher eventPublisher;
+    private final OrderEventPublisher orderEventPublisher;
 
     public Page<OrderDetailData> list(Pageable pageable, User loggedInUser,
             Integer orderStatusId, Long requestedBy, Long approvedBy, Long rejectedBy,
@@ -123,7 +125,7 @@ public class OrderService {
                 null,
                 newData);
 
-        eventPublisher.publishEvent(
+        orderEventPublisher.publishOrderCreatedEvent(
                 new OrderCreationEvent(
                         order.getId(),
                         order.getRequestedBy().getId(),

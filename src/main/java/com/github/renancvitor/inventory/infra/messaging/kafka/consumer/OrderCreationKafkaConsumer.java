@@ -1,8 +1,10 @@
 package com.github.renancvitor.inventory.infra.messaging.kafka.consumer;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
+@ConditionalOnProperty(value = "messaging.kafka.enabled", havingValue = "true")
 @Component
 public class OrderCreationKafkaConsumer {
 
