@@ -13,20 +13,17 @@ import org.springframework.stereotype.Service;
 
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.movement.dto.MovementOrderRequest;
-import com.github.renancvitor.inventory.application.movement.repository.MovementRepository;
 import com.github.renancvitor.inventory.application.movement.repository.MovementTypeRepository;
 import com.github.renancvitor.inventory.application.movement.service.MovementService;
 import com.github.renancvitor.inventory.application.order.dto.OrderCreationData;
 import com.github.renancvitor.inventory.application.order.dto.OrderDetailData;
 import com.github.renancvitor.inventory.application.order.dto.OrderLogData;
 import com.github.renancvitor.inventory.application.order.dto.OrderUpdateData;
-import com.github.renancvitor.inventory.application.order.repository.OrderItemRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderSpecifications;
 import com.github.renancvitor.inventory.application.order.repository.OrderStatusRepository;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.movement.Movement;
-import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
@@ -52,8 +49,6 @@ public class OrderService {
     private final MovementTypeRepository movementTypeRepository;
     private final ProductRepository productRepository;
     private final MovementService movementService;
-    private final MovementRepository movementRepository;
-    private final OrderItemRepository orderItemRepository;
     private final OrderStatusRepository orderStatusRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
@@ -260,25 +255,6 @@ public class OrderService {
                 newData);
 
         return new OrderDetailData(updatedOrder);
-    }
-
-    private Movement convertToEntity(MovementOrderRequest request, User loggedInUser, Order order) {
-        Product product = productRepository.findById(request.productId())
-                .orElseThrow(() -> NotFoundExceptionFactory.product(request.productId()));
-
-        MovementTypeEntity movementType = movementTypeRepository.findById(request.movementTypeId())
-                .orElseThrow(() -> NotFoundExceptionFactory.movementType(request.movementTypeId()));
-
-        Movement movement = new Movement();
-        movement.setProduct(product);
-        movement.setMovementType(movementType);
-        movement.setQuantity(request.quantity());
-        movement.setUnitPrice(request.unitPrice());
-        movement.setMovementationDate(LocalDateTime.now());
-        movement.setUser(loggedInUser);
-        movement.setOrder(order);
-
-        return movement;
     }
 
 }
