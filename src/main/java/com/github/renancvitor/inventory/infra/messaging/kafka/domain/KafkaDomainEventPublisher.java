@@ -9,7 +9,8 @@ import org.springframework.stereotype.Component;
 import com.github.renancvitor.inventory.domain.events.BusinessEvent;
 import com.github.renancvitor.inventory.domain.events.DomainEventEnvelope;
 import com.github.renancvitor.inventory.domain.events.DomainEventPublisher;
-import com.github.renancvitor.inventory.infra.messaging.kafka.contract.KafkaTopics;
+import com.github.renancvitor.inventory.domain.events.EventTypes;
+import com.github.renancvitor.inventory.infra.messaging.kafka.mapping.KafkaEventRouting;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,19 +20,23 @@ import lombok.RequiredArgsConstructor;
 public class KafkaDomainEventPublisher implements DomainEventPublisher {
 
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final KafkaEventRouting routing;
 
     @Override
     public void publish(BusinessEvent event) {
 
+        String eventType = EventTypes.from(event);
+        String version = "v1";
+
         DomainEventEnvelope<BusinessEvent> envelope = new DomainEventEnvelope<>(
                 UUID.randomUUID().toString(),
-                event.getClass().getSimpleName(),
-                "v1",
+                eventType,
+                version,
                 event.ocurredAt(),
                 "inventory-notification-system",
                 event);
 
-        String topic = KafkaTopics.resolve(event);
+        String topic = routing.resolveTopic(eventType, version);
 
         kafkaTemplate.send(topic, envelope);
     }
