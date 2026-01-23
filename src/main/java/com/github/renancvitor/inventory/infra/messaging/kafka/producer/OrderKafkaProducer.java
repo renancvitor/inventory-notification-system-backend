@@ -5,6 +5,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
+import com.github.renancvitor.inventory.infra.messaging.kafka.contract.KafkaTopics;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +17,7 @@ public class OrderKafkaProducer {
     private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void send(OrderCreationEvent event) {
-        kafkaTemplate.send("order.created.v1", event);
+        kafkaTemplate.send(KafkaTopics.ORDER_CREATED_V1, event);
     }
 
 }
