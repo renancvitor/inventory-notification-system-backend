@@ -4,11 +4,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
-@ConditionalOnProperty(value = "messaging.kafka.enabled", havingValue = "true")
 @Component
+@ConditionalOnProperty(name = "messaging.provider", havingValue = "kafka")
 public class OrderCreationKafkaConsumer {
 
-    @KafkaListener(topics = "order-creation-topic", groupId = "order-created-consumer", containerFactory = "kafkaListenerContainerFactory")
+    @KafkaListener(topics = "order-creation-topic", groupId = "order-created-consumer")
     public void consume(Object payload) {
         System.out.println("Received Order Creation Event");
         System.out.println(payload);
@@ -16,7 +16,7 @@ public class OrderCreationKafkaConsumer {
         throw new RuntimeException("Erro proposital");
     }
 
-    @KafkaListener(topics = "order-creation-topic.DLT", groupId = "order-created-dlt-consumer", containerFactory = "dlqKafkaListenerContainerFactory")
+    @KafkaListener(topics = "order-creation-topic.DLT", groupId = "order-created-dlt-consumer")
     public void dlq(Object payload) {
         System.out.println("Received Order Creation DLT Event");
         System.out.println(payload);

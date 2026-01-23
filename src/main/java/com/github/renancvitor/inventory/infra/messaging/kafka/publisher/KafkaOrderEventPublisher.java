@@ -10,7 +10,7 @@ import com.github.renancvitor.inventory.domain.events.OrderEventPublisher;
 import lombok.RequiredArgsConstructor;
 
 @Component
-@ConditionalOnProperty(value = "messaging.kafka.enabled", havingValue = "true")
+@ConditionalOnProperty(name = "messaging.provider", havingValue = "kafka")
 @RequiredArgsConstructor
 public class KafkaOrderEventPublisher implements OrderEventPublisher {
 

@@ -5,7 +5,6 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -53,7 +52,6 @@ public class OrderService {
     private final OrderStatusRepository orderStatusRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
-    private final ApplicationEventPublisher eventPublisher;
     private final OrderEventPublisher orderEventPublisher;
 
     public Page<OrderDetailData> list(Pageable pageable, User loggedInUser,

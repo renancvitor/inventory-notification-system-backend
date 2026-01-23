@@ -2,7 +2,6 @@ package com.github.renancvitor.inventory.application.movement.service;
 
 import java.time.Instant;
 
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,7 +36,6 @@ public class MovementService {
     private final SystemLogPublisherService logPublisherService;
     private final ProductRepository productRepository;
     private final StockMonitorService stockMonitorService;
-    private final ApplicationEventPublisher eventPublisher;
     private final StockBelowMininumPublisher stockBelowMininumPublisher;
 
     @Transactional

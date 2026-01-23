@@ -7,7 +7,7 @@ import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
 import com.github.renancvitor.inventory.domain.events.OrderEventPublisher;
 
 @Component
-@ConditionalOnProperty(value = "messaging.kafka.enabled", havingValue = "false", matchIfMissing = true)
+@ConditionalOnProperty(name = "messaging.provider", havingValue = "none", matchIfMissing = true)
 public class NoOpOrderEventPublisher implements OrderEventPublisher {
 
     @Override
