@@ -20,8 +20,8 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.product.exception.InsufficientStockException;
 import com.github.renancvitor.inventory.domain.entity.product.exception.InvalidQuantityException;
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.domain.events.DomainEventPublisher;
 import com.github.renancvitor.inventory.domain.events.StockBelowMinimumEvent;
-import com.github.renancvitor.inventory.domain.events.StockBelowMininumPublisher;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 
@@ -36,7 +36,7 @@ public class MovementService {
     private final SystemLogPublisherService logPublisherService;
     private final ProductRepository productRepository;
     private final StockMonitorService stockMonitorService;
-    private final StockBelowMininumPublisher stockBelowMininumPublisher;
+    private final DomainEventPublisher domainEventPublisher;
 
     @Transactional
     public MovementDetailData output(MovementOrderRequest request, User loggedInUser, Order order) {
@@ -78,7 +78,7 @@ public class MovementService {
         stockMonitorService.handleLowStock(product, loggedInUser);
 
         if (product.isStockLow()) {
-            stockBelowMininumPublisher.publishStockBelowMinimumEvent(
+            domainEventPublisher.publish(
                     new StockBelowMinimumEvent(
                             product.getId(),
                             loggedInUser.getId(),
