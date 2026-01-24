@@ -1,7 +1,9 @@
 package com.github.renancvitor.inventory.infra.messaging.kafka.domain;
 
+import java.util.Optional;
 import java.util.UUID;
 
+import org.slf4j.MDC;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
@@ -28,12 +30,16 @@ public class KafkaDomainEventPublisher implements DomainEventPublisher {
         String eventType = EventTypes.from(event);
         String version = "v1";
 
+        String correlationId = Optional.ofNullable(MDC.get("correlationId"))
+                .orElse(UUID.randomUUID().toString());
+
         DomainEventEnvelope<BusinessEvent> envelope = new DomainEventEnvelope<>(
                 UUID.randomUUID().toString(),
                 eventType,
                 version,
                 event.ocurredAt(),
                 "inventory-notification-system",
+                correlationId,
                 event);
 
         String topic = routing.resolveTopic(eventType, version);
