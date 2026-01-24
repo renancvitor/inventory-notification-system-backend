@@ -12,6 +12,8 @@ import org.springframework.stereotype.Component;
 import com.github.renancvitor.inventory.domain.events.DomainEventEnvelope;
 import com.github.renancvitor.inventory.domain.events.StockBelowMinimumEvent;
 import com.github.renancvitor.inventory.infra.messaging.kafka.contract.KafkaTopics;
+import com.github.renancvitor.inventory.infra.messaging.kafka.idempotency.ProcessedEvent;
+import com.github.renancvitor.inventory.infra.messaging.kafka.idempotency.ProcessedEventRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

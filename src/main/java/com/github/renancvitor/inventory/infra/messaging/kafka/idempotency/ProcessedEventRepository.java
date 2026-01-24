@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.consumer;
+package com.github.renancvitor.inventory.infra.messaging.kafka.idempotency;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

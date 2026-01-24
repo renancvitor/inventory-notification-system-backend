@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.consumer;
+package com.github.renancvitor.inventory.infra.messaging.kafka.idempotency;
 
 import java.time.Instant;
 
