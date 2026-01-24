@@ -33,10 +33,11 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.user.exception.AccessDeniedException;
-import com.github.renancvitor.inventory.domain.events.DomainEventPublisher;
+import com.github.renancvitor.inventory.domain.events.EventTypes;
 import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
+import com.github.renancvitor.inventory.infra.outbox.OutboxService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +53,7 @@ public class OrderService {
     private final OrderStatusRepository orderStatusRepository;
     private final SystemLogPublisherService logPublisherService;
     private final AuthenticationService authenticationService;
-    private final DomainEventPublisher domainEventPublisher;
+    private final OutboxService outboxService;
 
     public Page<OrderDetailData> list(Pageable pageable, User loggedInUser,
             Integer orderStatusId, Long requestedBy, Long approvedBy, Long rejectedBy,
@@ -123,11 +124,16 @@ public class OrderService {
                 null,
                 newData);
 
-        domainEventPublisher.publish(
+        outboxService.saveEvent(
+                "ORDER",
+                order.getId(),
+                EventTypes.ORDER_CREATED,
+                "v1",
                 new OrderCreationEvent(
                         order.getId(),
                         order.getRequestedBy().getId(),
-                        order.getTotalValue(), Instant.now()));
+                        order.getTotalValue(),
+                        Instant.now()));
 
         return new OrderDetailData(order);
     }
