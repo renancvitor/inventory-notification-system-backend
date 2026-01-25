@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.outbox;
+package com.github.renancvitor.inventory.infra.outbox.entity;
 
 public enum OutboxStatus {
 

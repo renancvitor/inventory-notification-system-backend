@@ -1,8 +1,10 @@
-package com.github.renancvitor.inventory.infra.outbox;
+package com.github.renancvitor.inventory.infra.outbox.scheduler;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.github.renancvitor.inventory.infra.outbox.publisher.OutboxPublisherService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

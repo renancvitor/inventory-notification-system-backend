@@ -29,6 +29,11 @@
  │    └── user-update-password.gif
  ├── insomnia
  │    └── insomnia-api-export
+ ├── kafka
+ │    ├── diagram
+ │    │    ├── C4-component-diagram.png
+ │    │    └── C4-container-diagram.png
+ │    └── kafka-architecture.md
  ├── email-notification.md
  ├── inventory-notification-der.png
  ├── project-structure.md
@@ -144,47 +149,56 @@ src/main
  │    │         └── service
  │    │              └── UserService.java
  │    ├── domain
- │    │    └── entity
- │    │         ├── category
- │    │         │    ├── enums
- │    │         |    │    └── CategoryEnum.java
- │    │         │    └── CategoryEntity.java
- │    │         ├── errorlog
- │    │         │    ├── ErrorLog.java
- │    │         │    └── ErrorLogEvent.java
- │    │         ├── movement
- │    │         │    ├── enums
- │    │         |    │    └── MovementTypeEnum.java
- │    │         │    ├── Movement.java
- │    │         │    └── MovementTypeEntity.java
- │    │         ├── order
- │    │         │    ├── enums
- │    │         |    │    └── OrderStatusEnum.java
- │    │         │    ├── exception
- │    │         │    │    └── OrderStatusException.java
- │    │         │    ├── Order.java
- │    │         │    ├── OrderItem.java
- │    │         │    └── OrderStatusEntity.java
- │    │         ├── person
- │    │         │    └── Person.java
- │    │         ├── product
- │    │         │    ├── exception
- │    │         │    │    ├── DuplicateProductException.java
- │    │         │    │    ├── InsufficientStockException.java
- │    │         │    │    └── InvalidQuantityException.java
- │    │         │    └── Product.java
- │    │         ├── systemlog
- │    │         │    ├── SystemLog.java
- │    │         │    └── SystemLogEvent.java
- │    │         └── user
- │    │              ├── enums
- │    │              │    ├── PermissionEnum.java
- │    │              │    └── UserTypeEnum.java
- │    │              ├── exception
- │    │              │    └── AccessDeniedException.java
- │    │              ├── PermissionEntity.java
- │    │              ├── User.java
- │    │              └── UserTypeEntity.java
+ │    │    ├── entity
+ │    │    │    ├── category
+ │    │    │    │    ├── enums
+ │    │    │    │    │    └── CategoryEnum.java
+ │    │    │    │    └── CategoryEntity.java
+ │    │    │    ├── errorlog
+ │    │    │    │    ├── ErrorLog.java
+ │    │    │    │    └── ErrorLogEvent.java
+ │    │    │    ├── movement
+ │    │    │    │    ├── enums
+ │    │    │    │    │    └── MovementTypeEnum.java
+ │    │    │    │    ├── Movement.java
+ │    │    │    │    └── MovementTypeEntity.java
+ │    │    │    ├── order
+ │    │    │    │    ├── enums
+ │    │    │    |    │    └── OrderStatusEnum.java
+ │    │    │    │    ├── exception
+ │    │    │    │    │    └── OrderStatusException.java
+ │    │    │    │    ├── Order.java
+ │    │    │    │    ├── OrderItem.java
+ │    │    │    │    └── OrderStatusEntity.java
+ │    │    │    ├── person
+ │    │    │    │    └── Person.java
+ │    │    │    ├── product
+ │    │    │    │    ├── exception
+ │    │    │    │    │    ├── DuplicateProductException.java
+ │    │    │    │    │    ├── InsufficientStockException.java
+ │    │    │    │    │    └── InvalidQuantityException.java
+ │    │    │    │    └── Product.java
+ │    │    │    ├── systemlog
+ │    │    │    │    ├── SystemLog.java
+ │    │    │    │    └── SystemLogEvent.java
+ │    │    │    └── user
+ │    │    │         ├── enums
+ │    │    │         │    ├── PermissionEnum.java
+ │    │    │         │    └── UserTypeEnum.java
+ │    │    │         ├── exception
+ │    │    │         │    └── AccessDeniedException.java
+ │    │    │         ├── PermissionEntity.java
+ │    │    │         ├── User.java
+ │    │    │         └── UserTypeEntity.java
+ │    │    └── events
+ │    │         ├── enums
+ │    │         │    └── EventVersions.java
+ │    │         ├── BusinessEvent.java
+ │    │         ├── DomainEventEnvelope.java
+ │    │         ├── DomainEventPublisher.java
+ │    │         ├── EventTypes.java
+ │    │         ├── OrderCreationEvent.java
+ │    │         └── StockBelowMinimumEvent.java
  │    ├── exception
  │    │    ├── factory
  │    │    │    ├── NotFoundExceptionFactory.java
@@ -204,7 +218,7 @@ src/main
  │    │         └── email
  │    │              └── EmailException.java
  │    ├── infra
- │    │    ├── config
+ │    │    ├── config 
  │    │    │    ├── AwsSesConfig.java
  │    │    │    └── WebConfig.java
  │    │    ├── documentation
@@ -213,10 +227,43 @@ src/main
  │    │    │    ├── errorlog
  │    │    │    │    ├── ErrorLogListener.java
  │    │    │    │    └── ErrorLogPublisherService.java
+ │    │    │    ├── fallback
+ │    │    │    │    └── NoOpDomainEventPublisher.java
+ │    │    │    ├── kafka
+ │    │    │    │    ├── config
+ │    │    │    │    │    └── KafkaProducerConfig.java
+ │    │    │    │    ├── consumer
+ │    │    │    │    │    ├── OrderCreationKafkaConsumer.java
+ │    │    │    │    │    └── StockBelowMinimumKafkaConsumer.java
+ │    │    │    │    ├── idempotency
+ │    │    │    │    │    ├── EventDuplication.java
+ │    │    │    │    │    ├── JpaEventDeduplication.java
+ │    │    │    │    │    ├── ProcessedEvent.java
+ │    │    │    │    │    └── ProcessedEventRepository.java
+ │    │    │    │    ├── observability
+ │    │    │    │    │    └── CorrelationIdFilter.java
+ │    │    │    │    ├── producer
+ │    │    │    │    │    └── KafkaDomainEventPublisher.java
+ │    │    │    │    ├── routing
+ │    │    │    │    │    └── KafkaEventRouting.java
+ │    │    │    │    └── topic
+ │    │    │    │         └── KafkaTopics.java
  │    │    │    └── systemlog
  │    │    │         ├── LoggableData.java
  │    │    │         ├── SystemLogListener.java
  │    │    │         └── SystemLogPublisherService.java
+ │    │    ├── outbox
+ │    │    │    ├── entity
+ │    │    │    │    ├── OutboxEventEntity.java
+ │    │    │    │    └── OutboxStatus.java
+ │    │    │    ├── publisher
+ │    │    │    │    ├── OutboxPublisherService.java
+ │    │    │    │    └── OutboxService.java
+ │    │    │    ├── repository
+ │    │    │    │    └── OutboxEventRepository.java
+ │    │    │    └── scheduler
+ │    │    │         ├── OutboxScheduler.java
+ │    │    │         └── OutboxSchedulerConfig.java
  │    │    └── security
  │    │         ├── SecurityConfiguration.java
  │    │         └── SecurityFilter.java
@@ -245,7 +292,9 @@ src/main
  │    │    ├── V16__create_table_movement_types.sql
  │    │    ├── V17__create_table_movements.sql
  │    │    ├── V18__seed_movement_types.sql
- │    │    └── V19__create_table_order_item.sql
+ │    │    ├── V19__create_table_order_item.sql
+ │    │    ├── V20__create_table_events_kafka.sql
+ │    │    └── V21__create_table_outbox_events.sql
  │    ├── application-dev.properties
  │    ├── application-prod.properties
  │    ├── application-secret.properties                               # Oculto, possui dados sensíveis

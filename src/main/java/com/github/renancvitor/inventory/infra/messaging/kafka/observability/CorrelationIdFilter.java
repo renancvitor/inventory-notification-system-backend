@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.filter;
+package com.github.renancvitor.inventory.infra.messaging.kafka.observability;
 
 import java.io.IOException;
 import java.util.Optional;

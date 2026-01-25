@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.outbox;
+package com.github.renancvitor.inventory.infra.outbox.scheduler;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;

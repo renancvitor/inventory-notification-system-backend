@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.contract;
+package com.github.renancvitor.inventory.infra.messaging.kafka.topic;
 
 public final class KafkaTopics {
 

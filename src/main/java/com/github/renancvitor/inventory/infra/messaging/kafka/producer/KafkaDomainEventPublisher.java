@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.domain;
+package com.github.renancvitor.inventory.infra.messaging.kafka.producer;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -12,7 +12,7 @@ import com.github.renancvitor.inventory.domain.events.BusinessEvent;
 import com.github.renancvitor.inventory.domain.events.DomainEventEnvelope;
 import com.github.renancvitor.inventory.domain.events.DomainEventPublisher;
 import com.github.renancvitor.inventory.domain.events.EventTypes;
-import com.github.renancvitor.inventory.infra.messaging.kafka.mapping.KafkaEventRouting;
+import com.github.renancvitor.inventory.infra.messaging.kafka.routing.KafkaEventRouting;
 
 import lombok.RequiredArgsConstructor;
 

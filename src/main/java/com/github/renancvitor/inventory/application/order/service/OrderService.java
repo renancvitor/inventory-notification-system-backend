@@ -37,7 +37,7 @@ import com.github.renancvitor.inventory.domain.events.EventTypes;
 import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
 import com.github.renancvitor.inventory.exception.factory.NotFoundExceptionFactory;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
-import com.github.renancvitor.inventory.infra.outbox.OutboxService;
+import com.github.renancvitor.inventory.infra.outbox.publisher.OutboxService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

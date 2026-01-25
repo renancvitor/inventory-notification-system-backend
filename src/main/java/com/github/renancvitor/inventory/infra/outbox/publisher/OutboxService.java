@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.outbox;
+package com.github.renancvitor.inventory.infra.outbox.publisher;
 
 import java.time.Instant;
 import java.util.UUID;
@@ -7,6 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.renancvitor.inventory.infra.outbox.entity.OutboxEventEntity;
+import com.github.renancvitor.inventory.infra.outbox.entity.OutboxStatus;
+import com.github.renancvitor.inventory.infra.outbox.repository.OutboxEventRepository;
 
 import lombok.RequiredArgsConstructor;
 

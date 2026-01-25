@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.infra.outbox;
+package com.github.renancvitor.inventory.infra.outbox.entity;
 
 import java.time.Instant;
 import java.util.UUID;

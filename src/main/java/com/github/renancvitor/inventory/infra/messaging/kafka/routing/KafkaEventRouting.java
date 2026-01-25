@@ -1,10 +1,10 @@
-package com.github.renancvitor.inventory.infra.messaging.kafka.mapping;
+package com.github.renancvitor.inventory.infra.messaging.kafka.routing;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 import com.github.renancvitor.inventory.domain.events.EventTypes;
-import com.github.renancvitor.inventory.infra.messaging.kafka.contract.KafkaTopics;
+import com.github.renancvitor.inventory.infra.messaging.kafka.topic.KafkaTopics;
 
 @Component
 @ConditionalOnProperty(name = "messaging.provider", havingValue = "kafka")
