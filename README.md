@@ -32,6 +32,7 @@ O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disp
   - [🌐 API - Swagger](#-api---swagger)
   - [🗂️ Diagrama ER](#-diagrama-er-do-banco-de-dados-postgresql)
 - [Demonstração das Notificações por E-mail](#demonstração-das-notificações-por-e-mail)
+- [Mensageria com Apache Kafka](#mensageria-kafka)
 - [Testes Automatizados](#testes-automatizados)
 - [Testando a API via Insomnia](#testando-a-api-via-insomnia)
 - [Estrutura do Projeto](#estrutura-do-projeto)
@@ -194,6 +195,38 @@ como:
 
 🔗 Veja os exemplos reais dos e-mails enviados:  
 [➡️ Exemplos de Notificações por E-mail](./docs/email-notification.md)
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
+---
+
+<h2 id="mensageria-kafka" align="center"> Mensageria com Apache Kafka</h2>
+
+O projeto utiliza **[Apache Kafka](https://kafka.apache.org/)** para comunicação assíncrona entre contextos de negócio,
+com foco em **desacoplamento, resiliência e escalabilidade**.
+
+A mensageria é utilizada principalmente para eventos de negócio como:
+
+- criação de pedidos
+- notificações de estoque abaixo do mínimo
+- processamento assíncrono
+
+A arquitetura foi projetada com foco em padrões utilizados no mercado, incluindo:
+
+- eventos de domínio desacoplados da infraestrutura
+- event envelope padronizado
+- versionamento de eventos
+- retry automático e Dead Letter Topic (DLT)
+- idempotência no consumo
+- correlationId para rastreabilidade
+- Outbox Pattern para consistência transacional
+
+📘 **Documentação técnica completa**
+
+A documentação técnica completa da arquitetura de mensageria, incluindo fluxos, decisões arquiteturais
+e diagramas C4, está disponível em:
+
+➡️ [Kafka Architecture — Documentação Técnica](./docs//kafka/kafka-architecture.md)
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
