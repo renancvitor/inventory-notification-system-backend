@@ -34,7 +34,6 @@ import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
-import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.exceptions.OrderStatusException;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
@@ -68,7 +67,6 @@ public class OrderServiceUpdateTests {
         @InjectMocks
         private OrderService orderService;
 
-        private OrderItem orderItem;
         private Order order;
         private User loggedInUser;
         private Product product;
@@ -77,7 +75,6 @@ public class OrderServiceUpdateTests {
 
         @BeforeEach
         void setup() {
-                orderItem = TestEntityFactory.createOrderItem();
                 order = TestEntityFactory.createOrder();
                 loggedInUser = TestEntityFactory.createUser();
                 product = TestEntityFactory.createProduct();

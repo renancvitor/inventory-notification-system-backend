@@ -38,7 +38,6 @@ import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 import com.github.renancvitor.inventory.domain.entity.order.exceptions.OrderStatusException;
-import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
@@ -47,238 +46,236 @@ import com.github.renancvitor.inventory.utils.TestEntityFactory;
 @ActiveProfiles("test")
 public class OrderServiceApproveTests {
 
-    @Mock
-    private OrderRepository orderRepository;
+        @Mock
+        private OrderRepository orderRepository;
 
-    @Mock
-    private ProductRepository productRepository;
+        @Mock
+        private ProductRepository productRepository;
 
-    @Mock
-    private MovementTypeRepository movementTypeRepository;
+        @Mock
+        private MovementTypeRepository movementTypeRepository;
 
-    @Mock
-    private OrderItemRepository orderItemRepository;
+        @Mock
+        private OrderItemRepository orderItemRepository;
 
-    @Mock
-    private OrderStatusRepository orderStatusRepository;
+        @Mock
+        private OrderStatusRepository orderStatusRepository;
 
-    @Mock
-    private SystemLogPublisherService logPublisherService;
+        @Mock
+        private SystemLogPublisherService logPublisherService;
 
-    @Mock
-    private AuthenticationService authenticationService;
+        @Mock
+        private AuthenticationService authenticationService;
 
-    @Mock
-    private MovementService movementService;
+        @Mock
+        private MovementService movementService;
 
-    @InjectMocks
-    private OrderService orderService;
+        @InjectMocks
+        private OrderService orderService;
 
-    private OrderItem orderItem;
-    private Order order;
-    private User loggedInUser;
-    private Product product;
-    private OrderStatusEntity orderStatusEntity;
-    private OrderStatusEntity orderStatusEntityApproved;
-    private MovementTypeEntity movementTypeEntity;
+        private OrderItem orderItem;
+        private Order order;
+        private User loggedInUser;
+        private OrderStatusEntity orderStatusEntity;
+        private OrderStatusEntity orderStatusEntityApproved;
+        private MovementTypeEntity movementTypeEntity;
 
-    @BeforeEach
-    void setup() {
-        orderItem = TestEntityFactory.createOrderItem();
-        order = TestEntityFactory.createOrder();
-        loggedInUser = TestEntityFactory.createUser();
-        product = TestEntityFactory.createProduct();
-        orderStatusEntity = TestEntityFactory.createStatusPending();
-        movementTypeEntity = TestEntityFactory.createMovementTypeInput();
-        orderStatusEntityApproved = TestEntityFactory.createStatusApproved();
-    }
-
-    @Nested
-    class PositiveCases {
-        @Test
-        void shouldApproveOrderSuccessfully() {
-            order.setOrderStatus(orderStatusEntity);
-            order.setRequestedBy(loggedInUser);
-
-            orderItem.setOrder(order);
-            order.setItems(List.of(orderItem));
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            when(orderRepository.save(any(Order.class)))
-                    .thenAnswer(inv -> inv.getArgument(0));
-
-            OrderDetailData result = orderService.approve(order.getId(), loggedInUser);
-
-            assertNotNull(result);
-            assertEquals(OrderStatusEnum.APPROVED.getDisplayName(), result.status());
-
-            verify(orderRepository).findById(order.getId());
-            verify(orderStatusRepository).findById(OrderStatusEnum.APPROVED.getId());
-            verify(orderRepository).save(any(Order.class));
-
-            verify(movementService).input(any(), eq(loggedInUser), eq(order));
-
-            verify(logPublisherService).publish(
-                    eq("ORDER_APPROVED"),
-                    contains(loggedInUser.getUsername()),
-                    any(OrderLogData.class),
-                    any(OrderLogData.class));
-        }
-    }
-
-    @Nested
-    class NegativeCases {
-        @Test
-        void shouldThrowWhenOrderNotFound() {
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.empty());
-
-            assertThrows(RuntimeException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
-
-            verify(orderRepository).findById(order.getId());
+        @BeforeEach
+        void setup() {
+                orderItem = TestEntityFactory.createOrderItem();
+                order = TestEntityFactory.createOrder();
+                loggedInUser = TestEntityFactory.createUser();
+                orderStatusEntity = TestEntityFactory.createStatusPending();
+                movementTypeEntity = TestEntityFactory.createMovementTypeInput();
+                orderStatusEntityApproved = TestEntityFactory.createStatusApproved();
         }
 
-        @Test
-        void shouldThrowWhenStatusIsNotPending() {
-            order.setOrderStatus(orderStatusEntityApproved);
+        @Nested
+        class PositiveCases {
+                @Test
+                void shouldApproveOrderSuccessfully() {
+                        order.setOrderStatus(orderStatusEntity);
+                        order.setRequestedBy(loggedInUser);
 
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
+                        orderItem.setOrder(order);
+                        order.setItems(List.of(orderItem));
 
-            assertThrows(OrderStatusException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
 
-            verify(orderRepository).findById(order.getId());
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenAnswer(inv -> inv.getArgument(0));
+
+                        OrderDetailData result = orderService.approve(order.getId(), loggedInUser);
+
+                        assertNotNull(result);
+                        assertEquals(OrderStatusEnum.APPROVED.getDisplayName(), result.status());
+
+                        verify(orderRepository).findById(order.getId());
+                        verify(orderStatusRepository).findById(OrderStatusEnum.APPROVED.getId());
+                        verify(orderRepository).save(any(Order.class));
+
+                        verify(movementService).input(any(), eq(loggedInUser), eq(order));
+
+                        verify(logPublisherService).publish(
+                                        eq("ORDER_APPROVED"),
+                                        contains(loggedInUser.getUsername()),
+                                        any(OrderLogData.class),
+                                        any(OrderLogData.class));
+                }
         }
 
-        @Test
-        void shouldThrowWhenApprovedStatusNotFound() {
-            order.setOrderStatus(orderStatusEntity);
+        @Nested
+        class NegativeCases {
+                @Test
+                void shouldThrowWhenOrderNotFound() {
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.empty());
 
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
+                        assertThrows(RuntimeException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
 
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.empty());
+                        verify(orderRepository).findById(order.getId());
+                }
 
-            assertThrows(OrderStatusException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
+                @Test
+                void shouldThrowWhenStatusIsNotPending() {
+                        order.setOrderStatus(orderStatusEntityApproved);
 
-            verify(orderStatusRepository).findById(OrderStatusEnum.APPROVED.getId());
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        assertThrows(OrderStatusException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+
+                        verify(orderRepository).findById(order.getId());
+                }
+
+                @Test
+                void shouldThrowWhenApprovedStatusNotFound() {
+                        order.setOrderStatus(orderStatusEntity);
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.empty());
+
+                        assertThrows(OrderStatusException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+
+                        verify(orderStatusRepository).findById(OrderStatusEnum.APPROVED.getId());
+                }
+
+                @Test
+                void shouldThrowWhenLoggedUserIsNull() {
+                        order.setOrderStatus(orderStatusEntity);
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        assertThrows(NullPointerException.class,
+                                        () -> orderService.approve(order.getId(), null));
+                }
+
+                @Test
+                void shouldThrowWhenMovementServiceInputFails() {
+                        order.setOrderStatus(orderStatusEntity);
+
+                        orderItem.setMovementType(movementTypeEntity);
+                        orderItem.setOrder(order);
+                        order.setItems(List.of(orderItem));
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenAnswer(inv -> inv.getArgument(0));
+
+                        doThrow(new RuntimeException("input error"))
+                                        .when(movementService)
+                                        .input(any(), eq(loggedInUser), eq(order));
+
+                        assertThrows(RuntimeException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+                }
+
+                @Test
+                void shouldThrowWhenMovementServiceOutputFails() {
+                        order.setOrderStatus(orderStatusEntity);
+
+                        MovementTypeEntity movementTypeEntityOutput = TestEntityFactory.createMovementTypeOutput();
+                        orderItem.setMovementType(movementTypeEntityOutput);
+                        orderItem.setOrder(order);
+                        order.setItems(List.of(orderItem));
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenAnswer(inv -> inv.getArgument(0));
+
+                        doThrow(new RuntimeException("output error"))
+                                        .when(movementService)
+                                        .output(any(), eq(loggedInUser), eq(order));
+
+                        assertThrows(RuntimeException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+                }
+
+                @Test
+                void shouldThrowWhenRepositorySaveFails() {
+                        order.setOrderStatus(orderStatusEntity);
+                        order.setItems(List.of(orderItem));
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenThrow(new RuntimeException("DB error"));
+
+                        assertThrows(RuntimeException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+                }
+
+                @Test
+                void shouldThrowWhenPublishFails() {
+                        order.setOrderStatus(orderStatusEntity);
+                        order.setItems(List.of(orderItem));
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+
+                        when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
+                                        .thenReturn(Optional.of(orderStatusEntityApproved));
+
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenAnswer(inv -> inv.getArgument(0));
+
+                        doThrow(new RuntimeException("log error"))
+                                        .when(logPublisherService)
+                                        .publish(any(), any(), any(), any());
+
+                        assertThrows(RuntimeException.class,
+                                        () -> orderService.approve(order.getId(), loggedInUser));
+
+                        verify(logPublisherService).publish(any(), any(), any(), any());
+                }
         }
-
-        @Test
-        void shouldThrowWhenLoggedUserIsNull() {
-            order.setOrderStatus(orderStatusEntity);
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            assertThrows(NullPointerException.class,
-                    () -> orderService.approve(order.getId(), null));
-        }
-
-        @Test
-        void shouldThrowWhenMovementServiceInputFails() {
-            order.setOrderStatus(orderStatusEntity);
-
-            orderItem.setMovementType(movementTypeEntity);
-            orderItem.setOrder(order);
-            order.setItems(List.of(orderItem));
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            when(orderRepository.save(any(Order.class)))
-                    .thenAnswer(inv -> inv.getArgument(0));
-
-            doThrow(new RuntimeException("input error"))
-                    .when(movementService)
-                    .input(any(), eq(loggedInUser), eq(order));
-
-            assertThrows(RuntimeException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
-        }
-
-        @Test
-        void shouldThrowWhenMovementServiceOutputFails() {
-            order.setOrderStatus(orderStatusEntity);
-
-            MovementTypeEntity movementTypeEntityOutput = TestEntityFactory.createMovementTypeOutput();
-            orderItem.setMovementType(movementTypeEntityOutput);
-            orderItem.setOrder(order);
-            order.setItems(List.of(orderItem));
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            when(orderRepository.save(any(Order.class)))
-                    .thenAnswer(inv -> inv.getArgument(0));
-
-            doThrow(new RuntimeException("output error"))
-                    .when(movementService)
-                    .output(any(), eq(loggedInUser), eq(order));
-
-            assertThrows(RuntimeException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
-        }
-
-        @Test
-        void shouldThrowWhenRepositorySaveFails() {
-            order.setOrderStatus(orderStatusEntity);
-            order.setItems(List.of(orderItem));
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            when(orderRepository.save(any(Order.class)))
-                    .thenThrow(new RuntimeException("DB error"));
-
-            assertThrows(RuntimeException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
-        }
-
-        @Test
-        void shouldThrowWhenPublishFails() {
-            order.setOrderStatus(orderStatusEntity);
-            order.setItems(List.of(orderItem));
-
-            when(orderRepository.findById(order.getId()))
-                    .thenReturn(Optional.of(order));
-
-            when(orderStatusRepository.findById(OrderStatusEnum.APPROVED.getId()))
-                    .thenReturn(Optional.of(orderStatusEntityApproved));
-
-            when(orderRepository.save(any(Order.class)))
-                    .thenAnswer(inv -> inv.getArgument(0));
-
-            doThrow(new RuntimeException("log error"))
-                    .when(logPublisherService)
-                    .publish(any(), any(), any(), any());
-
-            assertThrows(RuntimeException.class,
-                    () -> orderService.approve(order.getId(), loggedInUser));
-
-            verify(logPublisherService).publish(any(), any(), any(), any());
-        }
-    }
 
 }

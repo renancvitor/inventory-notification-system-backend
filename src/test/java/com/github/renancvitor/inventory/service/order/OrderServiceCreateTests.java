@@ -37,12 +37,12 @@ import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
-import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
+import com.github.renancvitor.inventory.infra.outbox.publisher.OutboxService;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
 @ExtendWith(MockitoExtension.class)
@@ -67,11 +67,12 @@ public class OrderServiceCreateTests {
         @Mock
         private SystemLogPublisherService logPublisherService;
 
+        @Mock
+        private OutboxService outboxService;
+
         @InjectMocks
         private OrderService orderService;
 
-        private OrderItem orderItem;
-        private Order order;
         private User loggedInUser;
         private Product product;
         private OrderStatusEntity orderStatusEntity;
@@ -79,8 +80,6 @@ public class OrderServiceCreateTests {
 
         @BeforeEach
         void setup() {
-                orderItem = TestEntityFactory.createOrderItem();
-                order = TestEntityFactory.createOrder();
                 loggedInUser = TestEntityFactory.createUser();
                 product = TestEntityFactory.createProduct();
                 orderStatusEntity = TestEntityFactory.createStatusPending();

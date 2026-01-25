@@ -31,7 +31,6 @@ import com.github.renancvitor.inventory.application.person.repository.PersonRepo
 import com.github.renancvitor.inventory.application.person.service.PersonService;
 import com.github.renancvitor.inventory.application.user.dto.UserCreationData;
 import com.github.renancvitor.inventory.application.user.repository.UserTypeRepository;
-import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
@@ -63,13 +62,11 @@ public class PersonControllerCreateTests {
         @InjectMocks
         private PersonController personController;
 
-        private Person person;
         private User loggedInUser;
         private UserTypeEntity userTypeEntity;
 
         @BeforeEach
         void setup() {
-                person = TestEntityFactory.createPerson();
                 loggedInUser = TestEntityFactory.createUser();
                 userTypeEntity = TestEntityFactory.createUserTypeAdmin();
 

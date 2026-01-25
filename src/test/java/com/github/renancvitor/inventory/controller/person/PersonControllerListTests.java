@@ -36,7 +36,6 @@ import com.github.renancvitor.inventory.application.person.service.PersonService
 import com.github.renancvitor.inventory.application.user.repository.UserTypeRepository;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
-import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
 import com.github.renancvitor.inventory.utils.CustomPage;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
@@ -61,13 +60,11 @@ public class PersonControllerListTests {
 
         private Person person;
         private User loggedInUser;
-        private UserTypeEntity userTypeEntity;
 
         @BeforeEach
         void setup() {
                 person = TestEntityFactory.createPerson();
                 loggedInUser = TestEntityFactory.createUser();
-                userTypeEntity = TestEntityFactory.createUserTypeAdmin();
         }
 
         @Nested
@@ -103,7 +100,6 @@ public class PersonControllerListTests {
 
                 @Test
                 void shouldListWithActiveTrue() {
-                        userTypeEntity = TestEntityFactory.createUserTypeAdmin();
                         PersonListingData data = new PersonListingData(person);
 
                         Page<PersonListingData> page = new PageImpl<>(List.of(data), PageRequest.of(
@@ -133,7 +129,6 @@ public class PersonControllerListTests {
 
                 @Test
                 void shouldListWithActiveFalse() {
-                        userTypeEntity = TestEntityFactory.createUserTypeAdmin();
                         PersonListingData data = new PersonListingData(person);
 
                         Page<PersonListingData> page = new PageImpl<>(List.of(data), PageRequest.of(

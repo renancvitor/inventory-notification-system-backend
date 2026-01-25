@@ -24,11 +24,7 @@ import com.github.renancvitor.inventory.application.order.repository.OrderItemRe
 import com.github.renancvitor.inventory.application.order.repository.OrderRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderStatusRepository;
 import com.github.renancvitor.inventory.application.order.service.OrderService;
-import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
-import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
-import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
-import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
@@ -55,23 +51,13 @@ public class OrderControllerRejectTests {
     @InjectMocks
     private OrderController orderController;
 
-    private OrderItem orderItem;
     private Order order;
     private User loggedInUser;
-    private Product product;
-    private OrderStatusEntity orderStatusEntity;
-    private MovementTypeEntity movementTypeEntityOutput;
-    private MovementTypeEntity movementTypeEntityInput;
 
     @BeforeEach
     void setup() {
-        orderItem = TestEntityFactory.createOrderItem();
         order = TestEntityFactory.createOrder();
         loggedInUser = TestEntityFactory.createUser();
-        product = TestEntityFactory.createProduct();
-        orderStatusEntity = TestEntityFactory.createStatusPending();
-        movementTypeEntityOutput = TestEntityFactory.createMovementTypeOutput();
-        movementTypeEntityInput = TestEntityFactory.createMovementTypeInput();
     }
 
     @Nested
