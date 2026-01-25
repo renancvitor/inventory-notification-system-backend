@@ -1,4 +1,4 @@
-package com.github.renancvitor.inventory.utils;
+package com.github.renancvitor.inventory.shared;
 
 import org.springframework.data.domain.Page;
 

@@ -39,7 +39,7 @@ import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
-import com.github.renancvitor.inventory.utils.CustomPage;
+import com.github.renancvitor.inventory.shared.CustomPage;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
 
 @ExtendWith(MockitoExtension.class)
