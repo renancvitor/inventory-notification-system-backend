@@ -9,6 +9,7 @@ EmailTestRunner.java
 MockUtils.java
 extensoes.txt
 estrutura.sql
+schema.sql
 .env
 
 ### STS ###

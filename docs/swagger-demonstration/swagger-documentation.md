@@ -104,4 +104,4 @@ Controle de acesso aplicado em endpoints de atualização de status.
 Navegação geral pelo Swagger UI, destacando endpoints e descrições.
 ![](./gifs/complete-and-interactive-documentation.gif)
 
- <p align="right"><a href="../README.md">🔄 Voltar para a documentação completa</a></p>
+ <p align="right"><a href="../../README.md">🔄 Voltar para a documentação completa</a></p>

@@ -30,7 +30,7 @@ O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disp
 - [Funcionalidades](#funcionalidades)
 - [Documentação Visual](#documentação-visual)
   - [🌐 API - Swagger](#-api---swagger)
-  - [🗂️ Diagrama ER](#-diagrama-er-do-banco-de-dados-postgresql)
+  - [🗂️ Diagrama ER do banco de dados PostgreSQL](#-diagrama-er-do-banco-de-dados-postgresql)
 - [Demonstração das Notificações por E-mail](#demonstração-das-notificações-por-e-mail)
 - [Mensageria com Apache Kafka](#mensageria-kafka)
 - [Testes Automatizados](#testes-automatizados)
@@ -77,7 +77,7 @@ O uso de boas práticas e a organização do projeto garantem um código escalá
   - 🛠️ Controle de versionamento de banco com [Flyway](https://flywaydb.org/)
   - 🐘 [PostgreSQL](https://www.postgresql.org/): Banco de dados
   
-- 🧰 **Ferramentas e Build**
+- 🧰 **Build e Ambiente**
   - 📦 [Maven](https://maven.apache.org/): Gerenciamento de dependências e build
   - 🐧 [WSL](https://ubuntu.com/desktop/wsl) e 🐳 [Docker CLI](https://www.docker.com/products/cli/)
 
@@ -88,7 +88,8 @@ O uso de boas práticas e a organização do projeto garantem um código escalá
 <h2 id="ferramentas-utilizadas" align="center">Ferramentas Utilizadas</h2>
 
 - 💻 [Visual Studio Code](https://code.visualstudio.com/): Ambiente de desenvolvimento integrado (IDE) leve e extensível.
-- 🐘 [PostgreSQL](https://www.postgresql.org/): Banco de dados utilizado via contêiner Docker.
+- 🐳 [Docker](https://www.docker.com/): Utilizado via Docker CLI para execução e gerenciamento dos contêineres do projeto.
+- 🐘 [PostgreSQL](https://www.postgresql.org/): Banco de dados relacional executado em contêiner Docker, acessado via CLI (psql).
 - 📡 [Insomnia](https://insomnia.rest/): Ferramenta de teste de APIs REST que permite enviar requisições HTTP, validar respostas e testar endpoints com facilidade. 
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
@@ -174,12 +175,15 @@ O **Sistema de Notificação de Estoque** é um backend desenvolvido com [Spring
 
  <h3 id="-api---swagger">🌐 <strong>API - Swagger</strong></h3>
 
-Para ver a interface [Swagger](https://swagger.io/specification/) em ação, acesse as [demonstrações visuais](./docs/swagger-documentation.md) com GIFs interativos mostrando os principais endpoints da API.
+Para ver a interface [Swagger](https://swagger.io/specification/) em ação, acesse as demonstrações visuais com GIFs interativos mostrando os principais endpoints da API.
+
+👉 Veja a documentação visual do Swagger aqui:  
+[📘 Swagger — Demonstrações Visuais da API](./docs/swagger-demonstration/swagger-documentation.md)
 
 <h3 id="-diagrama-er-do-banco-de-dados-postgresql">🗂️ <strong>Diagrama ER do banco de dados PostgreSQL</strong></h3>
 
 👉 Veja o diagrama completo aqui:  
-[📊 Diagrama ER — Banco de Dados](./docs/database-diagram.md)
+[📊 Diagrama ER — Banco de Dados](./docs/database/database-description.md)
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
@@ -194,7 +198,7 @@ como:
 - Relatório diário consolidado de pedidos gerados
 
 🔗 Veja os exemplos reais dos e-mails enviados:  
-[➡️ Exemplos de Notificações por E-mail](./docs/email-notification.md)
+[➡️ Exemplos de Notificações por E-mail](./docs/email-notification/email-notification.md)
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
@@ -226,7 +230,7 @@ A arquitetura foi projetada com foco em padrões utilizados no mercado, incluind
 A documentação técnica completa da arquitetura de mensageria, incluindo fluxos, decisões arquiteturais
 e diagramas C4, está disponível em:
 
-➡️ [Kafka Architecture — Documentação Técnica](./docs//kafka/kafka-architecture.md)
+➡️ [Kafka Architecture — Documentação Técnica](./docs/kafka/kafka-architecture.md)
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 

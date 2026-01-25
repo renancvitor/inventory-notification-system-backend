@@ -5,28 +5,15 @@
  └── ci.yml
 
  docs
+ ├── database
+ │    ├── diagram
+ │    │    └── inventory-notification-der.png
+ │    └── database-description.md
  ├── email-notification
- │    ├── email-daily-report.png
- │    └── email-low-stock.png
- ├── gifs
- │    ├── complete-and-interactive-documentation.gif
- │    ├── complete-documentation.gif
- │    ├── login-api-jwt.gif
- │    ├── order-approve.gif
- │    ├── order-creation.gif
- │    ├── order-list.gif
- │    ├── order-reject.gif
- │    ├── order-update.gif
- │    ├── people-and-users-list.gif
- │    ├── person-softdelete-activate.gif
- │    ├── person-user-create.gif
- │    ├── product-list.gif
- │    ├── product-registration.gif
- │    ├── product-softdelete-activate.gif
- │    ├── product-update.gif
- │    ├── user-softdelete-activate.gif
- │    ├── user-type-update.gif
- │    └── user-update-password.gif
+ │    ├── picture
+ │    │    ├── email-daily-report.png
+ │    │    └── email-low-stock.png
+ │    └── email-notification.md
  ├── insomnia
  │    └── insomnia-api-export
  ├── kafka
@@ -34,13 +21,32 @@
  │    │    ├── C4-component-diagram.png
  │    │    └── C4-container-diagram.png
  │    └── kafka-architecture.md
- ├── email-notification.md
- ├── inventory-notification-der.png
- ├── project-structure.md
- └── swagger-documentation.md
-
-src/main
- ├── java/com/github/renanc/vitor/inventory
+ ├── swagger-demonstration
+ │    ├── gifs
+ │    │    ├── diagram
+ │    │    ├── complete-and-interactive-documentation.gif
+ │    │    ├── complete-documentation.gif
+ │    │    ├── login-api-jwt.gif
+ │    │    ├── order-approve.gif
+ │    │    ├── order-creation.gif
+ │    │    ├── order-list.gif
+ │    │    ├── order-reject.gif
+ │    │    ├── order-update.gif
+ │    │    ├── people-and-users-list.gif
+ │    │    ├── person-softdelete-activate.gif
+ │    │    ├── person-user-create.gif
+ │    │    ├── product-list.gif
+ │    │    ├── product-registration.gif
+ │    │    ├── product-softdelete-activate.gif
+ │    │    ├── product-update.gif
+ │    │    ├── user-softdelete-activate.gif
+ │    │    ├── user-type-update.gif
+ │    │    └── user-update-password.gif
+ │    └── swagger-documentation.md
+ └── project-structure.md
+ 
+src
+ ├── main/java/com/github/renanc/vitor/inventory
  │    ├── application
  │    │    ├── authentication
  │    │    │    ├── controller
@@ -267,7 +273,7 @@ src/main
  │    │    └── security
  │    │         ├── SecurityConfiguration.java
  │    │         └── SecurityFilter.java
- │    ├── utils
+ │    ├── shared
  │    │    ├── CustomPage.java
  │    │    ├── PageMapper.java
  │    │    └── StackTraceUtils.java

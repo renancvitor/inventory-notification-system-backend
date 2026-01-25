@@ -9,13 +9,13 @@ dos fluxos de alerta e relatórios automáticos.
 ## 🔻 Alerta: Estoque abaixo do mínimo
 E-mail enviado automaticamente quando um produto atinge um nível crítico de estoque.
 
-![](./email-notification/email-low-stock.png)
+![](picture/email-low-stock.png)
 
 ---
 
 ## 📊 Relatório Diário de Pedidos
 Resumo consolidado de todos os pedidos gerados no dia, enviado automaticamente ao final do dia.
 
-![](./email-notification/email-daily-report.png)
+![](picture/email-daily-report.png)
 
- <p align="right"><a href="../README.md">🔄 Voltar para a documentação completa</a></p>
+ <p align="right"><a href="../../README.md">🔄 Voltar para a documentação completa</a></p>
