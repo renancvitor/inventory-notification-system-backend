@@ -237,7 +237,7 @@ src/main
  │    │    │    │    │    └── StockBelowMinimumKafkaConsumer.java
  │    │    │    │    ├── idempotency
  │    │    │    │    │    ├── EventDuplication.java
- │    │    │    │    │    ├── JpaEventDeduplication.java
+ │    │    │    │    │    ├── JpaEventDuplication.java
  │    │    │    │    │    ├── ProcessedEvent.java
  │    │    │    │    │    └── ProcessedEventRepository.java
  │    │    │    │    ├── observability

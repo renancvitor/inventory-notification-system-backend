@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @Component
 @RequiredArgsConstructor
-public class JpaEventDeduplication implements EventDuplication {
+public class JpaEventDuplication implements EventDuplication {
 
     private final ProcessedEventRepository processedEventRepository;
 
