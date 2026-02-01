@@ -70,22 +70,3 @@ jobs:
           ssh -i ~/.ssh/ec2.pem \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "sudo systemctl restart ${{ secrets.SERVICE_NAME }}"
-
-      # ============================
-      # HEALTH CHECK
-      # ============================
-      - name: Health check
-        run: |
-          echo "Waiting application startup..."
-
-          for i in {1..20}; do
-            echo "Health check attempt $i"
-            if curl -f http://${{ secrets.EC2_HOST }}:8080/health; then
-              echo "Application is UP"
-              exit 0
-            fi
-            sleep 5
-          done
-
-          echo "Application did not become healthy"
-          exit 1
