@@ -19,7 +19,7 @@ public class StockMonitorService {
 
     private final EmailService emailService;
 
-    @Value("${app.mail.recipient}")
+    @Value("${APP_MAIL_RECIPIENT}")
     private String recipients;
 
     public void handleLowStock(Product product, User loggedInUser) {

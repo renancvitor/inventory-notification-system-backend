@@ -335,7 +335,7 @@ cd inventory-notification-system-backend
 ```
 3. Inicie os serviços necessários no Docker (PostgreSQL)
 ```bash
-docker-compose up -d
+docker compose -f docker-compose.dev.yml up -d
 ```
 Isso vai criar o container do banco de dados PostgreSQL. Certifique-se de que as portas configuradas no docker-compose.yml não estejam sendo usadas por outros serviços.
 
@@ -345,15 +345,15 @@ docker ps
 ```
 ⚠️ **Se algum container não estiver ativo, volte ao passo 3.**
 
-5. Configure o banco de dados no arquivo `src/main/resources/application-dev.properties` com suas credenciais locais. Ao iniciar o projeto, as migrations serão aplicadas automaticamente pelo [Flyway](https://flywaydb.org/).
+5. Configure o banco de dados no arquivo `src/main/resources/application-dev.yml` com suas credenciais locais. Ao iniciar o projeto, as migrations serão aplicadas automaticamente pelo [Flyway](https://flywaydb.org/).
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/nome_do_banco
 spring.datasource.username=seu_usuario
 spring.datasource.password=sua_senha
 ```
-6. Execute o backend com o Maven Wrapper:
+6. Execute o backend com o Maven Wrapper no perfil de desenvolvimento:
 ```bash
-./mvnw spring-boot:run
+SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
 7. Acesse a API pelo navegador ou ferramentas como [Insomnia](https://insomnia.rest/) na porta configurada (por padrão http://localhost:8080).<br>
 ⚠️ **Lembre-se de manter o Docker rodando enquanto estiver utilizando a aplicação.**

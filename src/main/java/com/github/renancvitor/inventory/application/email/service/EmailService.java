@@ -27,7 +27,7 @@ public class EmailService {
         private final SesClient sesClient;
         private final SystemLogPublisherService logPublisherService;
 
-        @Value("${app.mail.sender}")
+        @Value("${APP_MAIL_SENDER}")
         private String secretEmailSender;
 
         public EmailResponse sendEmail(EmailRequest emailRequest, User loggedInUser) {

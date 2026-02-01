@@ -11,6 +11,8 @@ extensoes.txt
 estrutura.sql
 schema.sql
 .env
+application.txt
+docker-compose.txt
 
 ### STS ###
 .apt_generated
