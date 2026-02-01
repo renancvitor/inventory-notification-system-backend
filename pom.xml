@@ -46,10 +46,12 @@
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
+			<version>11.7.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
+			<version>11.7.2</version>
 		</dependency>
 
 		<dependency>
@@ -139,7 +141,7 @@
 			<plugin>
 				<groupId>org.flywaydb</groupId>
 				<artifactId>flyway-maven-plugin</artifactId>
-				<version>10.17.0</version>
+				<version>11.7.2</version>
 			</plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
