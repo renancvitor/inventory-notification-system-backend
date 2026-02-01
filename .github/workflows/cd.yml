@@ -5,10 +5,11 @@ on:
     workflows: ["CI - Build & Test"]
     types:
       - completed
+  workflow_dispatch:  # Permite execução manual via GitHub UI ou gh CLI
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -38,14 +39,18 @@ jobs:
       - name: Build JAR
         run: mvn clean package -DskipTests
 
+      - name: Verify JAR was created
+        run: |
+          if [ ! -f target/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar ]; then
+            echo "❌ JAR file not found!"
+            exit 1
+          fi
+          echo "✅ JAR file created successfully"
+          ls -lh target/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar
+
       # ============================
       # SSH CONFIG
       # ============================
-      - name: Network test
-        run: |
-          echo "Testing connection to ${{ secrets.EC2_HOST }}"
-          nc -zv ${{ secrets.EC2_HOST }} 22
-
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
@@ -53,14 +58,56 @@ jobs:
           chmod 600 ~/.ssh/ec2.pem
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
 
+      - name: Network test
+        run: |
+          echo "Testing connection to ${{ secrets.EC2_HOST }}"
+          nc -zv ${{ secrets.EC2_HOST }} 22
+
+      # ============================
+      # PRE-DEPLOY CHECKS
+      # ============================
+      - name: Check EC2 connectivity and service status
+        run: |
+          ssh -i ~/.ssh/ec2.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "echo '✅ Connected to EC2' && \
+           echo '📦 Current JAR:' && \
+           ls -lh ${{ secrets.EC2_APP_DIR }}/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar 2>/dev/null || echo 'No JAR found yet' && \
+           echo '🔍 Service status:' && \
+           sudo systemctl status ${{ secrets.SERVICE_NAME }} | head -5"
+
       # ============================
       # DEPLOY
       # ============================
-      - name: Deploy JAR
+      - name: Backup old JAR
+        run: |
+          ssh -i ~/.ssh/ec2.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "if [ -f ${{ secrets.EC2_APP_DIR }}/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar ]; then \
+             mv ${{ secrets.EC2_APP_DIR }}/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar \
+                ${{ secrets.EC2_APP_DIR }}/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar.backup; \
+             echo '✅ Backup created'; \
+           fi"
+
+      - name: Deploy JAR to EC2
         run: |
           scp -i ~/.ssh/ec2.pem \
-          target/*SNAPSHOT.jar \
-          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_APP_DIR }}/app.jar
+          target/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }}:${{ secrets.EC2_APP_DIR }}/
+          
+          if [ $? -eq 0 ]; then
+            echo "✅ JAR deployed successfully"
+          else
+            echo "❌ Failed to deploy JAR"
+            exit 1
+          fi
+
+      - name: Verify deployed JAR
+        run: |
+          ssh -i ~/.ssh/ec2.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "ls -lh ${{ secrets.EC2_APP_DIR }}/inventory-notification-system-backend-0.0.1-SNAPSHOT.jar && \
+           echo '✅ JAR verified on EC2'"
 
       # ============================
       # RESTART
@@ -69,4 +116,29 @@ jobs:
         run: |
           ssh -i ~/.ssh/ec2.pem \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
-          "sudo systemctl restart ${{ secrets.SERVICE_NAME }}"
+          "echo 'Stopping service...' && \
+           sudo systemctl stop ${{ secrets.SERVICE_NAME }} && \
+           sleep 3 && \
+           echo 'Starting service...' && \
+           sudo systemctl start ${{ secrets.SERVICE_NAME }} && \
+           sleep 5 && \
+           echo 'Service status:' && \
+           sudo systemctl status ${{ secrets.SERVICE_NAME }} --no-pager"
+
+      - name: Verify service is running
+        run: |
+          ssh -i ~/.ssh/ec2.pem \
+          ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
+          "if sudo systemctl is-active --quiet ${{ secrets.SERVICE_NAME }}; then \
+             echo '✅ Service is running'; \
+           else \
+             echo '❌ Service failed to start'; \
+             sudo systemctl status ${{ secrets.SERVICE_NAME }} --no-pager; \
+             exit 1; \
+           fi"
+
+      - name: Health check
+        run: |
+          sleep 10
+          echo "Checking health endpoint..."
+          curl -s http://${{ secrets.EC2_HOST }}:8080/health | head -c 200 || echo "⚠️ Health check not yet available"
