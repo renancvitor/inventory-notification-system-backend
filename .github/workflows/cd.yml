@@ -77,5 +77,15 @@ jobs:
       - name: Health check
         run: |
           echo "Waiting application startup..."
-          sleep 10
-          curl -f http://${{ secrets.EC2_HOST }}:8080/health
+
+          for i in {1..20}; do
+            echo "Health check attempt $i"
+            if curl -f http://${{ secrets.EC2_HOST }}:8080/health; then
+              echo "Application is UP"
+              exit 0
+            fi
+            sleep 5
+          done
+
+          echo "Application did not become healthy"
+          exit 1
