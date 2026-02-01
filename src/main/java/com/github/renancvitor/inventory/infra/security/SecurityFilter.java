@@ -27,41 +27,42 @@ public class SecurityFilter extends OncePerRequestFilter {
     private TokenService tokenService;
 
     @Override
-    protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response,
-            @NotNull FilterChain filterChain) throws ServletException, IOException {
-
+    protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        if ("/login".equals(path)
-                || path.startsWith("/swagger-ui")
-                || path.startsWith("/v3/api-docs")
+        return path.equals("/login")
                 || path.startsWith("/health")
-                || path.startsWith("/actuator")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
+                || path.startsWith("/actuator")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs");
+    }
 
-        var tokenJWT = recoveryToken(request);
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain filterChain) throws ServletException, IOException {
+
+        String tokenJWT = recoveryToken(request);
 
         if (tokenJWT != null) {
-            var subject = tokenService.getSubject(tokenJWT);
-            userRepository.findByPersonEmailAndActiveTrue(subject).ifPresent(user -> {
-                var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-            });
+            String subject = tokenService.getSubject(tokenJWT);
+            userRepository.findByPersonEmailAndActiveTrue(subject)
+                    .ifPresent(user -> {
+                        var auth = new UsernamePasswordAuthenticationToken(
+                                user, null, user.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(auth);
+                    });
         }
 
         filterChain.doFilter(request, response);
     }
 
-    public String recoveryToken(HttpServletRequest request) {
-        var authorizationHeader = request.getHeader("Authorization");
-        if (authorizationHeader != null) {
-            return authorizationHeader.replace("Bearer ", "");
+    private String recoveryToken(HttpServletRequest request) {
+        String authorizationHeader = request.getHeader("Authorization");
+        if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
+            return authorizationHeader.substring(7);
         }
-
         return null;
     }
-
 }
