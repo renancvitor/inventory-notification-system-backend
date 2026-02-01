@@ -43,15 +43,14 @@
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
-		<!-- Ambos comentados para ambiente de produção com banco gerenciado pela infraestrutura -->
-		<!-- <dependency>
+		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-core</artifactId>
-		</dependency> -->
-		<!-- <dependency>
+		</dependency>
+		<dependency>
 			<groupId>org.flywaydb</groupId>
 			<artifactId>flyway-database-postgresql</artifactId>
-		</dependency> -->
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
