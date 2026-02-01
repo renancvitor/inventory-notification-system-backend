@@ -29,7 +29,8 @@ public class SecurityFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
 
-        return path.equals("/login")
+        return request.getMethod().equals("OPTIONS")
+                || path.equals("/login")
                 || path.startsWith("/health")
                 || path.startsWith("/actuator")
                 || path.startsWith("/swagger-ui")
