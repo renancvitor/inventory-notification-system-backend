@@ -22,7 +22,7 @@ public class HealthController {
     @Value("${app.version}")
     private String version;
 
-    @Value("${app.environment.default}")
+    @Value("${app.environment:unknown}")
     private String environment;
 
     @GetMapping
