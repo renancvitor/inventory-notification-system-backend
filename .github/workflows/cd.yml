@@ -41,6 +41,11 @@ jobs:
       # ============================
       # SSH CONFIG
       # ============================
+      - name: Network test
+        run: |
+          echo "Testing connection to ${{ secrets.EC2_HOST }}"
+          nc -zv ${{ secrets.EC2_HOST }} 22
+
       - name: Setup SSH
         run: |
           mkdir -p ~/.ssh
