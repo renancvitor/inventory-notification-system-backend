@@ -23,3 +23,7 @@ logging:
 security:
   token:
     secret: ${JWT_SECRET}
+
+app:
+  name: Inventory Notification System Backend
+  version: 1.0.0

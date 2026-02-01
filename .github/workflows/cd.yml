@@ -70,3 +70,12 @@ jobs:
           ssh -i ~/.ssh/ec2.pem \
           ${{ secrets.EC2_USER }}@${{ secrets.EC2_HOST }} \
           "sudo systemctl restart ${{ secrets.SERVICE_NAME }}"
+
+      # ============================
+      # HEALTH CHECK
+      # ============================
+      - name: Health check
+        run: |
+          echo "Waiting application startup..."
+          sleep 10
+          curl -f http://${{ secrets.EC2_HOST }}:8080/health

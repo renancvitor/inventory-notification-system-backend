@@ -16,3 +16,6 @@ messaging:
 outbox:
   scheduler:
     enabled: true
+
+app:
+  environment: development
