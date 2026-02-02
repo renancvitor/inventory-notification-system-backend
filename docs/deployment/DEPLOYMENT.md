@@ -1,4 +1,4 @@
-# 🚀 Deployment Guide
+# ☁️ Deployment Guide
 
 ## Automação com GitHub Actions
 
@@ -23,16 +23,16 @@ O projeto está configurado com **GitHub Actions** para deploy automático:
 
 Configure estes secrets no repositório (`Settings > Secrets and variables > Actions`):
 
-```
-EC2_HOST              = 18.224.70.113
-EC2_USER              = ec2-user
-EC2_SSH_KEY           = (conteúdo da sua chave PEM privada)
-EC2_APP_DIR           = /home/ec2-user
-SERVICE_NAME          = inventory-backend
-DB_FLYWAY_URL         = jdbc:postgresql://seu-rds:5432/inventory_db
-DB_USER               = postgres
-DB_PASSWORD           = sua-senha
-```
+- `EC2_HOST` - IP público ou domínio da instância EC2
+- `EC2_USER` - Usuário SSH da EC2
+- `EC2_SSH_KEY` - Conteúdo completo da chave PEM privada
+- `EC2_APP_DIR` - Diretório onde o JAR será armazenado
+- `SERVICE_NAME` - Nome do serviço systemctl
+- `DB_FLYWAY_URL` - URL de conexão do banco de dados
+- `DB_USER` - Usuário do banco de dados
+- `DB_PASSWORD` - Senha do banco de dados
+
+**⚠️ Nunca commit credenciais ou IPs no repositório!**
 
 ---
 
@@ -74,11 +74,11 @@ gh run watch  # Acompanhar execução
 ### Serviço não inicia após deploy
 
 ```bash
-# Ver logs do serviço
-ssh ec2-user@18.224.70.113 "sudo journalctl -u inventory-backend -n 50 -f"
+# Ver logs do serviço (conectar via SSH)
+ssh <ec2-user>@<seu-ec2-host> "sudo journalctl -u <service-name> -n 50 -f"
 
 # Ver status do serviço
-ssh ec2-user@18.224.70.113 "sudo systemctl status inventory-backend"
+ssh <ec2-user>@<seu-ec2-host> "sudo systemctl status <service-name>"
 ```
 
 ### JAR não está sendo atualizado
@@ -93,13 +93,13 @@ Verificar:
 
 ```bash
 # Testar conexão
-ssh -i ~/.ssh/ec2.pem ec2-user@18.224.70.113 "echo OK"
+ssh -i ~/.ssh/ec2.pem <ec2-user>@<seu-ec2-host> "echo OK"
 
 # Se falhar, verificar:
 # 1. Arquivo de chave PEM tem permissão 600
 chmod 600 ~/.ssh/ec2.pem
 
-# 2. IP da EC2 está correto
+# 2. IP/domínio está correto
 # 3. Security Group permite SSH na porta 22
 ```
 
@@ -119,12 +119,12 @@ chmod 600 ~/.ssh/ec2.pem
 ## Verificar Deploy
 
 ```bash
-# Acessar a aplicação
-curl http://18.224.70.113:8080/health
+# Acessar a aplicação (substitua com o IP/domínio real)
+curl http://<seu-ec2-host>:8080/health
 
-# Ver Swagger UI
-http://18.224.70.113:8080/swagger-ui/index.html
+# Ver Swagger UI (substitua com o IP/domínio real)
+http://<seu-ec2-host>:8080/swagger-ui/index.html
 
-# Ver logs da aplicação
-ssh ec2-user@18.224.70.113 "sudo journalctl -u inventory-backend -f"
+# Ver logs da aplicação (conectar via SSH)
+ssh <ec2-user>@<seu-ec2-host> "sudo journalctl -u <service-name> -f"
 ```

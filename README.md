@@ -37,6 +37,7 @@ O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disp
 - [Testando a API via Insomnia](#testando-a-api-via-insomnia)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Como Executar o Projeto](#como-executar-o-projeto)
+- [Deploy na AWS](#deploy-na-aws)
 - [Contribuições](#contribuições)
 - [Contato](#contato)
 - [Licença](#licenca)
@@ -357,6 +358,37 @@ SPRING_PROFILES_ACTIVE=dev ./mvnw spring-boot:run
 ```
 7. Acesse a API pelo navegador ou ferramentas como [Insomnia](https://insomnia.rest/) na porta configurada (por padrão http://localhost:8080).<br>
 ⚠️ **Lembre-se de manter o Docker rodando enquanto estiver utilizando a aplicação.**
+
+<p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
+
+---
+
+<h2 id="deploy-na-aws" align="center">Deploy na AWS</h2>
+
+Este projeto está **automaticamente deployado na AWS EC2** com um pipeline de CI/CD robusto e seguro. A aplicação é atualizada automaticamente a cada push para a branch `main`, garantindo que sempre esteja rodando a versão mais recente do código.
+
+### 🚀 Arquitetura do Deploy
+
+O processo de deploy é totalmente automatizado através de **GitHub Actions**:
+
+1. **CI Pipeline** - Compila e testa o código a cada push
+2. **CD Pipeline** - Realiza migração de banco, compila o JAR e faz deploy na EC2
+3. **Validação** - Verifica se o serviço iniciou corretamente com health checks
+
+### 💡 Destaques da Automação
+
+- ✅ **Zero Downtime**: O serviço é gracefully reiniciado sem perder requisições
+- ✅ **Backup Automático**: Cada deploy faz backup do JAR anterior
+- ✅ **Validação de Saúde**: Health check confirma que a aplicação iniciou corretamente
+- ✅ **Logs Detalhados**: Cada etapa do deploy é registrada para troubleshooting
+- ✅ **Secrets Seguros**: Todas as credenciais armazenadas no GitHub Secrets
+
+### 📚 Documentação Completa
+
+Para instruções detalhadas sobre deploy manual, configuração de secrets, troubleshooting e muito mais:
+
+👉 Veja a documentação completa aqui:  
+[🚀 Deploy na AWS — Guia Completo](./docs/deployment/DEPLOYMENT.md)
 
 <p align="right"><a href="#inicio">⬆️ Voltar ao início</a></p>
 
