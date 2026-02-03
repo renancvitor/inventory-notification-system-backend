@@ -29,7 +29,8 @@ jobs:
               required_contexts: [],
               auto_merge: false,
             });
-            core.setOutput('deployment_id', deployment.data.id);
+            console.log('DEPLOYMENT_ID=' + deployment.data.id);
+            core.exportVariable('DEPLOYMENT_ID', deployment.data.id);
 
       - name: Checkout
         uses: actions/checkout@v4
@@ -172,7 +173,7 @@ jobs:
             await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              deployment_id: ${{ steps.deployment.outputs.deployment_id }},
+              deployment_id: process.env.DEPLOYMENT_ID,
               state: 'success',
               environment_url: 'http://${{ secrets.EC2_HOST }}:8080',
               description: 'Deployment completed successfully',
@@ -186,7 +187,7 @@ jobs:
             await github.rest.repos.createDeploymentStatus({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              deployment_id: ${{ steps.deployment.outputs.deployment_id }},
+              deployment_id: process.env.DEPLOYMENT_ID,
               state: 'failure',
               description: 'Deployment failed',
             });
