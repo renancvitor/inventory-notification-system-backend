@@ -26,11 +26,14 @@ public class SpringDocConfiguration {
                                                                                 .bearerFormat("JWT")))
                                 .addSecurityItem(new SecurityRequirement().addList("bearer-key"))
                                 .addServersItem(new Server()
+                                                .url("https://www.inventory-system.renantech.com.br")
+                                                .description("Ambiente de produção"))
+                                .addServersItem(new Server()
                                                 .url("http://localhost:8080")
                                                 .description("Ambiente local"))
                                 .info(new Info()
                                                 .title("Inventory Notification System")
-                                                .version("1.0.0")
+                                                .version("1.2.0")
                                                 .description(
                                                                 "API REST da aplicação Inventory Notification System." +
                                                                                 "Forneceções operações de criação, leitura, atualização e remoção (CRUD) para os recursos do sistema. O projeto está em desenvolvimento e esta documentação será atualizada em tempo."
@@ -38,6 +41,7 @@ public class SpringDocConfiguration {
                                                                                 "Esta API garante validação, autenticação via JWT (JSON Web Token) e tratamento consistente de erros, permitindo integração segura com o Frontend.")
                                                 .contact(new Contact()
                                                                 .name("Renan C. Vitor")
+                                                                .url("https://github.com/renancvitor")
                                                                 .email("renan.vitor.cm@gmail.com"))
                                                 .license(new License()
                                                                 .name("MIT Licence")
