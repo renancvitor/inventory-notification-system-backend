@@ -74,7 +74,7 @@ public class AuthenticationServiceTests {
             JWTTokenData result = authenticationService.authentication(data, authenticationManager);
 
             assertNotNull(result);
-            assertEquals("randomJwt", result.tokem());
+            assertEquals("randomJwt", result.token());
             assertEquals(loggedInUser.getId(), result.user().id());
         }
 
@@ -107,7 +107,7 @@ public class AuthenticationServiceTests {
             JWTTokenData result = authenticationService.authentication(data, authenticationManager);
 
             assertTrue(result.firstAccess());
-            assertEquals("jwt", result.tokem());
+            assertEquals("jwt", result.token());
         }
 
         @Test
