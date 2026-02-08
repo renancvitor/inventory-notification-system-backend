@@ -1,6 +1,8 @@
 spring:
   application:
     name: Inventory Notification System Backend
+  config:
+    import: optional:file:.env[.properties]
 
   jpa:
     open-in-view: true
