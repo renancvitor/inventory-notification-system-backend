@@ -13,10 +13,21 @@
 ---
 
 <h2 align="center">🔗 Frontend</h2>
-O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disponível em um repositório dedicado:
 
-- 🌐 [Sistema de Notificação de Estoque — Frontend](#)  <!-- atualizar link quando disponível -->
-> 🚧 O frontend ainda está em desenvolvimento. O link será adicionado assim que o repositório estiver disponível.
+O frontend é desenvolvido em um repositório separado.  
+Acompanhe releases e evolução da interface em:
+
+- 🌐 [Sistema de Notificação de Estoque — Frontend](https://github.com/renancvitor/inventory-notification-system-frontend)
+
+> 🚧 O frontend ainda está em desenvolvimento.  
+
+---
+
+### 📊 Progresso do Projeto
+
+Planejamento, tarefas e histórico de evolução disponíveis no GitHub Projects:
+
+- 🗺️ [Inventory System - Roadmap](https://github.com/users/renancvitor/projects/2/views/1)
 
 ---
 
@@ -47,7 +58,7 @@ O frontend será desenvolvido separadamente. Quando estiver pronto, ficará disp
 <h2 id="visao-geral-do-projeto" align="center">Visão Geral do Projeto</h2>
 
 <b>Sistema de Notificação de Estoque</b> é um backend desenvolvido com <b>[Spring Boot](https://spring.io/projects/spring-boot)</b>, projetado para gerenciar o estoque e enviar notificações para produtos com baixo estoque.<br>
-Desenvolvido principalmente para prática de backend, o projeto também atende pequenas empresas que buscam organizar e monitorar seus processos de estoque. Ele segue uma arquitetura bem organizada em camadas e pacotes funcionais (application, domain, infra, exception e utils), garantindo escalabilidade e manutenção.
+Desenvolvido principalmente para prática de backend, o projeto também atende pequenas empresas que buscam organizar e monitorar seus processos de estoque de materiais de uso interno (escritório, limpeza, relacionados). Ele segue uma arquitetura bem organizada em camadas e pacotes funcionais (application, domain, infra, exception e utils), garantindo escalabilidade e manutenção.
 
 O desenvolvimento do projeto consolidou habilidades como:
 - 🏗️ Arquitetura RESTful
