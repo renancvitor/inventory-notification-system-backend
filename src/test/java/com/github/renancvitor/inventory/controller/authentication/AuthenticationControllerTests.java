@@ -62,7 +62,7 @@ class AuthenticationControllerTests {
                     any(AuthenticationManager.class)))
                     .thenReturn(jwtTokenData);
 
-            ResponseEntity<UserSummaryData> result = authenticationController.authentication(loginData, response);
+            ResponseEntity<UserSummaryData> result = authenticationController.authentication(loginData);
 
             assertNotNull(result);
             assertEquals(200, result.getStatusCode().value());
@@ -87,7 +87,7 @@ class AuthenticationControllerTests {
                     any(AuthenticationManager.class)))
                     .thenThrow(new RuntimeException("Auth failed"));
 
-            assertThrows(RuntimeException.class, () -> authenticationController.authentication(loginData, response));
+            assertThrows(RuntimeException.class, () -> authenticationController.authentication(loginData));
 
             verify(authenticationService).authentication(
                     any(LoginData.class),
