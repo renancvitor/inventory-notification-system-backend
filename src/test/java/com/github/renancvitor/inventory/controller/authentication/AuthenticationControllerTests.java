@@ -4,6 +4,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -21,6 +24,10 @@ import com.github.renancvitor.inventory.application.authentication.controller.Au
 import com.github.renancvitor.inventory.application.authentication.dto.JWTTokenData;
 import com.github.renancvitor.inventory.application.authentication.dto.LoginData;
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
+import com.github.renancvitor.inventory.application.user.dto.UserSummaryData;
+
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -48,14 +55,24 @@ class AuthenticationControllerTests {
     class PositiveCases {
         @Test
         void shouldReturn200AndJWTTokenDataWhenAuthenticationSucceeds() {
-            when(authenticationService.authentication(any(LoginData.class), any(AuthenticationManager.class)))
+            HttpServletResponse response = mock(HttpServletResponse.class);
+
+            when(authenticationService.authentication(
+                    any(LoginData.class),
+                    any(AuthenticationManager.class)))
                     .thenReturn(jwtTokenData);
 
-            ResponseEntity<JWTTokenData> response = authenticationController.authentication(loginData);
+            ResponseEntity<UserSummaryData> result = authenticationController.authentication(loginData, response);
 
-            assertNotNull(response);
-            assertEquals(200, response.getStatusCode().value());
-            assertEquals(jwtTokenData, response.getBody());
+            assertNotNull(result);
+            assertEquals(200, result.getStatusCode().value());
+            assertEquals(jwtTokenData.user(), result.getBody());
+
+            verify(authenticationService).authentication(
+                    any(LoginData.class),
+                    any(AuthenticationManager.class));
+
+            verify(response).addCookie(any(Cookie.class));
         }
     }
 
@@ -63,10 +80,20 @@ class AuthenticationControllerTests {
     class NegativeCases {
         @Test
         void shouldPropagateExceptionWhenServiceThrows() {
-            when(authenticationService.authentication(any(LoginData.class), any(AuthenticationManager.class)))
+            HttpServletResponse response = mock(HttpServletResponse.class);
+
+            when(authenticationService.authentication(
+                    any(LoginData.class),
+                    any(AuthenticationManager.class)))
                     .thenThrow(new RuntimeException("Auth failed"));
 
-            assertThrows(RuntimeException.class, () -> authenticationController.authentication(loginData));
+            assertThrows(RuntimeException.class, () -> authenticationController.authentication(loginData, response));
+
+            verify(authenticationService).authentication(
+                    any(LoginData.class),
+                    any(AuthenticationManager.class));
+
+            verifyNoInteractions(response);
         }
     }
 }
