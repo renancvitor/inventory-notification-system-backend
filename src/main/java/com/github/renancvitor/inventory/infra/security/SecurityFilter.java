@@ -32,6 +32,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         return request.getMethod().equals("OPTIONS")
                 || path.equals("/login")
+                || path.equals("/auth/logout")
                 || path.startsWith("/health")
                 || path.startsWith("/actuator")
                 || path.startsWith("/swagger-ui")
