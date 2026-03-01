@@ -3,10 +3,9 @@ package com.github.renancvitor.inventory.controller.authentication;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -26,8 +25,7 @@ import com.github.renancvitor.inventory.application.authentication.dto.LoginData
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.user.dto.UserSummaryData;
 
-import jakarta.servlet.http.Cookie;
-import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.http.HttpHeaders;
 
 @ExtendWith(MockitoExtension.class)
 @ActiveProfiles("test")
@@ -55,8 +53,6 @@ class AuthenticationControllerTests {
     class PositiveCases {
         @Test
         void shouldReturn200AndJWTTokenDataWhenAuthenticationSucceeds() {
-            HttpServletResponse response = mock(HttpServletResponse.class);
-
             when(authenticationService.authentication(
                     any(LoginData.class),
                     any(AuthenticationManager.class)))
@@ -67,12 +63,18 @@ class AuthenticationControllerTests {
             assertNotNull(result);
             assertEquals(200, result.getStatusCode().value());
             assertEquals(jwtTokenData.user(), result.getBody());
+                String setCookieHeader = result.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
+                assertNotNull(setCookieHeader);
+                assertTrue(setCookieHeader.contains("access_token=jwt-token"));
+                assertTrue(setCookieHeader.contains("Path=/"));
+                assertTrue(setCookieHeader.contains("Max-Age=7200"));
+                assertTrue(setCookieHeader.contains("Secure"));
+                assertTrue(setCookieHeader.contains("HttpOnly"));
+                assertTrue(setCookieHeader.contains("SameSite=Lax"));
 
             verify(authenticationService).authentication(
                     any(LoginData.class),
                     any(AuthenticationManager.class));
-
-            verify(response).addCookie(any(Cookie.class));
         }
     }
 
@@ -80,8 +82,6 @@ class AuthenticationControllerTests {
     class NegativeCases {
         @Test
         void shouldPropagateExceptionWhenServiceThrows() {
-            HttpServletResponse response = mock(HttpServletResponse.class);
-
             when(authenticationService.authentication(
                     any(LoginData.class),
                     any(AuthenticationManager.class)))
@@ -92,8 +92,6 @@ class AuthenticationControllerTests {
             verify(authenticationService).authentication(
                     any(LoginData.class),
                     any(AuthenticationManager.class));
-
-            verifyNoInteractions(response);
         }
     }
 }
