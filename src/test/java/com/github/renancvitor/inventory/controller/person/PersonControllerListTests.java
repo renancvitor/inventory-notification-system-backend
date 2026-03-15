@@ -78,13 +78,14 @@ public class PersonControllerListTests {
 
                         lenient().when(personService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(User.class),
                                         isNull()))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<PersonListingData>> response = personController.list(
                                         null,
-                                        PageRequest.of(0, 10),
+                                        PageRequest.of(0, 10), null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -93,6 +94,7 @@ public class PersonControllerListTests {
                                         .isEqualTo(person.getPersonName());
                         verify(personService).list(
                                         any(Pageable.class),
+                                        isNull(),
                                         eq(loggedInUser),
                                         isNull());
                         verifyNoMoreInteractions(personService);
@@ -107,13 +109,14 @@ public class PersonControllerListTests {
 
                         lenient().when(personService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(User.class),
                                         eq(true)))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<PersonListingData>> response = personController.list(
                                         true,
-                                        PageRequest.of(0, 10),
+                                        PageRequest.of(0, 10), null, 
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -122,6 +125,7 @@ public class PersonControllerListTests {
                                         .isEqualTo(person.getPersonName());
                         verify(personService).list(
                                         any(Pageable.class),
+                                        isNull(),
                                         eq(loggedInUser),
                                         eq(true));
                         verifyNoMoreInteractions(personService);
@@ -136,13 +140,14 @@ public class PersonControllerListTests {
 
                         lenient().when(personService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(User.class),
                                         eq(false)))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<PersonListingData>> response = personController.list(
                                         false,
-                                        PageRequest.of(0, 10),
+                                        PageRequest.of(0, 10), null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -151,6 +156,7 @@ public class PersonControllerListTests {
                                         .isEqualTo(person.getPersonName());
                         verify(personService).list(
                                         any(Pageable.class),
+                                        isNull(),
                                         eq(loggedInUser),
                                         eq(false));
                         verifyNoMoreInteractions(personService);
@@ -170,13 +176,15 @@ public class PersonControllerListTests {
 
                         when(personService.list(
                                         eq(customPageable),
+                                        isNull(),
                                         any(),
-                                        any()))
+                                        isNull()))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<PersonListingData>> response = personController.list(
                                         null,
                                         customPageable,
+                                        null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -186,8 +194,9 @@ public class PersonControllerListTests {
 
                         verify(personService).list(
                                         eq(customPageable),
+                                        isNull(),
                                         any(),
-                                        any());
+                                        isNull());
                 }
         }
 
@@ -200,6 +209,7 @@ public class PersonControllerListTests {
                                         PageRequest.of(
                                                         0,
                                                         10),
+                                                        null,
                                         null))
                                         .isInstanceOf(NullPointerException.class);
                 }
@@ -208,20 +218,23 @@ public class PersonControllerListTests {
                 void shouldReturnInternalServerErrorWhenServiceThrows() {
                         when(personService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(User.class),
-                                        any()))
+                                        isNull()))
                                         .thenThrow(new RuntimeException("Service error"));
 
                         assertThatThrownBy(() -> personController.list(
                                         null, PageRequest.of(
                                                         0,
                                                         10),
+                                                        null,
                                         loggedInUser))
                                         .isInstanceOf(RuntimeException.class)
                                         .hasMessageContaining("Service error");
 
                         verify(personService).list(
                                         any(Pageable.class),
+                                        isNull(),
                                         eq(loggedInUser),
                                         isNull());
                 }
@@ -230,13 +243,14 @@ public class PersonControllerListTests {
                 void shouldReturnEmptyPageWhenNoPersonsFound() {
                         when(personService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(User.class),
-                                        any()))
+                                        isNull()))
                                         .thenReturn(Page.empty());
 
                         ResponseEntity<CustomPage<PersonListingData>> response = personController.list(
                                         null,
-                                        PageRequest.of(0, 10),
+                                        PageRequest.of(0, 10), null,
                                         loggedInUser);
 
                         assertThat(response.getBody().getContent()).isEmpty();

@@ -73,7 +73,7 @@ public class PersonServiceListTests {
                     .thenReturn(page);
 
             Page<PersonListingData> result = personService.list(
-                    PageRequest.of(0, 10),
+                    PageRequest.of(0, 10), null, 
                     loggedInUser, null);
 
             assertEquals(1, result.getTotalElements());
@@ -90,7 +90,7 @@ public class PersonServiceListTests {
                     .thenReturn(page);
 
             Page<PersonListingData> result = personService.list(
-                    PageRequest.of(0, 10),
+                    PageRequest.of(0, 10), null,
                     loggedInUser, true);
 
             assertEquals(1, result.getTotalElements());
@@ -107,7 +107,7 @@ public class PersonServiceListTests {
                     .thenReturn(page);
 
             Page<PersonListingData> result = personService.list(
-                    PageRequest.of(0, 10),
+                    PageRequest.of(0, 10), null,
                     loggedInUser, false);
 
             assertEquals(1, result.getTotalElements());
@@ -126,7 +126,7 @@ public class PersonServiceListTests {
                     .thenReturn(page);
 
             Page<PersonListingData> result = personService.list(
-                    PageRequest.of(0, 10),
+                    PageRequest.of(0, 10), null,
                     null, null);
 
             assertNotNull(result);
@@ -147,7 +147,7 @@ public class PersonServiceListTests {
                     .authorize(anyList());
 
             assertThrows(AuthorizationException.class,
-                    () -> personService.list(PageRequest.of(0, 10), loggedInUser, null));
+                    () -> personService.list(PageRequest.of(0, 10), null, loggedInUser, null));
         }
     }
 
