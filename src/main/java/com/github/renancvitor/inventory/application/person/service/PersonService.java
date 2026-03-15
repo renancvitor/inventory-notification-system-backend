@@ -32,8 +32,15 @@ public class PersonService {
         private final AuthenticationService authenticationService;
         private final SystemLogPublisherService logPublisherService;
 
-        public Page<PersonListingData> list(Pageable pageable, User loggedInUser, Boolean active) {
+        public Page<PersonListingData> list(Pageable pageable, String search, User loggedInUser, Boolean active) {
                 authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+
+                if (search != null && !search.isBlank()) {
+                        return personRepository
+                                        .findByPersonNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrCpfContaining(
+                                                        search, search, search, pageable)
+                                        .map(PersonListingData::new);                        
+                }
 
                 if (active != null) {
                         return personRepository.findAllByActive(active, pageable).map(PersonListingData::new);

@@ -38,8 +38,9 @@ public class PersonController {
     @GetMapping
     public ResponseEntity<CustomPage<PersonListingData>> list(@RequestParam(required = false) Boolean active,
             @PageableDefault(size = 10, sort = ("personName")) Pageable pageable,
+            @RequestParam(required = false) String search,
             @AuthenticationPrincipal User loggedInUser) {
-        var page = personService.list(pageable, loggedInUser, active);
+        var page = personService.list(pageable, search, loggedInUser, active);
         return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }
 

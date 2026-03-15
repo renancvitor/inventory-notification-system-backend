@@ -20,4 +20,11 @@ public interface PersonRepository extends JpaRepository<Person, Long> {
 
     Optional<Person> findByPersonName(String name);
 
+    Page<Person> findByPersonNameContainingIgnoreCaseOrEmailContainingIgnoreCaseOrCpfContaining(
+        String personName,
+        String email,
+        String cpf,
+        Pageable pageable
+    );
+
 }
