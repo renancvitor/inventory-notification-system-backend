@@ -62,7 +62,7 @@ public class PersonService {
 
                 UserCreationData userData = new UserCreationData(
                                 person.getCpf(),
-                                userCreationData.password(),
+                                "123456", // Default password, should be changed on first login
                                 UserTypeEnum.COMMON.getId());
                 userService.create(person, userData, loggedInUser);
 
