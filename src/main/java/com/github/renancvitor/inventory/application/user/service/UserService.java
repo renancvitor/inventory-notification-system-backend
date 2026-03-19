@@ -39,8 +39,12 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final SystemLogPublisherService logPublisherService;
 
-    public Page<UserListingData> list(Pageable pageable, User loggedInUser, Boolean active) {
+    public Page<UserListingData> list(Pageable pageable, String search, User loggedInUser, Boolean active) {
         authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
+
+        if (search != null && !search.isBlank()) {
+            return userRepository.search(search, pageable).map(UserListingData::new);
+        }
 
         if (active != null) {
             return userRepository.findAllByActive(active, pageable).map(UserListingData::new);
