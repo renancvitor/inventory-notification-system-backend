@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 
-public record PersonDetailData(Long id, String personName, String cpf, String email, LocalDateTime registrationDate) {
+public record PersonDetailData(Long id, String personName, String cpf, String email, LocalDateTime registrationDate, Boolean active) {
 
     public PersonDetailData(Person person) {
         this(
@@ -12,7 +12,8 @@ public record PersonDetailData(Long id, String personName, String cpf, String em
                 person.getPersonName(),
                 person.getCpf(),
                 person.getEmail(),
-                person.getRegistrationDate());
+                person.getRegistrationDate(),
+                person.getActive());
     }
 
 }

@@ -95,7 +95,8 @@ public class PersonControllerCreateTests {
                                         personData.personName(),
                                         personData.cpf(),
                                         personData.email(),
-                                        LocalDateTime.now());
+                                        LocalDateTime.now(),
+                                        true);
 
                         userTypeEntity = TestEntityFactory.createUserTypeAdmin();
                         loggedInUser.setUserType(userTypeEntity);
@@ -140,7 +141,8 @@ public class PersonControllerCreateTests {
                                         personData.personName(),
                                         personData.cpf(),
                                         personData.email(),
-                                        LocalDateTime.now());
+                                        LocalDateTime.now(),
+                                        true);
 
                         userTypeEntity = TestEntityFactory.createUserTypeAdmin();
                         loggedInUser.setUserType(userTypeEntity);

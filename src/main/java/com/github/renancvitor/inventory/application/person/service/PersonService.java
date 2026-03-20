@@ -119,4 +119,11 @@ public class PersonService {
                                 newData);
         }
 
+        public PersonDetailData getById(Long id) {
+                Person person = personRepository.findById(id)
+                                .orElseThrow(() -> NotFoundExceptionFactory.person(id));
+
+                return new PersonDetailData(person);
+        }
+
 }

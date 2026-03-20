@@ -72,7 +72,7 @@ public class UserServiceListTests {
             when(userRepository.findAll(pageable))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, loggedInUser, null);
+            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, null);
 
             assertEquals(1, result.getTotalElements());
             verify(userRepository).findAll(pageable);
@@ -88,7 +88,7 @@ public class UserServiceListTests {
             when(userRepository.findAllByActive(true, pageable))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, loggedInUser, true);
+            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, true);
 
             assertEquals(1, result.getTotalElements());
             verify(userRepository).findAllByActive(true, pageable);
@@ -104,7 +104,7 @@ public class UserServiceListTests {
             when(userRepository.findAllByActive(false, pageable))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, loggedInUser, false);
+            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, false);
 
             assertEquals(1, result.getTotalElements());
             verify(userRepository).findAllByActive(false, pageable);
@@ -123,7 +123,7 @@ public class UserServiceListTests {
             when(userRepository.findAll(pageable))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, loggedInUser, null);
+            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, null);
 
             assertNotNull(result);
             assertEquals(1, result.getTotalElements());
@@ -140,7 +140,7 @@ public class UserServiceListTests {
 
             assertThrows(
                     AuthorizationException.class,
-                    () -> userService.list(pageable, loggedInUser, null));
+                    () -> userService.list(pageable, null, loggedInUser, null));
         }
     }
 

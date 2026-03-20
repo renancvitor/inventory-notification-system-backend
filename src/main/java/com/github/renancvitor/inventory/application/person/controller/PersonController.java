@@ -70,4 +70,12 @@ public class PersonController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonDetailData> getById(@PathVariable Long id) {
+        PersonDetailData person = personService.getById(id);
+        
+        return ResponseEntity.ok(person);
+    }
+    
+
 }

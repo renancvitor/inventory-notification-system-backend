@@ -63,19 +63,20 @@ public class UserControllerListTests {
                         UserListingData listingData = new UserListingData(loggedInUser);
                         Page<UserListingData> page = new PageImpl<>(List.of(listingData), pageable, 1);
 
-                        when(userService.list(eq(pageable), eq(loggedInUser), eq(true)))
+                        when(userService.list(eq(pageable), isNull(), eq(loggedInUser), eq(true)))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<UserListingData>> response = userController.list(
                                         true,
                                         pageable,
+                                        null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
                         assertThat(response.getBody()).isNotNull();
                         assertThat(response.getBody().content()).hasSize(1);
 
-                        verify(userService).list(pageable, loggedInUser, true);
+                        verify(userService).list(pageable, null, loggedInUser, true);
                 }
 
                 @Test
@@ -85,19 +86,20 @@ public class UserControllerListTests {
                         UserListingData listingData = new UserListingData(loggedInUser);
                         Page<UserListingData> page = new PageImpl<>(List.of(listingData), pageable, 1);
 
-                        when(userService.list(eq(pageable), eq(loggedInUser), isNull()))
+                        when(userService.list(eq(pageable), isNull(), eq(loggedInUser), isNull()))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<UserListingData>> response = userController.list(
                                         null,
                                         pageable,
+                                        null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
                         assertThat(response.getBody()).isNotNull();
                         assertThat(response.getBody().content()).hasSize(1);
 
-                        verify(userService).list(pageable, loggedInUser, null);
+                        verify(userService).list(pageable, null, loggedInUser, null);
                 }
 
                 @Test
@@ -109,12 +111,13 @@ public class UserControllerListTests {
 
                         Page<UserListingData> page = new PageImpl<>(List.of(), customPageable, 0);
 
-                        when(userService.list(eq(customPageable), eq(loggedInUser), isNull()))
+                        when(userService.list(eq(customPageable), isNull(), eq(loggedInUser), isNull()))
                                         .thenReturn(page);
 
                         ResponseEntity<CustomPage<UserListingData>> response = userController.list(
                                         null,
                                         customPageable,
+                                        null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -122,7 +125,7 @@ public class UserControllerListTests {
                         assertThat(response.getBody().page()).isEqualTo(2);
                         assertThat(response.getBody().size()).isEqualTo(5);
 
-                        verify(userService).list(customPageable, loggedInUser, null);
+                        verify(userService).list(customPageable, null, loggedInUser, null);
                 }
 
                 @Test
@@ -131,19 +134,20 @@ public class UserControllerListTests {
 
                         Page<UserListingData> emptyPage = new PageImpl<>(List.of(), pageable, 0);
 
-                        when(userService.list(any(), any(), any()))
+                        when(userService.list(any(), any(), any(), any()))
                                         .thenReturn(emptyPage);
 
                         ResponseEntity<CustomPage<UserListingData>> response = userController.list(
                                         null,
                                         pageable,
+                                        null,
                                         loggedInUser);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
                         assertThat(response.getBody()).isNotNull();
                         assertThat(response.getBody().content()).isEmpty();
 
-                        verify(userService).list(pageable, loggedInUser, null);
+                        verify(userService).list(pageable, null, loggedInUser, null);
                 }
         }
 
@@ -155,14 +159,14 @@ public class UserControllerListTests {
 
                         RuntimeException exception = new RuntimeException("Erro ao listar usuários");
 
-                        when(userService.list(any(), any(), any()))
+                        when(userService.list(any(), any(), any(), any()))
                                         .thenThrow(exception);
 
-                        assertThatThrownBy(() -> userController.list(true, pageable, loggedInUser))
+                        assertThatThrownBy(() -> userController.list(true, pageable, null, loggedInUser))
                                         .isInstanceOf(RuntimeException.class)
                                         .hasMessageContaining("Erro ao listar usuários");
 
-                        verify(userService).list(any(), eq(loggedInUser), eq(true));
+                        verify(userService).list(any(), isNull(), eq(loggedInUser), eq(true));
                 }
         }
 
