@@ -1,5 +1,7 @@
 package com.github.renancvitor.inventory.application.user.controller;
 
+import java.util.List;
+
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.renancvitor.inventory.application.user.dto.UserDetailData;
 import com.github.renancvitor.inventory.application.user.dto.UserListingData;
 import com.github.renancvitor.inventory.application.user.dto.UserPasswordUpdateData;
+import com.github.renancvitor.inventory.application.user.dto.UserTypeResponse;
 import com.github.renancvitor.inventory.application.user.dto.UserTypeUpdateData;
 import com.github.renancvitor.inventory.application.user.service.UserService;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -78,6 +81,10 @@ public class UserController {
 
         return ResponseEntity.ok(user);
     }
-    
 
+    @GetMapping("/user-types")
+    public List<UserTypeResponse> listUserTypes() {
+        return userService.listUserTypes();
+    }
+        
 }

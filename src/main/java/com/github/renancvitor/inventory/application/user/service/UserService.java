@@ -1,5 +1,6 @@
 package com.github.renancvitor.inventory.application.user.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -15,6 +16,7 @@ import com.github.renancvitor.inventory.application.user.dto.UserListingData;
 import com.github.renancvitor.inventory.application.user.dto.UserLogData;
 import com.github.renancvitor.inventory.application.user.dto.UserLogPasswordData;
 import com.github.renancvitor.inventory.application.user.dto.UserPasswordUpdateData;
+import com.github.renancvitor.inventory.application.user.dto.UserTypeResponse;
 import com.github.renancvitor.inventory.application.user.dto.UserTypeUpdateData;
 import com.github.renancvitor.inventory.application.user.repository.UserRepository;
 import com.github.renancvitor.inventory.application.user.repository.UserTypeRepository;
@@ -197,6 +199,16 @@ public class UserService {
                 .orElseThrow(() -> NotFoundExceptionFactory.user(id));
 
         return new UserDetailData(user);
+    }
+
+    public List<UserTypeResponse> listUserTypes() {
+        return Arrays.stream(UserTypeEnum.values())
+                .map(ut -> new UserTypeResponse(
+                    ut.getId(),
+                    ut.name(),
+                    ut.getDisplayName()
+                ))
+                .toList();
     }
 
 }
