@@ -7,14 +7,16 @@ public record UserDetailData(
         Long id,
         String personCpf,
         String personEmail,
-        String nameUserType) {
+        String nameUserType,
+        Boolean active) {
 
     public UserDetailData(User user) {
         this(
                 user.getId(),
                 user.getPerson().getCpf(),
                 user.getPerson().getEmail(),
-                UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName());
+                UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName(),
+                user.getActive());
     }
 
 }

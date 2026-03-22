@@ -192,4 +192,11 @@ public class UserService {
         return password != null && password.matches(regex);
     }
 
+    public UserDetailData getById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.user(id));
+
+        return new UserDetailData(user);
+    }
+
 }

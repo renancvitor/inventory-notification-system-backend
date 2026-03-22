@@ -72,4 +72,12 @@ public class UserController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<UserDetailData> getById(@PathVariable Long id) {
+        UserDetailData user = userService.getById(id);
+
+        return ResponseEntity.ok(user);
+    }
+    
+
 }
