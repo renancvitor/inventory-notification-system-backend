@@ -39,8 +39,9 @@ public class UserController {
     public ResponseEntity<CustomPage<UserListingData>> list(@RequestParam(required = false) Boolean active,
             @PageableDefault(size = 10, sort = ("person.personName")) Pageable pageable,
             @RequestParam(required = false) String search,
-            @AuthenticationPrincipal User loggedInUser) {
-        var page = userService.list(pageable, search, loggedInUser, active);
+            @AuthenticationPrincipal User loggedInUser,
+            @RequestParam(required = false) String userType) {
+        var page = userService.list(pageable, search, loggedInUser, active, userType);
 
         return ResponseEntity.ok(PageMapper.toCustomPage(page));
     }

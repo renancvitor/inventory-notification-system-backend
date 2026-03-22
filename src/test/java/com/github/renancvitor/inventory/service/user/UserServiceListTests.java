@@ -3,7 +3,9 @@ package com.github.renancvitor.inventory.service.user;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -21,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.ActiveProfiles;
 
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
@@ -57,77 +60,82 @@ public class UserServiceListTests {
     void setup() {
         loggedInUser = TestEntityFactory.createUser();
         userTypeEntity = TestEntityFactory.createUserTypeCommon();
-
         loggedInUser.setUserType(userTypeEntity);
     }
 
     @Nested
     class PositiveCases {
-        @Test
-        void shouldListAllUsersWhenActiveIsNull() {
-            Pageable pageable = PageRequest.of(0, 10);
 
+        @SuppressWarnings("unchecked")
+        @Test
+        void shouldListUsersWithoutFilters() {
+            Pageable pageable = PageRequest.of(0, 10);
             Page<User> page = new PageImpl<>(List.of(loggedInUser));
 
-            when(userRepository.findAll(pageable))
+            when(userRepository.findAll(any(Specification.class), eq(pageable)))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, null);
+            Page<UserListingData> result =
+                    userService.list(pageable, null, loggedInUser, null, null);
 
             assertEquals(1, result.getTotalElements());
-            verify(userRepository).findAll(pageable);
+
+            verify(userRepository).findAll(any(Specification.class), eq(pageable));
             verify(authenticationService).authorize(List.of(UserTypeEnum.ADMIN));
         }
 
+        @SuppressWarnings("unchecked")
         @Test
         void shouldFilterUsersByActiveTrue() {
             Pageable pageable = PageRequest.of(0, 10);
-
             Page<User> page = new PageImpl<>(List.of(loggedInUser));
 
-            when(userRepository.findAllByActive(true, pageable))
+            when(userRepository.findAll(any(Specification.class), eq(pageable)))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, true);
+            Page<UserListingData> result =
+                    userService.list(pageable, null, loggedInUser, true, null);
 
             assertEquals(1, result.getTotalElements());
-            verify(userRepository).findAllByActive(true, pageable);
-            verify(authenticationService).authorize(List.of(UserTypeEnum.ADMIN));
+
+            verify(userRepository).findAll(any(Specification.class), eq(pageable));
         }
 
+        @SuppressWarnings("unchecked")
         @Test
-        void shouldFilterUsersByActiveFalse() {
+        void shouldFilterUsersByUserType() {
             Pageable pageable = PageRequest.of(0, 10);
-
             Page<User> page = new PageImpl<>(List.of(loggedInUser));
 
-            when(userRepository.findAllByActive(false, pageable))
+            when(userRepository.findAll(any(Specification.class), eq(pageable)))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, false);
+            Page<UserListingData> result =
+                    userService.list(pageable, null, loggedInUser, null, "ADMIN");
 
             assertEquals(1, result.getTotalElements());
-            verify(userRepository).findAllByActive(false, pageable);
-            verify(authenticationService).authorize(List.of(UserTypeEnum.ADMIN));
+
+            verify(userRepository).findAll(any(Specification.class), eq(pageable));
         }
     }
 
     @Nested
     class NegativeCases {
-        @Test
-        void shouldIgnoreActiveFilterWhenNull() {
-            Pageable pageable = PageRequest.of(0, 10);
 
+        @SuppressWarnings("unchecked")
+        @Test
+        void shouldReturnUsersWhenNoFiltersProvided() {
+            Pageable pageable = PageRequest.of(0, 10);
             Page<User> page = new PageImpl<>(List.of(loggedInUser));
 
-            when(userRepository.findAll(pageable))
+            when(userRepository.findAll(any(Specification.class), eq(pageable)))
                     .thenReturn(page);
 
-            Page<UserListingData> result = userService.list(pageable, null, loggedInUser, null);
+            Page<UserListingData> result =
+                    userService.list(pageable, null, loggedInUser, null, null);
 
             assertNotNull(result);
             assertEquals(1, result.getTotalElements());
-            verify(userRepository).findAll(pageable);
         }
 
         @Test
@@ -140,8 +148,8 @@ public class UserServiceListTests {
 
             assertThrows(
                     AuthorizationException.class,
-                    () -> userService.list(pageable, null, loggedInUser, null));
+                    () -> userService.list(pageable, null, loggedInUser, null, null)
+            );
         }
     }
-
 }

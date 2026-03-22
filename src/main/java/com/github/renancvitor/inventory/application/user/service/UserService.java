@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +20,7 @@ import com.github.renancvitor.inventory.application.user.dto.UserPasswordUpdateD
 import com.github.renancvitor.inventory.application.user.dto.UserTypeResponse;
 import com.github.renancvitor.inventory.application.user.dto.UserTypeUpdateData;
 import com.github.renancvitor.inventory.application.user.repository.UserRepository;
+import com.github.renancvitor.inventory.application.user.repository.UserSpecifications;
 import com.github.renancvitor.inventory.application.user.repository.UserTypeRepository;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -41,18 +43,24 @@ public class UserService {
     private final AuthenticationService authenticationService;
     private final SystemLogPublisherService logPublisherService;
 
-    public Page<UserListingData> list(Pageable pageable, String search, User loggedInUser, Boolean active) {
+    public Page<UserListingData> list(Pageable pageable, String search, User loggedInUser, Boolean active, String userType) {
         authenticationService.authorize(List.of(UserTypeEnum.ADMIN));
 
+        Specification<User> specification = Specification.unrestricted();
+
         if (search != null && !search.isBlank()) {
-            return userRepository.search(search, pageable).map(UserListingData::new);
+            specification = specification.and(UserSpecifications.search(search));
         }
 
         if (active != null) {
-            return userRepository.findAllByActive(active, pageable).map(UserListingData::new);
+            specification = specification.and(UserSpecifications.active(active));
         }
 
-        return userRepository.findAll(pageable).map(UserListingData::new);
+        if (userType != null && !userType.isBlank()) {
+            specification = specification.and(UserSpecifications.userType(userType));
+        }
+
+        return userRepository.findAll(specification, pageable).map(UserListingData::new);
     }
 
     @Transactional
