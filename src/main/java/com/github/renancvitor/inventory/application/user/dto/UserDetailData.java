@@ -5,6 +5,7 @@ import com.github.renancvitor.inventory.domain.entity.user.enums.UserTypeEnum;
 
 public record UserDetailData(
         Long id,
+        String personName,
         String personCpf,
         String personEmail,
         String nameUserType,
@@ -13,6 +14,7 @@ public record UserDetailData(
     public UserDetailData(User user) {
         this(
                 user.getId(),
+                user.getPerson().getPersonName(),
                 user.getPerson().getCpf(),
                 user.getPerson().getEmail(),
                 UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName(),
