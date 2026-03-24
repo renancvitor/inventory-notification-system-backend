@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -42,11 +43,13 @@ public class ProductController {
     @GetMapping
     public ResponseEntity<CustomPage<ProductListingData>> list(
             @ParameterObject @PageableDefault(size = 10, sort = "productName") Pageable pageable,
+            @RequestParam(required = false) String search,
             @AuthenticationPrincipal User loggedInUser,
             @ParameterObject @Valid ProductFilter filter) {
 
         var page = productService.list(
                 pageable,
+                search,
                 filter.active(),
                 filter.categoryId(),
                 filter.minPrice(),

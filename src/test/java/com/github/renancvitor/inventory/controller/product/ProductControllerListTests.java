@@ -90,6 +90,7 @@ public class ProductControllerListTests {
 
                         when(productService.list(
                                         any(Pageable.class),
+                                        isNull(),
                                         any(Boolean.class),
                                         any(Integer.class),
                                         any(BigDecimal.class),
@@ -104,7 +105,8 @@ public class ProductControllerListTests {
                                         BigDecimal.valueOf(300.00));
 
                         ResponseEntity<CustomPage<ProductListingData>> response = productController.list(
-                                        PageRequest.of(0, 10), // pageable
+                                        PageRequest.of(0, 10),
+                                        null, // search
                                         loggedInUser, // authentication principal
                                         filter // filter
                         );
@@ -112,6 +114,7 @@ public class ProductControllerListTests {
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
                         verify(productService).list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         true,
                                         1,
                                         BigDecimal.valueOf(10.00),
@@ -133,6 +136,7 @@ public class ProductControllerListTests {
                                         isNull(),
                                         isNull(),
                                         isNull(),
+                                        isNull(),
                                         any(User.class)))
                                         .thenReturn(page);
 
@@ -144,12 +148,14 @@ public class ProductControllerListTests {
 
                         ResponseEntity<CustomPage<ProductListingData>> response = productController.list(
                                         PageRequest.of(0, 10),
+                                        null, // search
                                         loggedInUser,
                                         filter);
 
                         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
                         verify(productService).list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -163,7 +169,7 @@ public class ProductControllerListTests {
                         Page<ProductListingData> emptyPage = new PageImpl<>(List.of(),
                                         PageRequest.of(0, 10), 0);
 
-                        when(productService.list(any(Pageable.class), any(), any(), any(), any(),
+                        when(productService.list(any(Pageable.class), isNull(), any(), any(), any(), any(),
                                         any()))
                                         .thenReturn(emptyPage);
 
@@ -175,6 +181,7 @@ public class ProductControllerListTests {
 
                         ResponseEntity<CustomPage<ProductListingData>> response = productController.list(
                                         PageRequest.of(0, 10),
+                                        null, // search
                                         loggedInUser,
                                         filter);
 
@@ -194,6 +201,7 @@ public class ProductControllerListTests {
 
                         when(productService.list(
                                         eq(customPageable),
+                                        isNull(),
                                         any(),
                                         any(),
                                         any(),
@@ -209,6 +217,7 @@ public class ProductControllerListTests {
 
                         ResponseEntity<CustomPage<ProductListingData>> response = productController.list(
                                         customPageable,
+                                        null, // search
                                         loggedInUser,
                                         filter);
 
@@ -219,6 +228,7 @@ public class ProductControllerListTests {
 
                         verify(productService).list(
                                         eq(customPageable),
+                                        isNull(),
                                         any(),
                                         any(),
                                         any(),

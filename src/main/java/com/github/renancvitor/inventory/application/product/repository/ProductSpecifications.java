@@ -8,6 +8,14 @@ import com.github.renancvitor.inventory.domain.entity.product.Product;
 
 public class ProductSpecifications {
 
+    public static Specification<Product> search(String search) {
+        return (root, query, builder) -> builder.or(
+                builder.like(builder.lower(root.get("productName")), "%" + search.toLowerCase() + "%"),
+                builder.like(builder.lower(root.get("description")), "%" + search.toLowerCase() + "%"),
+                builder.like(builder.lower(root.get("category").get("categoryName")), "%" + search.toLowerCase() + "%")
+        );
+    }
+
     public static Specification<Product> active(Boolean active) {
         return (root, query, builder) -> builder.equal(root.get("active"), active);
     }

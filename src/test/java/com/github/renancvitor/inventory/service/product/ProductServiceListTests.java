@@ -80,7 +80,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
-                                        null, null, null, null, null);
+                                        null, null, null, null, null, null);
 
                         assertEquals(1, result.getTotalElements());
 
@@ -99,6 +99,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         1,
                                         null,
@@ -123,6 +124,7 @@ public class ProductServiceListTests {
                                         PageRequest.of(0, 10),
                                         null,
                                         null,
+                                        null,
                                         BigDecimal.valueOf(10.00),
                                         BigDecimal.valueOf(300.00),
                                         null);
@@ -143,6 +145,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         true,
                                         null,
                                         null,
@@ -165,6 +168,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         true,
                                         1,
                                         BigDecimal.valueOf(10.00),
@@ -190,7 +194,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
-                                        null, null, null, null, null);
+                                        null, null, null, null, null, null);
 
                         assertTrue(result.isEmpty());
                         assertEquals(0, result.getTotalElements());
@@ -209,7 +213,7 @@ public class ProductServiceListTests {
 
                         Page<ProductListingData> result = productService.list(
                                         PageRequest.of(0, 10),
-                                        null, null, null, null, null);
+                                        null, null, null, null, null, null);
 
                         assertNotNull(result);
                         assertEquals(1, result.getTotalElements());

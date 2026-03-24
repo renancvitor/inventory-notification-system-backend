@@ -38,10 +38,13 @@ public class ProductService {
         private final SystemLogPublisherService logPublisherService;
         private final AuthenticationService authenticationService;
 
-        public Page<ProductListingData> list(Pageable pageable, Boolean active,
+        public Page<ProductListingData> list(Pageable pageable, String search, Boolean active,
                         Integer categoryId, BigDecimal minPrice, BigDecimal maxPrice, User loggedInUser) {
                 Specification<Product> specification = Specification.unrestricted();
-
+                
+                if (search != null && !search.isBlank()) {
+                        specification = specification.and(ProductSpecifications.search(search));
+                }
                 if (active != null) {
                         specification = specification.and(ProductSpecifications.active(active));
                 }
