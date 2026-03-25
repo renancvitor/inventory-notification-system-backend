@@ -11,7 +11,7 @@ public class ProductSpecifications {
     public static Specification<Product> search(String search) {
         return (root, query, builder) -> builder.or(
                 builder.like(builder.lower(root.get("productName")), "%" + search.toLowerCase() + "%"),
-                builder.like(builder.lower(root.get("description")), "%" + search.toLowerCase() + "%"),
+                builder.like(builder.lower(root.get("brand")), "%" + search.toLowerCase() + "%"),
                 builder.like(builder.lower(root.get("category").get("categoryName")), "%" + search.toLowerCase() + "%")
         );
     }
