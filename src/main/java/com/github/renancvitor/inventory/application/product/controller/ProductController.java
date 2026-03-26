@@ -92,4 +92,12 @@ public class ProductController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<ProductDetailData> getById(@PathVariable Long id) {
+        ProductDetailData product = productService.getById(id);
+        
+        return ResponseEntity.ok(product);
+    }
+    
+
 }

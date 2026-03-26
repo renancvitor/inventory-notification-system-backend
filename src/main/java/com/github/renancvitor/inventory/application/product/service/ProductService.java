@@ -166,4 +166,11 @@ public class ProductService {
                                 newData);
         }
 
+        public ProductDetailData getById(Long id) {
+                Product product = productRepository.findById(id)
+                                .orElseThrow(() -> NotFoundExceptionFactory.product(id));
+
+                return new ProductDetailData(product);
+        }
+
 }
