@@ -2,9 +2,12 @@ package com.github.renancvitor.inventory.application.order.dto;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.github.renancvitor.inventory.application.movement.dto.MovementDetailData;
+import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
+import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 
@@ -14,6 +17,7 @@ public record OrderDetailData(
                 String description,
                 BigDecimal totalValue,
                 String status,
+                String orderType,
                 String requestedBy,
                 String approvedBy,
                 String rejectedBy,
@@ -25,6 +29,7 @@ public record OrderDetailData(
                                 order.getDescription(),
                                 order.getTotalValue(),
                                 OrderStatusEnum.valueOf(order.getOrderStatus().getOrderStatusName()).getDisplayName(),
+                                resolveOrderType(order),
                                 order.getRequestedBy() != null ? order.getRequestedBy().getUsername() : null,
                                 order.getApprovedBy() != null ? order.getApprovedBy().getUsername() : null,
                                 order.getRejectedBy() != null ? order.getRejectedBy().getUsername() : null,
@@ -33,5 +38,49 @@ public record OrderDetailData(
                                                                 .map(MovementDetailData::new)
                                                                 .toList()
                                                 : List.of());
+        }
+
+        private static String resolveOrderType(Order order) {
+                List<String> orderTypes = new ArrayList<>();
+
+                if (order.getItems() != null) {
+                        order.getItems().stream()
+                                        .map(item -> item.getMovementType())
+                                        .filter(movementType -> movementType != null && movementType.getMovementTypeName() != null)
+                                        .map(OrderDetailData::resolveMovementTypeDisplayName)
+                                        .forEach(orderTypes::add);
+                }
+
+                if (orderTypes.isEmpty() && order.getMovements() != null) {
+                        order.getMovements().stream()
+                                        .map(movement -> movement.getMovementType())
+                                        .filter(movementType -> movementType != null && movementType.getMovementTypeName() != null)
+                                        .map(OrderDetailData::resolveMovementTypeDisplayName)
+                                        .forEach(orderTypes::add);
+                }
+
+                if (orderTypes.isEmpty()) {
+                        return null;
+                }
+
+                List<String> distinctTypes = orderTypes.stream().distinct().toList();
+
+                return distinctTypes.size() == 1 ? distinctTypes.getFirst() : "Misto";
+        }
+
+        private static String resolveMovementTypeDisplayName(MovementTypeEntity movementType) {
+                if (movementType.getId() != null) {
+                        return MovementTypeEnum.fromId(movementType.getId()).getDisplayName();
+                }
+
+                String movementTypeName = movementType.getMovementTypeName();
+                for (MovementTypeEnum type : MovementTypeEnum.values()) {
+                        if (type.name().equalsIgnoreCase(movementTypeName)
+                                        || type.getDisplayName().equalsIgnoreCase(movementTypeName)) {
+                                return type.getDisplayName();
+                        }
+                }
+
+                throw new IllegalArgumentException("Tipo de movimento inválido: " + movementTypeName);
         }
 }

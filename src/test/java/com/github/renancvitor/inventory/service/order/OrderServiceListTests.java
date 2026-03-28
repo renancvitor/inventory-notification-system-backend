@@ -84,6 +84,7 @@ public class OrderServiceListTests {
                                         null,
                                         null,
                                         null,
+                                        null,
                                         null);
 
                         assertEquals(1, result.getTotalElements());
@@ -102,6 +103,7 @@ public class OrderServiceListTests {
 
                         Page<OrderDetailData> result = orderService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         1,
                                         null,
@@ -129,6 +131,7 @@ public class OrderServiceListTests {
                                         PageRequest.of(0, 10),
                                         null,
                                         null,
+                                        null,
                                         10L,
                                         null,
                                         null,
@@ -152,6 +155,7 @@ public class OrderServiceListTests {
 
                         Page<OrderDetailData> result = orderService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -181,6 +185,7 @@ public class OrderServiceListTests {
                                         null,
                                         null,
                                         null,
+                                        null,
                                         30L,
                                         null,
                                         null,
@@ -204,6 +209,7 @@ public class OrderServiceListTests {
 
                         Page<OrderDetailData> result = orderService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -237,6 +243,7 @@ public class OrderServiceListTests {
                                         null,
                                         null,
                                         null,
+                                        null,
                                         updatedAt,
                                         null);
 
@@ -258,6 +265,7 @@ public class OrderServiceListTests {
 
                         Page<OrderDetailData> result = orderService.list(
                                         PageRequest.of(0, 10),
+                                        null,
                                         null,
                                         null,
                                         null,
@@ -293,6 +301,7 @@ public class OrderServiceListTests {
                                                 null,
                                                 null,
                                                 null,
+                                                null,
                                                 null);
                         });
 
@@ -306,6 +315,7 @@ public class OrderServiceListTests {
                         assertThrows(IllegalArgumentException.class, () -> {
                                 orderService.list(
                                                 PageRequest.of(-1, 10),
+                                                null,
                                                 null,
                                                 null,
                                                 null,
@@ -333,6 +343,7 @@ public class OrderServiceListTests {
                                                 null,
                                                 null,
                                                 null,
+                                                null,
                                                 null);
                         });
 
@@ -352,6 +363,7 @@ public class OrderServiceListTests {
                         assertThrows(NullPointerException.class, () -> {
                                 orderService.list(
                                                 PageRequest.of(0, 10),
+                                                null,
                                                 null,
                                                 null,
                                                 null,
@@ -392,6 +404,7 @@ public class OrderServiceListTests {
                                                 null,
                                                 null,
                                                 null,
+                                                null,
                                                 null);
                         });
 
@@ -400,5 +413,4 @@ public class OrderServiceListTests {
                                                         eq(PageRequest.of(0, 10)));
                 }
         }
-
 }

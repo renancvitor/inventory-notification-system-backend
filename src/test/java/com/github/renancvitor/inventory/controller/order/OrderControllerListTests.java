@@ -79,6 +79,7 @@ public class OrderControllerListTests {
                 @Test
                 void shouldListOrdersWithAllFilters() {
                         Pageable pageable = PageRequest.of(0, 10);
+                        String search = "pedido";
 
                         loggedInUser.setId(1L);
                         loggedInUser.setId(2L);
@@ -88,6 +89,7 @@ public class OrderControllerListTests {
                         BigDecimal totalValue = BigDecimal.valueOf(150.00);
 
                         OrderFilter filter = mock(OrderFilter.class);
+                        when(filter.search()).thenReturn(search);
                         when(filter.orderStatusId()).thenReturn(orderStatusEntity.getId());
                         when(filter.requestedBy()).thenReturn(1L);
                         when(filter.approvedBy()).thenReturn(2L);
@@ -106,6 +108,7 @@ public class OrderControllerListTests {
                         when(orderService.list(
                                         eq(pageable),
                                         eq(loggedInUser),
+                                        eq(search),
                                         eq(orderStatusEntity.getId()),
                                         eq(1L),
                                         eq(2L),
@@ -127,6 +130,7 @@ public class OrderControllerListTests {
                         verify(orderService).list(
                                         eq(pageable),
                                         eq(loggedInUser),
+                                        eq(search),
                                         eq(orderStatusEntity.getId()),
                                         eq(1L),
                                         eq(2L),
@@ -164,6 +168,7 @@ public class OrderControllerListTests {
                                         isNull(),
                                         isNull(),
                                         isNull(),
+                                        isNull(),
                                         isNull()))
                                         .thenReturn(emptyPage);
 
@@ -179,6 +184,7 @@ public class OrderControllerListTests {
                         verify(orderService).list(
                                         eq(pageable),
                                         eq(loggedInUser),
+                                        isNull(),
                                         isNull(),
                                         isNull(),
                                         isNull(),
@@ -219,6 +225,7 @@ public class OrderControllerListTests {
                                         isNull(),
                                         isNull(),
                                         isNull(),
+                                        isNull(),
                                         isNull()))
                                         .thenReturn(page);
 
@@ -236,6 +243,7 @@ public class OrderControllerListTests {
                         verify(orderService).list(
                                         eq(customPageable),
                                         eq(loggedInUser),
+                                        isNull(),
                                         isNull(),
                                         isNull(),
                                         isNull(),
@@ -265,6 +273,7 @@ public class OrderControllerListTests {
                                         any(),
                                         any(),
                                         any(),
+                                        any(),
                                         any()))
                                         .thenThrow(exception);
 
@@ -275,6 +284,7 @@ public class OrderControllerListTests {
                         verify(orderService).list(
                                         eq(pageable),
                                         eq(loggedInUser),
+                                        any(),
                                         any(),
                                         any(),
                                         any(),
