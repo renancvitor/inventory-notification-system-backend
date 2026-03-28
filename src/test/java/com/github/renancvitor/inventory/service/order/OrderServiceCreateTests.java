@@ -13,7 +13,6 @@ import static org.mockito.Mockito.when;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -41,6 +40,7 @@ import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.enums.OrderStatusEnum;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
 import com.github.renancvitor.inventory.domain.entity.user.User;
+import com.github.renancvitor.inventory.exception.types.common.EntityNotFoundException;
 import com.github.renancvitor.inventory.infra.messaging.systemlog.SystemLogPublisherService;
 import com.github.renancvitor.inventory.infra.outbox.publisher.OutboxService;
 import com.github.renancvitor.inventory.utils.TestEntityFactory;
@@ -164,7 +164,7 @@ public class OrderServiceCreateTests {
                         when(productRepository.findById(product.getId()))
                                         .thenReturn(Optional.empty());
 
-                        assertThrows(NoSuchElementException.class,
+                        assertThrows(EntityNotFoundException.class,
                                         () -> orderService.create(data, loggedInUser));
 
                         verify(productRepository).findById(product.getId());
@@ -190,7 +190,7 @@ public class OrderServiceCreateTests {
                         when(movementTypeRepository.findById(movementTypeEntity.getId()))
                                         .thenReturn(Optional.empty());
 
-                        assertThrows(NoSuchElementException.class,
+                        assertThrows(EntityNotFoundException.class,
                                         () -> orderService.create(data, loggedInUser));
 
                         verify(movementTypeRepository).findById(movementTypeEntity.getId());
