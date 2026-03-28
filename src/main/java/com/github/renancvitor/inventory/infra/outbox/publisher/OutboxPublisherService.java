@@ -41,7 +41,7 @@ public class OutboxPublisherService {
 
                 for (OutboxEventEntity event : events) {
                         try {
-                                Object payload = objectMapper.readValue(
+                                Object payload = objectMapper.convertValue(
                                                 event.getPayload(),
                                                 Object.class);
 

@@ -111,8 +111,10 @@ public class OrderService {
                 .map(dto -> {
                     OrderItem item = new OrderItem();
                     item.setOrder(order);
-                    item.setProduct(productRepository.findById(dto.productId()).orElseThrow());
-                    item.setMovementType(movementTypeRepository.findById(dto.movementTypeId()).orElseThrow());
+                    item.setProduct(productRepository.findById(dto.productId())
+                            .orElseThrow(() -> NotFoundExceptionFactory.product(dto.productId())));
+                    item.setMovementType(movementTypeRepository.findById(dto.movementTypeId())
+                            .orElseThrow(() -> NotFoundExceptionFactory.movementType(dto.movementTypeId())));
                     item.setQuantity(dto.quantity());
                     item.setUnitPrice(dto.unitPrice());
                     return item;

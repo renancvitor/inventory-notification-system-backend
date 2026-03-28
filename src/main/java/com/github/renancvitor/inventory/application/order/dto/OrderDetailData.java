@@ -70,7 +70,11 @@ public record OrderDetailData(
 
         private static String resolveMovementTypeDisplayName(MovementTypeEntity movementType) {
                 if (movementType.getId() != null) {
-                        return MovementTypeEnum.fromId(movementType.getId()).getDisplayName();
+                        try {
+                                return MovementTypeEnum.fromId(movementType.getId()).getDisplayName();
+                        } catch (IllegalArgumentException ignored) {
+                                // Fallback to name-based resolution for inconsistent seed data.
+                        }
                 }
 
                 String movementTypeName = movementType.getMovementTypeName();
