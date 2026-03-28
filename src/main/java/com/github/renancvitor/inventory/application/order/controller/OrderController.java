@@ -46,6 +46,7 @@ public class OrderController {
         var page = orderService.list(
                 pageable,
                 loggedInUser,
+                filter.search(),
                 filter.orderStatusId(),
                 filter.requestedBy(),
                 filter.approvedBy(),

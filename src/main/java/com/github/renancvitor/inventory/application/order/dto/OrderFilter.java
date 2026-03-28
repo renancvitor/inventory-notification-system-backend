@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import jakarta.validation.constraints.AssertTrue;
 
 public record OrderFilter(
+        String search,
         Integer orderStatusId,
         Long requestedBy,
         Long approvedBy,

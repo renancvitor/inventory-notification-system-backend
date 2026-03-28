@@ -56,10 +56,14 @@ public class OrderService {
     private final OutboxService outboxService;
 
     public Page<OrderDetailData> list(Pageable pageable, User loggedInUser,
-            Integer orderStatusId, Long requestedBy, Long approvedBy, Long rejectedBy,
+            String search, Integer orderStatusId, Long requestedBy, Long approvedBy, Long rejectedBy,
             LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal totalValue) {
 
         Specification<Order> specification = Specification.unrestricted();
+
+        if (search != null && !search.isBlank()) {
+            specification = specification.and(OrderSpecifications.search(search));
+        }
 
         if (orderStatusId != null) {
             specification = specification.and(OrderSpecifications.hasStatus(orderStatusId));
