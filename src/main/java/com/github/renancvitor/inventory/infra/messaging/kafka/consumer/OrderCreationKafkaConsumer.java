@@ -9,6 +9,9 @@ import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.renancvitor.inventory.domain.events.DomainEventEnvelope;
 import com.github.renancvitor.inventory.domain.events.OrderCreationEvent;
 import com.github.renancvitor.inventory.infra.messaging.kafka.idempotency.ProcessedEvent;
@@ -25,10 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class OrderCreationKafkaConsumer {
 
     private final ProcessedEventRepository processedEventRepository;
+    private final ObjectMapper objectMapper;
 
     @RetryableTopic(attempts = "4", backoff = @Backoff(delay = 5000, multiplier = 2.0), retryTopicSuffix = "-RETRY", dltTopicSuffix = "-DLT")
     @KafkaListener(topics = KafkaTopics.ORDER_CREATED_V1, groupId = "order-created-consumer")
-    public void consume(DomainEventEnvelope<OrderCreationEvent> envelope) {
+    public void consume(String message) {
+        DomainEventEnvelope<OrderCreationEvent> envelope = parseEnvelope(message);
+
         if (processedEventRepository.existsById(envelope.eventId())) {
             log.warn("Duplicated event ignored: {}", envelope.eventId());
             return;
@@ -49,8 +55,8 @@ public class OrderCreationKafkaConsumer {
     }
 
     @DltHandler
-    public void dlq(ConsumerRecord<String, DomainEventEnvelope<?>> record) {
-        DomainEventEnvelope<?> envelope = record.value();
+    public void dlq(ConsumerRecord<String, String> record) {
+        DomainEventEnvelope<?> envelope = parseEnvelope(record.value());
 
         MDC.put("correlationId", envelope.correlationId());
         log.error(
@@ -60,6 +66,17 @@ public class OrderCreationKafkaConsumer {
                 record.offset(),
                 envelope.eventType(),
                 envelope.payload());
+    }
+
+    private DomainEventEnvelope<OrderCreationEvent> parseEnvelope(String message) {
+        try {
+            return objectMapper.readValue(
+                    message,
+                    new TypeReference<DomainEventEnvelope<OrderCreationEvent>>() {
+                    });
+        } catch (JsonProcessingException exception) {
+            throw new IllegalArgumentException("Failed to parse order created event payload", exception);
+        }
     }
 
 }

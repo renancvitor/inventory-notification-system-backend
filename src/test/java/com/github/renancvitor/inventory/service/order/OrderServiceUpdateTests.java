@@ -27,13 +27,13 @@ import com.github.renancvitor.inventory.application.movement.repository.Movement
 import com.github.renancvitor.inventory.application.order.dto.OrderDetailData;
 import com.github.renancvitor.inventory.application.order.dto.OrderLogData;
 import com.github.renancvitor.inventory.application.order.dto.OrderUpdateData;
-import com.github.renancvitor.inventory.application.order.repository.OrderItemRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderRepository;
 import com.github.renancvitor.inventory.application.order.repository.OrderStatusRepository;
 import com.github.renancvitor.inventory.application.order.service.OrderService;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
 import com.github.renancvitor.inventory.domain.entity.movement.MovementTypeEntity;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
+import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
 import com.github.renancvitor.inventory.domain.entity.order.OrderStatusEntity;
 import com.github.renancvitor.inventory.domain.entity.order.exceptions.OrderStatusException;
 import com.github.renancvitor.inventory.domain.entity.product.Product;
@@ -54,9 +54,6 @@ public class OrderServiceUpdateTests {
 
         @Mock
         private MovementTypeRepository movementTypeRepository;
-
-        @Mock
-        private OrderItemRepository orderItemRepository;
 
         @Mock
         private OrderStatusRepository orderStatusRepository;
@@ -110,13 +107,21 @@ public class OrderServiceUpdateTests {
                                         .thenReturn(Optional.of(movementTypeEntity));
 
                         when(orderRepository.save(any(Order.class)))
-                                        .thenAnswer(inv -> inv.getArgument(0));
+                                        .thenAnswer(inv -> {
+                                                Order savedOrder = inv.getArgument(0);
+                                                savedOrder.updateTotalValue();
+                                                return savedOrder;
+                                        });
 
                         OrderDetailData result = orderService.update(order.getId(), data, loggedInUser);
 
                         assertNotNull(result);
                         assertEquals("Updated description", result.description());
-                        assertEquals(1, result.movements().size());
+                        assertEquals(1, result.items().size());
+                        assertEquals(0, result.movements().size());
+                        assertEquals(BigDecimal.valueOf(10), result.items().getFirst().unitPrice());
+                        assertEquals(5, result.items().getFirst().quantity());
+                        assertEquals(BigDecimal.valueOf(50), result.totalValue());
 
                         verify(orderRepository).findById(order.getId());
                         verify(productRepository).findByIdAndActiveTrue(product.getId());
@@ -127,6 +132,45 @@ public class OrderServiceUpdateTests {
                                                         contains(loggedInUser.getUsername()),
                                                         any(OrderLogData.class),
                                                         any(OrderLogData.class));
+                }
+
+                @Test
+                void shouldReplaceExistingOrderItemsWhenUpdatingOrder() {
+                        OrderItem existingItem = TestEntityFactory.createOrderItem();
+                        existingItem.setOrder(order);
+                        order.setItems(List.of(existingItem));
+                        order.setRequestedBy(loggedInUser);
+                        order.setOrderStatus(orderStatusEntity);
+
+                        MovementOrderRequest movement = new MovementOrderRequest(
+                                        product.getId(),
+                                        movementTypeEntity.getId(),
+                                        3,
+                                        BigDecimal.valueOf(25));
+
+                        OrderUpdateData data = new OrderUpdateData(
+                                        "Pedido com item substituido",
+                                        List.of(movement));
+
+                        when(orderRepository.findById(order.getId()))
+                                        .thenReturn(Optional.of(order));
+                        when(productRepository.findByIdAndActiveTrue(product.getId()))
+                                        .thenReturn(Optional.of(product));
+                        when(movementTypeRepository.findById(movementTypeEntity.getId()))
+                                        .thenReturn(Optional.of(movementTypeEntity));
+                        when(orderRepository.save(any(Order.class)))
+                                        .thenAnswer(inv -> {
+                                                Order savedOrder = inv.getArgument(0);
+                                                savedOrder.updateTotalValue();
+                                                return savedOrder;
+                                        });
+
+                        OrderDetailData result = orderService.update(order.getId(), data, loggedInUser);
+
+                        assertEquals(1, result.items().size());
+                        assertEquals(3, result.items().getFirst().quantity());
+                        assertEquals(BigDecimal.valueOf(25), result.items().getFirst().unitPrice());
+                        assertEquals("Pedido com item substituido", result.description());
                 }
         }
 

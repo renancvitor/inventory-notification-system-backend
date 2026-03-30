@@ -7,14 +7,16 @@ public record UserSummaryData(
         Long id,
         String nameUserType,
         String personName,
-        String personEmail) {
+        String personEmail,
+        Boolean firstAccess) {
 
     public UserSummaryData(User user) {
         this(
                 user.getId(),
                 UserTypeEnum.valueOf(user.getUserType().getUserTypeName()).getDisplayName(),
                 user.getPerson().getPersonName(),
-                user.getPerson().getEmail());
+                user.getPerson().getEmail(),
+                user.getFirstAccess());
     }
 
 }

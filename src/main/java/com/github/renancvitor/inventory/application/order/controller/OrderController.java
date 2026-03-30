@@ -59,6 +59,14 @@ public class OrderController {
     }
 
     @PreAuthorize("isAuthenticated()")
+    @GetMapping("/{id}")
+    public ResponseEntity<OrderDetailData> getById(@PathVariable Long id) {
+        OrderDetailData orderDetailData = orderService.getById(id);
+
+        return ResponseEntity.ok(orderDetailData);
+    }
+
+    @PreAuthorize("isAuthenticated()")
     @PostMapping
     public ResponseEntity<OrderDetailData> create(@RequestBody @Valid OrderCreationData data,
             UriComponentsBuilder uriComponentsBuilder,

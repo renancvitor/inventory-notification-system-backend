@@ -9,6 +9,9 @@ import org.springframework.kafka.annotation.RetryableTopic;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.renancvitor.inventory.domain.events.DomainEventEnvelope;
 import com.github.renancvitor.inventory.domain.events.StockBelowMinimumEvent;
 import com.github.renancvitor.inventory.infra.messaging.kafka.idempotency.ProcessedEvent;
@@ -25,10 +28,13 @@ import lombok.extern.slf4j.Slf4j;
 public class StockBelowMinimumKafkaConsumer {
 
     private final ProcessedEventRepository processedEventRepository;
+    private final ObjectMapper objectMapper;
 
     @RetryableTopic(attempts = "4", backoff = @Backoff(delay = 5000, multiplier = 2.0), retryTopicSuffix = "-RETRY", dltTopicSuffix = "-DLT")
     @KafkaListener(topics = KafkaTopics.STOCK_BELOW_MINIMUM_V1, groupId = "stock-below-minimum-consumer")
-    public void consume(DomainEventEnvelope<StockBelowMinimumEvent> envelope) {
+    public void consume(String message) {
+        DomainEventEnvelope<StockBelowMinimumEvent> envelope = parseEnvelope(message);
+
         if (processedEventRepository.existsById(envelope.eventId())) {
             log.warn("Duplicated event ignored: {}", envelope.eventId());
             return;
@@ -49,8 +55,8 @@ public class StockBelowMinimumKafkaConsumer {
     }
 
     @DltHandler
-    public void dlt(ConsumerRecord<String, DomainEventEnvelope<?>> record) {
-        DomainEventEnvelope<?> envelope = record.value();
+    public void dlt(ConsumerRecord<String, String> record) {
+        DomainEventEnvelope<?> envelope = parseEnvelope(record.value());
 
         MDC.put("correlationId", envelope.correlationId());
         log.error(
@@ -60,6 +66,17 @@ public class StockBelowMinimumKafkaConsumer {
                 record.offset(),
                 envelope.eventType(),
                 envelope.payload());
+    }
+
+    private DomainEventEnvelope<StockBelowMinimumEvent> parseEnvelope(String message) {
+        try {
+            return objectMapper.readValue(
+                    message,
+                    new TypeReference<DomainEventEnvelope<StockBelowMinimumEvent>>() {
+                    });
+        } catch (JsonProcessingException exception) {
+            throw new IllegalArgumentException("Failed to parse stock below minimum event payload", exception);
+        }
     }
 
 }

@@ -22,7 +22,6 @@ import com.github.renancvitor.inventory.application.order.repository.OrderReposi
 import com.github.renancvitor.inventory.application.order.repository.OrderSpecifications;
 import com.github.renancvitor.inventory.application.order.repository.OrderStatusRepository;
 import com.github.renancvitor.inventory.application.product.repository.ProductRepository;
-import com.github.renancvitor.inventory.domain.entity.movement.Movement;
 import com.github.renancvitor.inventory.domain.entity.movement.enums.MovementTypeEnum;
 import com.github.renancvitor.inventory.domain.entity.order.Order;
 import com.github.renancvitor.inventory.domain.entity.order.OrderItem;
@@ -96,6 +95,13 @@ public class OrderService {
         return orderRepository.findAll(specification, pageable).map(OrderDetailData::new);
     }
 
+    public OrderDetailData getById(Long id) {
+        Order order = orderRepository.findById(id)
+                .orElseThrow(() -> NotFoundExceptionFactory.order(id));
+
+        return new OrderDetailData(order);
+    }
+
     @Transactional
     public OrderDetailData create(OrderCreationData data, User loggedInUser) {
         Order order = new Order();
@@ -159,28 +165,27 @@ public class OrderService {
 
         OrderLogData oldData = OrderLogData.fromEntity(order);
 
-        List<Movement> updateMovements = data.movements().stream()
+        List<OrderItem> updatedItems = data.movements().stream()
                 .map(movementRequest -> {
                     Product product = productRepository.findByIdAndActiveTrue(movementRequest.productId())
                             .orElseThrow(() -> NotFoundExceptionFactory.product(movementRequest.productId()));
 
-                    Movement movement = new Movement();
-                    movement.setProduct(product);
-                    movement.setMovementType(movementTypeRepository.findById(movementRequest.movementTypeId())
+                    OrderItem item = new OrderItem();
+                    item.setOrder(order);
+                    item.setProduct(product);
+                    item.setMovementType(movementTypeRepository.findById(movementRequest.movementTypeId())
                             .orElseThrow(
                                     () -> NotFoundExceptionFactory.movementType(movementRequest.movementTypeId())));
-                    movement.setQuantity(movementRequest.quantity());
-                    movement.setUnitPrice(movementRequest.unitPrice());
-                    movement.updateTotalValue();
-                    movement.setMovementationDate(LocalDateTime.now());
-                    movement.setUser(loggedInUser);
-                    movement.setOrder(order);
+                    item.setQuantity(movementRequest.quantity());
+                    item.setUnitPrice(movementRequest.unitPrice());
 
-                    return movement;
+                    return item;
                 })
                 .toList();
 
-        order.setMovements(updateMovements);
+        order.setDescription(data.description());
+        order.setItems(updatedItems);
+        order.setMovements(List.of());
 
         Order updatedOrder = orderRepository.save(order);
         OrderLogData newData = OrderLogData.fromEntity(updatedOrder);

@@ -19,8 +19,12 @@ public record OrderDetailData(
                 String status,
                 String orderType,
                 String requestedBy,
+                String requestedByName,
                 String approvedBy,
+                String approvedByName,
                 String rejectedBy,
+                String rejectedByName,
+                List<OrderItemDetailData> items,
                 List<MovementDetailData> movements) {
         public OrderDetailData(Order order) {
                 this(
@@ -31,8 +35,22 @@ public record OrderDetailData(
                                 OrderStatusEnum.valueOf(order.getOrderStatus().getOrderStatusName()).getDisplayName(),
                                 resolveOrderType(order),
                                 order.getRequestedBy() != null ? order.getRequestedBy().getUsername() : null,
+                                order.getRequestedBy() != null && order.getRequestedBy().getPerson() != null
+                                                ? order.getRequestedBy().getPerson().getPersonName()
+                                                : null,
                                 order.getApprovedBy() != null ? order.getApprovedBy().getUsername() : null,
+                                order.getApprovedBy() != null && order.getApprovedBy().getPerson() != null
+                                                ? order.getApprovedBy().getPerson().getPersonName()
+                                                : null,
                                 order.getRejectedBy() != null ? order.getRejectedBy().getUsername() : null,
+                                order.getRejectedBy() != null && order.getRejectedBy().getPerson() != null
+                                                ? order.getRejectedBy().getPerson().getPersonName()
+                                                : null,
+                                order.getItems() != null
+                                                ? order.getItems().stream()
+                                                                .map(OrderItemDetailData::new)
+                                                                .toList()
+                                                : List.of(),
                                 order.getMovements() != null
                                                 ? order.getMovements().stream()
                                                                 .map(MovementDetailData::new)
@@ -73,7 +91,7 @@ public record OrderDetailData(
                         try {
                                 return MovementTypeEnum.fromId(movementType.getId()).getDisplayName();
                         } catch (IllegalArgumentException ignored) {
-                                // Fallback to name-based resolution for inconsistent seed data.
+                                
                         }
                 }
 
