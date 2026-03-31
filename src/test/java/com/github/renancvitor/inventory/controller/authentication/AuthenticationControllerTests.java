@@ -70,7 +70,7 @@ class AuthenticationControllerTests {
                 assertTrue(setCookieHeader.contains("Max-Age=7200"));
                 assertTrue(setCookieHeader.contains("Secure"));
                 assertTrue(setCookieHeader.contains("HttpOnly"));
-                assertTrue(setCookieHeader.contains("SameSite=Lax"));
+                assertTrue(setCookieHeader.contains("SameSite=None"));
 
             verify(authenticationService).authentication(
                     any(LoginData.class),

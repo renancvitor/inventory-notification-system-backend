@@ -53,7 +53,8 @@ public class SecurityConfiguration {
         corsConfiguration.setAllowedOriginPatterns(List.of(
                 "http://localhost:*",
                 "http://127.0.0.1:*",
-                "https://main.d5jbq59ticpax.amplifyapp.com"));
+                "https://main.d5jbq59ticpax.amplifyapp.com",
+                "https://www.inventory-system.renantech.com.br"));
         corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowCredentials(true);
