@@ -14,12 +14,10 @@
 
 <h2 align="center">🔗 Frontend</h2>
 
-O frontend é desenvolvido em um repositório separado.  
-Acompanhe releases e evolução da interface em:
+O frontend foi desenvolvido em um repositório separado utilizando Angular e se comunica com este backend através de APIs REST.
+Consulte o projeto da interface em:
 
 - 🌐 [Sistema de Notificação de Estoque — Frontend](https://github.com/renancvitor/inventory-notification-system-frontend)
-
-> 🚧 O frontend ainda está em desenvolvimento.  
 
 ---
 
