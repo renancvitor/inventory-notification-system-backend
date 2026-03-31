@@ -14,6 +14,7 @@ import com.github.renancvitor.inventory.application.person.dto.PersonListingData
 import com.github.renancvitor.inventory.application.person.dto.PersonLogData;
 import com.github.renancvitor.inventory.application.person.repository.PersonRepository;
 import com.github.renancvitor.inventory.application.user.dto.UserCreationData;
+import com.github.renancvitor.inventory.application.user.repository.UserRepository;
 import com.github.renancvitor.inventory.application.user.service.UserService;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
@@ -28,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 public class PersonService {
 
         private final PersonRepository personRepository;
+        private final UserRepository userRepository;
         private final UserService userService;
         private final AuthenticationService authenticationService;
         private final SystemLogPublisherService logPublisherService;
@@ -87,6 +89,10 @@ public class PersonService {
                 PersonLogData oldData = PersonLogData.fromEntity(person);
 
                 person.setActive(false);
+                userRepository.findByPersonId(person.getId()).ifPresent(user -> {
+                        user.setActive(false);
+                        userRepository.save(user);
+                });
 
                 Person updatedPerson = personRepository.save(person);
                 PersonLogData newData = PersonLogData.fromEntity(updatedPerson);
@@ -108,6 +114,10 @@ public class PersonService {
                 PersonLogData oldData = PersonLogData.fromEntity(person);
 
                 person.setActive(true);
+                userRepository.findByPersonId(person.getId()).ifPresent(user -> {
+                        user.setActive(true);
+                        userRepository.save(user);
+                });
 
                 Person updatedPerson = personRepository.save(person);
                 PersonLogData newData = PersonLogData.fromEntity(updatedPerson);

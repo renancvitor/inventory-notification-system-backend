@@ -23,7 +23,7 @@ import org.springframework.test.context.ActiveProfiles;
 import com.github.renancvitor.inventory.application.authentication.service.AuthenticationService;
 import com.github.renancvitor.inventory.application.person.repository.PersonRepository;
 import com.github.renancvitor.inventory.application.person.service.PersonService;
-import com.github.renancvitor.inventory.application.user.repository.UserTypeRepository;
+import com.github.renancvitor.inventory.application.user.repository.UserRepository;
 import com.github.renancvitor.inventory.domain.entity.person.Person;
 import com.github.renancvitor.inventory.domain.entity.user.User;
 import com.github.renancvitor.inventory.domain.entity.user.UserTypeEntity;
@@ -41,7 +41,7 @@ public class PersonServiceDeleteTests {
     private PersonRepository personRepository;
 
     @Mock
-    private UserTypeRepository userTypeRepository;
+    private UserRepository userRepository;
 
     @Mock
     private SystemLogPublisherService logPublisherService;
@@ -68,17 +68,27 @@ public class PersonServiceDeleteTests {
         @Test
         void shouldDeletePersonWithUserPermission() {
             loggedInUser.setUserType(userTypeEntity);
+            User user = TestEntityFactory.createUser();
+            user.setId(10L);
+            user.setPerson(person);
+            person.setId(1L);
 
             when(personRepository.findByIdAndActiveTrue(person.getId()))
                     .thenReturn(Optional.of(person));
+            when(userRepository.findByPersonId(person.getId()))
+                    .thenReturn(Optional.of(user));
 
             when(personRepository.save(any(Person.class)))
+                    .thenAnswer(invocation -> invocation.getArgument(0));
+            when(userRepository.save(any(User.class)))
                     .thenAnswer(invocation -> invocation.getArgument(0));
 
             personService.delete(person.getId(), loggedInUser);
 
             assertFalse(person.getActive());
+            assertFalse(user.getActive());
             verify(personRepository).save(person);
+            verify(userRepository).save(user);
             verify(authenticationService)
                     .authorize(List.of(UserTypeEnum.ADMIN));
         }
